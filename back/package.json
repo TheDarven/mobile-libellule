@@ -4,18 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "dev": "nodemon src/index.js",
-    "doc": "node src/util/swagger.js"
+    "test": "SET NODE_ENV=test && npm run updatedb && jest",
+    "dev": "SET NODE_ENV=development && npm run doc && nodemon src/index.js",
+    "start": "SET NODE_ENV=production && npm run doc && npm run updatedb && node src/index.js",
+
+    "doc": "node src/util/swagger.js",
+    "updatedb": "node src/util/update-db.js"
   },
   "author": "Bastien, Loïc, Lucas",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "dotenv": "^16.0.0",
     "express": "^4.18.0",
     "http-status": "^1.5.1",
     "jws": "^4.0.0",
-    "nodcdemon": "^2.0.15",
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.15",
+    "sequelize": "^6.19.0",
     "swagger-autogen": "^2.21.1",
     "swagger-ui-express": "^4.3.0"
   },
@@ -24,6 +30,7 @@
     "eslint-config-prettier": "^8.5.0",
     "jest": "^28.0.2",
     "prettier": "^2.6.2",
+    "sequelize-cli": "^6.4.1",
     "supertest": "^6.2.3"
   },
   "jest": {
