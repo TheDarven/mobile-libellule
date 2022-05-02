@@ -1,7 +1,7 @@
 require('../model/database-manager')
 
 require('../model/user')
-    .sync({ force: true })
+    .sync()
     .then(() => {
         console.log('\x1b[32m✔ \x1b[0mModel user synchronisé')
     }).catch((error) => {
