@@ -3,6 +3,7 @@ module.exports = {
     INVALID_BODY_DATA: 'Certains paramètres n\'existent pas ou sont invalides',
 
     USER_BODY_INVALID_NAME_LENGTH: 'Le nom doit posséder entre 3 et 120 caractères',
+    USER_BODY_INVALID_NAME_FORMAT: 'Le nom ne doit pas posséder d\'espace et de caractères spéciaux',
     USER_BODY_INVALID_PASSWORD_LENGTH: 'Le mot de passe doit posséder entre 4 et 120 caractères',
     USER_NOT_EXISTING: 'Aucun utilisateur ne correspond à ces identifiants',
     USER_NAME_ALREADY_USE: 'Ce nom est déjà utilisé par un autre utilisateur',

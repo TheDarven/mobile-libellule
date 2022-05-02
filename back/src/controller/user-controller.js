@@ -1,5 +1,7 @@
 const express = require('express')
-const { INVALID_BODY_DATA, USER_BODY_INVALID_NAME_LENGTH, USER_BODY_INVALID_PASSWORD_LENGTH } = require("../util/status-message");
+const { INVALID_BODY_DATA, USER_BODY_INVALID_NAME_LENGTH, USER_BODY_INVALID_PASSWORD_LENGTH,
+    USER_BODY_INVALID_NAME_FORMAT
+} = require("../util/status-message");
 const { CodeError } = require("../util/error-handler");
 const { loginUser, registerUser } = require("../service/user-service");
 const router = express.Router()
@@ -42,6 +44,11 @@ router.post('', (req, res, next) => {
 function checkName(name) {
     if (!name || name.length < 3 || name.length > 120) {
         throw new CodeError(USER_BODY_INVALID_NAME_LENGTH)
+    }
+
+    const regexp = new RegExp('(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])', 'g');
+    if (!regexp.test(name) || name.includes(' ')) {
+        throw new CodeError(USER_BODY_INVALID_NAME_FORMAT)
     }
 }
 
