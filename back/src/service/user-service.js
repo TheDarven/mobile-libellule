@@ -2,7 +2,7 @@ const userModel = require('../model/user')
 const { USER_NOT_EXISTING, USER_LOGGED_WITH_SUCCESS, USER_NAME_ALREADY_USE, USER_CREATED_WITH_SUCCESS } = require("../util/status-message");
 const { CodeError } = require("../util/error-handler");
 const httpStatus = require("http-status");
-const jws = require("jws");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 async function loginUser(name, password) {
@@ -14,14 +14,11 @@ async function loginUser(name, password) {
         throw new CodeError(USER_NOT_EXISTING, httpStatus.NOT_FOUND)
     }
 
-    // Build jws token
-    const algorithm = process.env.JWS_ALGORITHM
-    const secret = process.env.JWS_SECRET_KEY
-    const signature = jws.sign({
-        header: { alg: algorithm },
-        payload: user.name,
-        secret
-    })
+    // Build jwt token
+    const secret = process.env.JWT_SECRET_KEY
+    const algorithm = process.env.JWT_ALGORITHM
+    const expiresIn = process.env.JWT_EXPIRES_IN
+    const signature = jwt.sign({ data: user.name }, secret, { expiresIn , algorithm })
 
     return {
         response: USER_LOGGED_WITH_SUCCESS,
@@ -42,14 +39,11 @@ async function registerUser(name, password) {
     try {
         const user = await userModel.create({ name, password })
 
-        // Build jws token
-        const algorithm = process.env.JWS_ALGORITHM
-        const secret = process.env.JWS_SECRET_KEY
-        const signature = jws.sign({
-            header: { alg: algorithm },
-            payload: user.name,
-            secret
-        })
+        // Build jwt token
+        const secret = process.env.JWT_SECRET_KEY
+        const algorithm = process.env.JWT_ALGORITHM
+        const expiresIn = process.env.JWT_EXPIRES_IN
+        const signature = jwt.sign({ data: user.name }, secret, { expiresIn , algorithm })
 
         return {
             response: USER_CREATED_WITH_SUCCESS,
