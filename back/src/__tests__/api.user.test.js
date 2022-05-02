@@ -216,16 +216,6 @@ describe('User Endpoint Test',() => {
                 })
         })
     })
-
-
-    // Nom trop long
-    // Nom trop court
-    // Password trop long
-    // Password trop court
-    // Nom avec espace
-    // Compte déjà existant (pseudo)
-    // Compte non existant (pseudo)
-    // Mot de passe invalide
 })
 
 async function emptyDatabase() {
