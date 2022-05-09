@@ -44,13 +44,24 @@ async function registerUser(name, password) {
     }
 }
 
+async function getUserById(userId) {
+    try {
+        return await userModel.findOne({
+            where: {
+                userId
+            }
+        })
+    } catch (err) {
+        return null
+    }
+}
+
 function createJwtToken(user) {
     // Build jwt token
     const secret = process.env.JWT_SECRET_KEY
     const algorithm = process.env.JWT_ALGORITHM
     const expiresIn = process.env.JWT_EXPIRES_IN
-    return jwt.sign({ data: user.name }, secret, { expiresIn, algorithm });
+    return jwt.sign({ data: { name: user.name, userId: user.userId } }, secret, { expiresIn, algorithm });
 }
 
-
-module.exports = { loginUser, registerUser }
+module.exports = { loginUser, registerUser, getUserById, createJwtToken }

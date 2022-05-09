@@ -1,6 +1,8 @@
 module.exports = {
     DEFAULT_ERROR: 'Une erreur est apparue, réessayez plus tard',
     INVALID_BODY_DATA: 'Certains paramètres n\'existent pas ou sont invalides',
+    TOKEN_NOT_PRESENT: 'Le token d\'authentification n\'est pas présent dans l\'entête de la requête',
+    INVALID_TOKEN: 'Le token d\'authentification n\'est pas valide',
 
     // USER
     USER_BODY_INVALID_NAME_LENGTH: 'Le nom doit posséder entre 3 et 120 caractères',
