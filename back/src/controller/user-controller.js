@@ -21,7 +21,10 @@ router.post('/login', (req, res, next) => {
 
     // Use service
     loginUser(name, password)
-        .then(({ response, data }) => res.json({ status: true, response, data }))
+        .then(({ response, data }) => {
+            res.header('Authorization', `Bearer ${data}`)
+            res.json({ status: true, response })
+        })
         .catch(error => next(error))
 });
 
@@ -37,7 +40,10 @@ router.post('', (req, res, next) => {
 
     // Use service
     registerUser(name, password)
-        .then(({ response, data }) => res.json({ status: true, response, data }))
+        .then(({ response, data }) => {
+            res.header('Authorization', `Bearer ${data}`)
+            res.json({ status: true, response })
+        })
         .catch(error => next(error))
 })
 
