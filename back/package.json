@@ -8,7 +8,8 @@
     "dev": "SET NODE_ENV=development && npm run doc && nodemon src/index.js",
     "start": "SET NODE_ENV=production && npm run doc && npm run updatedb && node src/index.js",
     "doc": "node src/util/swagger.js",
-    "updatedb": "node src/util/update-db.js"
+    "updatedb": "node src/util/update-db.js",
+    "lint": "eslint ."
   },
   "author": "Bastien, Loïc, Lucas",
   "license": "ISC",
