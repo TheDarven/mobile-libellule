@@ -41,6 +41,11 @@ router.post('', (req, res, next) => {
         .catch(error => next(error))
 })
 
+router.get('/whoami', (req, res) => {
+    const user = req.user
+    res.json({ status: true, data: { name: user.name, displayName: user.displayName }})
+})
+
 function checkName(name) {
     if (!name || name.length < 3 || name.length > 120) {
         throw new CodeError(USER_BODY_INVALID_NAME_LENGTH)
