@@ -1,0 +1,35 @@
+lint-front:
+  stage: lint
+  tags: 
+    - docker
+  image: node:latest
+  before-script: 
+    - cd ./front
+    - npm i
+  script:
+    - npm run lint
+  only: dev
+
+# test-front : TODO if detox or something else
+
+pages:    # Génération de l'application (génère l'apk et le déplace dans appli.apk)
+  tags:
+    - docker
+  stage: deploy
+  image: sebastienviardot/rnenvsv:20220427
+  before-script: 
+    - cd ./front
+    - npm install --save-dev jetifier # Peut être nécessaire pour la génération de l'apk
+    - npm install   # Installe les modules node présents dans package.json (le répertoire node_modules n'étant pas dans le dépôt)
+
+  script:
+    - mkdir -p public # Crée le répertoire pour disposer dans pages de l'application 
+    - source /home/rnuser/.androidrc # Définit les variables d'environnement pour accéder aux outils nécessaires
+    - npx jetify    # Prépare la génération de l'application native
+    - cd android    # Se place dans le répertoire android
+    - ./gradlew assembleRelease # Puis génère l'application au format apk 
+    - cp ./app/build/outputs/apk/release/app-release.apk ../public/libellule.apk # Déplace l'application générée dans /public 
+  artifacts:
+    paths:
+      - public
+  only: master
