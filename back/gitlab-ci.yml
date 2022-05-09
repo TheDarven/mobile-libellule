@@ -1,0 +1,37 @@
+lint-back:
+  tags:
+    - docker
+  image: node:latest
+  stage: lint
+  before_script:
+    - cd ./back
+    - npm i
+  script:
+    - npm run lint
+
+test-back: 
+  tags:
+    - docker
+  image: node:latest
+  stage: test
+  before_script:
+    - cd ./back
+    - npm i
+  script:
+    - npm run test
+
+deploy-back:
+  tags:
+    - docker
+  image: ruby:latest
+  stage: deploy
+  # Environment setup for dpl install
+  before_script:
+    - cd ./back
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+  # Deploy on heroku
+  script:
+    - npm i
+    - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
