@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const { getUserById, createJwtToken } = require("../service/user-service");
 
 const EXCLUDED_TOKEN_ENDPOINTS = [
-    { path: '/api/users', method: 'POST' },
+    { path: '/api/users/', method: 'POST' },
     { path: '/api/users/login', method: 'POST' }
 ];
 
@@ -23,11 +23,10 @@ router.use('*', async (req, res, next) => {
     }
 
     // Verify if token is present
-    let token = req.headers?.authorization
-    if (!token || !token.startsWith('Bearer ')) {
+    const token = req.headers?.authorization
+    if (!token) {
         return next(new CodeError(TOKEN_NOT_PRESENT, httpStatus.UNAUTHORIZED))
     }
-    token = token.replace('Bearer ', '')
 
     // Verify token
     let decoded;
@@ -50,7 +49,7 @@ router.use('*', async (req, res, next) => {
     const currentTimestamp = Math.round(new Date() / 1000)
     const jwtExpiresIn = Math.round(process.env.JWT_EXPIRES_IN / 1000)
     if (currentTimestamp + (jwtExpiresIn / 2) > exp) {
-        res.header('Authorization', `Bearer ${createJwtToken(loggedUser)}`)
+        res.header('Authorization', createJwtToken(loggedUser))
     }
 
     return next();

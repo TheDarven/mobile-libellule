@@ -26,17 +26,19 @@ describe('User Endpoint Test',() => {
                 })
                 .expect(httpStatus.OK)
                 .then((response) => {
-                    const body = response._body;
+                    const body = response._body
 
                     expect(body.status).toBe(true)
 
                     expect(body.response).toBe(USER_CREATED_WITH_SUCCESS)
 
-                    expect(body.data).toBeTruthy() // Not empty
+                    const header = response.headers
+
+                    expect(header.authorization).toBeTruthy() // Not empty
 
                     const algorithm = process.env.JWT_ALGORITHM
                     const secret = process.env.JWT_SECRET_KEY
-                    jwt.verify(body.data, secret, { algorithm }, (error, decoded) => {
+                    jwt.verify(header.authorization, secret, { algorithm }, (error, decoded) => {
                         expect(error).toBeNull() // Token valid
                         expect(decoded).toBeTruthy() // Token not empty
                     })
@@ -162,11 +164,14 @@ describe('User Endpoint Test',() => {
 
                     expect(body.response).toBe(USER_LOGGED_WITH_SUCCESS)
 
-                    expect(body.data).toBeTruthy() // Not empty
+
+                    const header = response.headers
+
+                    expect(header.authorization).toBeTruthy() // Not empty
 
                     const algorithm = process.env.JWT_ALGORITHM
                     const secret = process.env.JWT_SECRET_KEY
-                    jwt.verify(body.data, secret, { algorithm }, (error, decoded) => {
+                    jwt.verify(header.authorization, secret, { algorithm }, (error, decoded) => {
                         expect(error).toBeNull() // Token valid
                         expect(decoded).toBeTruthy() // Token not empty
                     })
