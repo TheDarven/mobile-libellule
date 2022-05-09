@@ -1,5 +1,7 @@
 const userModel = require('../model/user')
-const { USER_NOT_EXISTING, USER_LOGGED_WITH_SUCCESS, USER_NAME_ALREADY_USE, USER_CREATED_WITH_SUCCESS } = require("../util/status-message");
+const { USER_NOT_EXISTING, USER_LOGGED_WITH_SUCCESS, USER_NAME_ALREADY_USE, USER_CREATED_WITH_SUCCESS,
+    USER_CREATION_FAILED
+} = require("../util/status-message");
 const { CodeError } = require("../util/error-handler");
 const httpStatus = require("http-status");
 const jwt = require("jsonwebtoken");
@@ -14,15 +16,9 @@ async function loginUser(name, password) {
         throw new CodeError(USER_NOT_EXISTING, httpStatus.NOT_FOUND)
     }
 
-    // Build jwt token
-    const secret = process.env.JWT_SECRET_KEY
-    const algorithm = process.env.JWT_ALGORITHM
-    const expiresIn = process.env.JWT_EXPIRES_IN
-    const signature = jwt.sign({ data: user.name }, secret, { expiresIn , algorithm })
-
     return {
         response: USER_LOGGED_WITH_SUCCESS,
-        data: signature
+        data: createJwtToken(user)
     }
 }
 
@@ -37,21 +33,23 @@ async function registerUser(name, password) {
 
     // Create user
     try {
-        const user = await userModel.create({ name, password })
-
-        // Build jwt token
-        const secret = process.env.JWT_SECRET_KEY
-        const algorithm = process.env.JWT_ALGORITHM
-        const expiresIn = process.env.JWT_EXPIRES_IN
-        const signature = jwt.sign({ data: user.name }, secret, { expiresIn , algorithm })
+        const user = await userModel.create({ name, password, displayName: 'DefaultDisplay' })
 
         return {
             response: USER_CREATED_WITH_SUCCESS,
-            data: signature
+            data: createJwtToken(user)
         }
     } catch (err) {
-        console.log(err)
+        throw new CodeError(USER_CREATION_FAILED, httpStatus.INTERNAL_SERVER_ERROR)
     }
+}
+
+function createJwtToken(user) {
+    // Build jwt token
+    const secret = process.env.JWT_SECRET_KEY
+    const algorithm = process.env.JWT_ALGORITHM
+    const expiresIn = process.env.JWT_EXPIRES_IN
+    return jwt.sign({ data: user.name }, secret, { expiresIn, algorithm });
 }
 
 

@@ -22,6 +22,11 @@ const user = db.define('User', {
             const hash = bcrypt.hashSync(value, parseInt(process.env.SALT));
             this.setDataValue('password', hash);
         }
+    },
+    displayName: {
+        type: DataTypes.STRING(200),
+        allowNull: false,
+        field: 'display_name'
     }
 });
 
