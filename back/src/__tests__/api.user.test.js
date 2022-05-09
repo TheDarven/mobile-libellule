@@ -2,7 +2,6 @@
 const jwt = require("jsonwebtoken")
 
 const app = require('../app')
-const userModel = require('../model/user')
 const supertest = require('supertest')
 const httpStatus = require("http-status")
 const { USER_CREATED_WITH_SUCCESS, USER_LOGGED_WITH_SUCCESS, USER_BODY_INVALID_PASSWORD_LENGTH,
@@ -16,14 +15,6 @@ const ACCOUNT_NAME = "Test"
 const ACCOUNT_PASSWORD = "MyPassword"
 
 describe('User Endpoint Test',() => {
-
-    afterAll(async () => {
-        return await emptyDatabase()
-    })
-
-    beforeAll(async () => {
-        return await emptyDatabase()
-    })
 
     describe('User SignUp Test', () => {
         it('should test signup', async () => {
@@ -217,10 +208,3 @@ describe('User Endpoint Test',() => {
         })
     })
 })
-
-async function emptyDatabase() {
-    return await userModel.destroy({
-        where: {},
-        truncate: true
-    })
-}
