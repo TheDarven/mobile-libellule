@@ -8,6 +8,8 @@ lint-back:
     - npm i
   script:
     - npm run lint
+  only:
+    - dev
 
 test-back: 
   tags:
@@ -19,6 +21,8 @@ test-back:
     - npm i
   script:
     - npm run test
+  only:
+    - dev
 
 deploy-back:
   tags:
@@ -35,3 +39,5 @@ deploy-back:
   script:
     - npm i
     - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
+  only:
+    - master
