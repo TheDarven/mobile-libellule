@@ -5,16 +5,20 @@ const app = require('../app')
 const supertest = require('supertest')
 const httpStatus = require("http-status")
 const { USER_CREATED_WITH_SUCCESS, USER_LOGGED_WITH_SUCCESS, USER_BODY_INVALID_PASSWORD_LENGTH,
-    USER_BODY_INVALID_NAME_LENGTH, USER_BODY_INVALID_NAME_FORMAT, USER_NAME_ALREADY_USE, USER_NOT_EXISTING
+    USER_BODY_INVALID_NAME_LENGTH, USER_BODY_INVALID_NAME_FORMAT, USER_NAME_ALREADY_USE, USER_NOT_EXISTING,
+    TOKEN_NOT_PRESENT, INVALID_TOKEN
 } = require("../util/status-message")
 
 const SIGNUP_ENDPOINT = '/api/users/'
 const SIGNIN_ENDPOINT = '/api/users/login'
+const WHOAMI_ENDPOINT = '/api/users/whoami'
 
 const ACCOUNT_NAME = "Test"
 const ACCOUNT_PASSWORD = "MyPassword"
 
 describe('User Endpoint Test',() => {
+
+    let token;
 
     describe('User SignUp Test', () => {
         it('should test signup', async () => {
@@ -175,6 +179,8 @@ describe('User Endpoint Test',() => {
                         expect(error).toBeNull() // Token valid
                         expect(decoded).toBeTruthy() // Token not empty
                     })
+
+                    token = header.authorization
                 })
         })
 
@@ -209,6 +215,52 @@ describe('User Endpoint Test',() => {
                     expect(body.status).toBe(false)
 
                     expect(body.response).toBe(USER_NOT_EXISTING)
+                })
+        })
+    })
+
+    describe('User WhoAmI Test', () => {
+        it('should test whoami', async () => {
+            await supertest(app)
+                .get(WHOAMI_ENDPOINT)
+                .set('Authorization', token)
+                .send()
+                .expect(httpStatus.OK)
+                .then((response) => {
+                    const body = response._body
+
+                    expect(body.status).toBe(true)
+
+                    expect(body.data?.name).toBe(ACCOUNT_NAME)
+                })
+        })
+
+        it('should test whoami without token', async () => {
+            await supertest(app)
+                .get(WHOAMI_ENDPOINT)
+                .send()
+                .expect(httpStatus.UNAUTHORIZED)
+                .then((response) => {
+                    const body = response._body
+
+                    expect(body.status).toBe(false)
+
+                    expect(body.response).toBe(TOKEN_NOT_PRESENT)
+                })
+        })
+
+        it ('should test whoami without valid token', async () => {
+            await supertest(app)
+                .get(WHOAMI_ENDPOINT)
+                .set('Authorization', 'invalid_token')
+                .send()
+                .expect(httpStatus.UNAUTHORIZED)
+                .then((response) => {
+                    const body = response._body
+
+                    expect(body.status).toBe(false)
+
+                    expect(body.response).toBe(INVALID_TOKEN)
                 })
         })
     })
