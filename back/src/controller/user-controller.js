@@ -8,7 +8,21 @@ const router = express.Router()
 
 router.post('/login', (req, res, next) => {
     // #swagger.summary = 'Connexion pour un utilisateur'
-    // #swagger.description = 'Connexion pour un utilisateur. Retourne un token d'authentification.'
+    // #swagger.description = "Connexion pour un utilisateur. Retourne un token d'authentification dans l'entête."
+    /* #swagger.requestBody = {
+        required: true,
+        schema: { $ref: '#/components/parameters/user' }
+    } */
+    /* #swagger.responses[200] = {
+        schema: { $ref: '#/components/responses/emptyResponse' },
+        headers: { $ref: '#/components/headers/token' }
+    } */
+    /* #swagger.responses[400] = {
+        schema: { $ref: '#/components/responses/400' }
+    } */
+    /* #swagger.responses[404] = {
+        schema: { $ref: '#/components/responses/404' }
+    } */
 
     // Check inputs
     const body = req.body
@@ -28,7 +42,24 @@ router.post('/login', (req, res, next) => {
         .catch(error => next(error))
 });
 
-router.post('', (req, res, next) => {
+router.post('/', (req, res, next) => {
+    // #swagger.summary = 'Inscription pour un utilisateur'
+    // #swagger.description = "Inscription pour un utilisateur. Retourne un token d'authentification dans l'entête."
+    /* #swagger.requestBody = {
+        required: true,
+        schema: { $ref: '#/components/parameters/user' }
+    } */
+    /* #swagger.responses[200] = {
+        schema: { $ref: '#/components/responses/emptyResponse' },
+        headers: { $ref: '#/components/headers/token' }
+    } */
+    /* #swagger.responses[400] = {
+        schema: { $ref: '#/components/responses/400' }
+    } */
+    /* #swagger.responses[404] = {
+        schema: { $ref: '#/components/responses/404' }
+    } */
+
     // Check inputs
     const body = req.body
     if (body == null) {
@@ -48,6 +79,19 @@ router.post('', (req, res, next) => {
 })
 
 router.get('/whoami', (req, res) => {
+    // #swagger.summary = 'Informations sur la connexion'
+    // #swagger.description = "Récupère les informations sur l\'utilisateur connecté."
+    // #swagger.parameters['authorization'] = { $ref: '#/components/parameters/authorization' }
+    /* #swagger.responses[200] = {
+        schema: {
+            status: true,
+            data: {
+                name: 'myname',
+                displayName: 'Libellule'
+            }
+        }
+    } */
+
     const user = req.user
     res.json({ status: true, data: { name: user.name, displayName: user.displayName }})
 })

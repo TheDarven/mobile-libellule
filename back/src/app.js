@@ -8,7 +8,7 @@ app.use(express.json({ limit: '50mb' }))
 app.use(express.urlencoded({ extended: true, limit: '10mb' }))
 
 // This middleware adds the json header to every response
-app.use('*', (req, res, next) => {
+app.use('/api/', (req, res, next) => {
     res.setHeader('Content-Type', 'application/json')
     next()
 })

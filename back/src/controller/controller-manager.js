@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { TOKEN_NOT_PRESENT, INVALID_TOKEN } = require("../util/status-message");
+const { TOKEN_NOT_PRESENT, INVALID_TOKEN, INVALID_TOKEN_USER } = require("../util/status-message");
 const { CodeError } = require("../util/error-handler");
 const httpStatus = require("http-status");
 const userController = require('./user-controller');
@@ -13,7 +13,7 @@ const EXCLUDED_TOKEN_ENDPOINTS = [
 ];
 
 // Token middleware
-router.use('*', async (req, res, next) => {
+router.use('/', async (req, res, next) => {
     // Bypass excluded endpoints
     const isExcludedPath = EXCLUDED_TOKEN_ENDPOINTS
         .find(excludedPath => excludedPath.path === req.originalUrl && excludedPath.method === req.method) != null
@@ -40,7 +40,7 @@ router.use('*', async (req, res, next) => {
 
     const loggedUser = await getUserById(decoded?.data?.userId);
     if (loggedUser == null) {
-        return next(new CodeError(INVALID_TOKEN, httpStatus.UNAUTHORIZED))
+        return next(new CodeError(INVALID_TOKEN_USER, httpStatus.UNAUTHORIZED))
     }
     req.user = loggedUser
 
@@ -55,6 +55,14 @@ router.use('*', async (req, res, next) => {
     return next();
 })
 
-router.use('/users', userController);
+router.use('/users', userController
+    // #swagger.tags = ['Users']
+    /* #swagger.responses[401] = {
+        schema: { $ref: '#/components/responses/401' }
+    } */
+    /* #swagger.responses[200] = {
+        headers: { $ref: '#/components/headers/refreshToken' }
+    } */
+);
 
 module.exports = router
