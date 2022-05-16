@@ -10,6 +10,7 @@ lint-back:
     - npm run lint
   only:
     - dev
+    - master
 
 test-back: 
   tags:
@@ -23,6 +24,7 @@ test-back:
     - npm run test
   only:
     - dev
+    - master
 
 deploy-back:
   tags:
