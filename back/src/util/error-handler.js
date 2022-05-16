@@ -17,13 +17,9 @@ const errorHandler = () => (err, req, res, next) => {
     let errorMessage = null;
     let errorCode = httpStatus.BAD_REQUEST
 
-    try {
-        errorMessage = err.message;
-    } catch (error) { }
+    errorMessage = err?.message ?? errorMessage;
 
-    try {
-        errorCode = err.code
-    } catch (error) { }
+    errorCode = err?.code ?? errorCode;
 
     if (err.code === httpStatus.BAD_REQUEST && errorMessage == null) {
         errorMessage = INVALID_BODY_DATA
