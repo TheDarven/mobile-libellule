@@ -1,4 +1,5 @@
-includes : './back/gitlab-ci.yml'
+include: 
+  - local: './back/gitlab-ci.yml'
 
 stages:
   - lint
