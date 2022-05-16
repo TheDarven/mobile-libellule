@@ -1,6 +1,8 @@
+import Spacings from '../../styles/spacings';
+
 export default {
     sectionContainer: {
-        marginTop: 32,
-        paddingHorizontal: 24,
-    },
+        marginTop: Spacings._32,
+        paddingHorizontal: Spacings._24
+    }
 };
