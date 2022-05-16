@@ -134,3 +134,5 @@ dist
 
 # swagger
 swagger_output.json
+
+package-lock.json
