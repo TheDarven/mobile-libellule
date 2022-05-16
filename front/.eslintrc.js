@@ -3,6 +3,9 @@ module.exports = {
     extends: '@react-native-community',
     plugins: ['detox'],
     env: {
-        jest: true,
+        jest: true
     },
+    rules: {
+        'comma-dangle': ['error', 'only-multiline']
+    }
 };
