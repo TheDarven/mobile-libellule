@@ -1,20 +1,26 @@
 import React from 'react';
 import {
     DebugInstructions,
-    Header,
     LearnMoreLinks,
     ReloadInstructions
 } from 'react-native/Libraries/NewAppScreen';
-import { ScrollView, StyleSheet, useColorScheme, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { MainLayout } from '../../layout/main/MainLayout';
 import Text from '../../component/text/Text';
 import Fonts from '../../styles/fonts';
-import Colors from '../../styles/colors';
 import Section from '../../component/section/Section';
 import colors from '../../styles/colors';
 import spacings from '../../styles/spacings';
 
 const IndexPage = () => {
+    const cardStyle = {
+        backgroundColor: colors.white._0,
+        borderRadius: 12,
+        paddingHorizontal: spacings._16,
+        paddingVertical: spacings._12,
+        shadowColor: colors.black._20
+    };
+
     return (
         <ScrollView contentInsetAdjustmentBehavior="automatic">
             <View>
@@ -29,15 +35,7 @@ const IndexPage = () => {
                     <Text fontSize={Fonts.size.xs}>An extra small text</Text>
                 </MainLayout>
                 <MainLayout>
-                    <View
-                        elevation={2}
-                        style={{
-                            backgroundColor: colors.white._0,
-                            borderRadius: 12,
-                            paddingHorizontal: spacings._16,
-                            paddingVertical: spacings._12,
-                            shadowColor: colors.black._20
-                        }}>
+                    <View elevation={2} style={cardStyle}>
                         <Text>Un texte omg</Text>
                     </View>
                 </MainLayout>

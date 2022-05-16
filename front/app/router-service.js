@@ -13,7 +13,7 @@ export const RouterProvider = ({ defaultRoute, children }) => {
 
     return (
         <RouterContext.Provider value={{ routerContext: { route, setRoute } }}>
-            { children }
+            {children}
         </RouterContext.Provider>
     );
 };
