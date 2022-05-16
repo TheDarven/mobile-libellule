@@ -1,0 +1,6 @@
+includes : './back/gitlab-ci.yml'
+
+stages:
+  - lint
+  - test
+  - deploy
