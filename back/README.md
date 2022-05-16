@@ -10,7 +10,52 @@
 **/service/** : Traitements liés aux endpoints
 
 
-## 2. Créer un endpoint pour un modèle ✏️
+## 2. Initialiser le projet
+
+1. Créer un fichier **.env.development** sur le modèle de **.env.example** et le compléter
+
+
+2. Créer un fichier **.env.test** sur le modèle de **.env.example** pour l'environement de test (base de donnée différente pour les tests)
+
+
+3. Installer les dépendances
+```bash
+npm install
+```
+
+4. Initialiser la base de données
+
+```bash
+npm run updatedb
+```
+
+5. Lancer le projet :
+
+- Pour lancer en développement :
+```bash
+npm run dev
+```
+- Pour lancer en production :
+```bash
+npm run start
+```
+
+6. Lancer les tests
+```bash
+npm run test
+```
+
+7. Mettre à jour a documentation
+```bash
+npm run doc
+```
+
+8. Pour linter le code
+```bash
+npm run lint
+```
+
+## 3. Créer un endpoint pour un modèle ✏️
 1. Si il n'existe pas, créer le modèle dans **/model/**.
 
 
@@ -32,3 +77,4 @@ puis l'ajouter dans un _use()_ du **controller-manager.js**.
 
 
 7. ⚠️ CREER LES TESTS sur les endpoints créés
+
