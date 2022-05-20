@@ -35,4 +35,5 @@ pages:    # Génération de l'application (génère l'apk et le déplace dans ap
     paths:
       - public
   only:
+    - dev
     - master

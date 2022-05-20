@@ -1,5 +1,6 @@
 include: 
   - local: '/back/.gitlab-ci.yml'
+  - local: '/front/.gitlab-ci.yml'
 
 stages:
   - lint
