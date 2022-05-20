@@ -33,6 +33,11 @@ deploy-back:
   # Environment setup for dpl install
   before_script:
     - cd ./back
+    - touch .env.production
+    - echo $SALT_PROD >> .env.production
+    - echo $JWT_SECRET_KEY_PROD >> .env.production
+    - echo $JWT_ALGORITHM_PROD >> .env.production
+    - echo $JWT_EXPIRES_IN_PROD >> .env.production
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
