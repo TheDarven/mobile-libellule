@@ -20,13 +20,12 @@ pages:    # Génération de l'application (génère l'apk et le déplace dans ap
   stage: deploy
   image: sebastienviardot/rnenvsv:20220427
   before-script: 
-    - cd ./front
-    - npm install --save-dev jetifier # Peut être nécessaire pour la génération de l'apk
-    - npm install   # Installe les modules node présents dans package.json (le répertoire node_modules n'étant pas dans le dépôt)
-
+    - cd ./front*
   script:
     - mkdir -p public # Crée le répertoire pour disposer dans pages de l'application 
     - source /home/rnuser/.androidrc # Définit les variables d'environnement pour accéder aux outils nécessaires
+    - npm install --save-dev jetifier # Peut être nécessaire pour la génération de l'apk
+    - npm install   # Installe les modules node présents dans package.json (le répertoire node_modules n'étant pas dans le dépôt)
     - npx jetify    # Prépare la génération de l'application native
     - cd android    # Se place dans le répertoire android
     - ./gradlew assembleRelease # Puis génère l'application au format apk 
