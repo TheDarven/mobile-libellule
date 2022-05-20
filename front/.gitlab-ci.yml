@@ -3,7 +3,7 @@ lint-front:
   tags: 
     - docker
   image: node:latest
-  before-script: 
+  before_script: 
     - cd ./front
     - npm i
   script:
@@ -19,8 +19,8 @@ pages:    # Génération de l'application (génère l'apk et le déplace dans ap
     - docker
   stage: deploy
   image: sebastienviardot/rnenvsv:20220427
-  before-script: 
-    - cd ./front*
+  before_script: 
+    - cd ./front
   script:
     - mkdir -p public # Crée le répertoire pour disposer dans pages de l'application 
     - source /home/rnuser/.androidrc # Définit les variables d'environnement pour accéder aux outils nécessaires
