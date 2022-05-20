@@ -12,20 +12,19 @@ lint-back:
     - dev
     - master
 
-test-back: 
-  tags:
-    - docker
-  image: node:latest
-  stage: test
-  before_script:
-    - cd ./back
-    - npm i
-  script:
-    - npm run test
-  only:
-    - dev
-    - master
-
+# test-back: 
+#   tags:
+#     - docker
+#   image: node:latest
+#   stage: test
+#   before_script:
+#     - cd ./back
+#     - npm i
+#   script:
+#     - npm run test
+#   only:
+#     - dev
+#     - master
 deploy-back:
   tags:
     - docker
@@ -34,12 +33,17 @@ deploy-back:
   # Environment setup for dpl install
   before_script:
     - cd ./back
+    - touch .env.production
+    - echo $SALT_PROD >> .env.production
+    - echo $JWT_SECRET_KEY_PROD >> .env.production
+    - echo $JWT_ALGORITHM_PROD >> .env.production
+    - echo $JWT_EXPIRES_IN_PROD >> .env.production
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
   # Deploy on heroku
   script:
-    - npm i
     - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
   only:
     - master
+    - dev

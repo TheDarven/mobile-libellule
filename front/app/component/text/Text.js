@@ -7,10 +7,10 @@ const Text = ({ children, fontSize, style }) => {
     const isDarkMode = useColorScheme() === 'dark';
 
     const textStyle = {
-        ...style,
         color: isDarkMode ? Colors.white._0 : Colors.black._100,
         fontSize: fontSize ? fontSize : Fonts.size.md,
-        fontFamily: 'Roboto'
+        fontFamily: 'Roboto',
+        ...style
     };
 
     return <ReactNative.Text style={textStyle}>{children}</ReactNative.Text>;

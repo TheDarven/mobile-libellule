@@ -4,27 +4,50 @@ import {
     LearnMoreLinks,
     ReloadInstructions
 } from 'react-native/Libraries/NewAppScreen';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import {
+    Button,
+    ScrollView,
+    StyleSheet,
+    useColorScheme,
+    View
+} from 'react-native';
 import { MainLayout } from '../../layout/main/MainLayout';
 import Text from '../../component/text/Text';
 import Fonts from '../../styles/fonts';
 import Section from '../../component/section/Section';
-import colors from '../../styles/colors';
-import spacings from '../../styles/spacings';
+import Colors from '../../styles/colors';
+import Spacings from '../../styles/spacings';
 
-const IndexPage = () => {
+const IndexScreen = ({ navigation }) => {
     const cardStyle = {
-        backgroundColor: colors.white._0,
+        backgroundColor: Colors.white._0,
         borderRadius: 12,
-        paddingHorizontal: spacings._16,
-        paddingVertical: spacings._12,
-        shadowColor: colors.black._20
+        paddingHorizontal: Spacings._16,
+        paddingVertical: Spacings._12,
+        shadowColor: Colors.black._20
+    };
+
+    const isDarkMode = useColorScheme() === 'dark';
+
+    const backgroundStyle = {
+        backgroundColor: isDarkMode ? Colors.black._100 : Colors.white._50
     };
 
     return (
-        <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+            style={backgroundStyle}>
             <View>
                 <MainLayout>
+                    <Button
+                        title={'Go to test page'}
+                        onPress={() => navigation.push('Test')}
+                    />
+                    <Button
+                        title={'Go to index page'}
+                        onPress={() => navigation.push('Drawer')}
+                    />
+
                     <Text fontSize={Fonts.size.xxl}>
                         An extra extra large text
                     </Text>
@@ -64,4 +87,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default IndexPage;
+export default IndexScreen;
