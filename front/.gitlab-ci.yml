@@ -3,7 +3,7 @@ lint-front:
   tags: 
     - docker
   image: node:latest
-  before-script: 
+  before_script: 
     - cd ./front
     - npm i
   script:
@@ -19,7 +19,7 @@ pages:    # Génération de l'application (génère l'apk et le déplace dans ap
     - docker
   stage: deploy
   image: sebastienviardot/rnenvsv:20220427
-  before-script: 
+  before_script: 
     - cd ./front
     - npm install --save-dev jetifier # Peut être nécessaire pour la génération de l'apk
     - npm install   # Installe les modules node présents dans package.json (le répertoire node_modules n'étant pas dans le dépôt)
