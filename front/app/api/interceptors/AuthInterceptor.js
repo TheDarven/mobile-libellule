@@ -39,6 +39,7 @@ const AuthInterceptor = ({ children }) => {
                 return req;
             })
         );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [authContext.token, authContext.isAuth]);
 
     useMemo(() => {
@@ -74,6 +75,7 @@ const AuthInterceptor = ({ children }) => {
                 }
             )
         );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [authContext.setToken]);
 
     return children;
