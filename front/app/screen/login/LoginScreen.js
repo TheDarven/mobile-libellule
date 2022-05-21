@@ -1,13 +1,55 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { MainLayout } from '../../layout/main/MainLayout';
+import LiTextInput from '../../component/LiTextInput/LiTextInput';
 import { View } from 'react-native';
-import Text from '../../component/text/Text';
+import Spacings from '../../styles/spacings';
+import LiPressable from '../../component/LiPressable/LiPressable';
+import { nonEmptyOrNull } from '../../util/string-helper';
+import { login } from '../../api/users-api';
 
 const LoginScreen = () => {
+    const [name, setName] = useState(null);
+    const [password, setPassword] = useState(null);
+    const [isFormValid, setIsFormValid] = useState(false);
+    const [isConnecting, setIsConnecting] = useState(false);
+
+    useEffect(() => {
+        setIsFormValid(nonEmptyOrNull(password) && nonEmptyOrNull(name));
+    }, [password, name]);
+
+    async function onLoginClicked() {
+        setIsConnecting(true);
+        await login(name, password);
+        setIsConnecting(false);
+    }
+
     return (
-        <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>Page de connexion</Text>
-        </View>
+        <MainLayout
+            style={{
+                flex: 1,
+                alignItems: 'center'
+            }}>
+            <LiTextInput
+                placeholder="Pseudonyme"
+                value={name}
+                onChangeText={setName}
+                style={{ marginTop: Spacings._64, marginBottom: Spacings._20 }}
+            />
+            <LiTextInput
+                placeholder="Mot de passe"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={true}
+                style={{ marginBottom: Spacings._24 }}
+            />
+            <View style={{ flex: 1, alignItems: 'flex-end', width: '100%' }}>
+                <LiPressable
+                    onPressIn={onLoginClicked}
+                    title="Se connecter"
+                    disable={!isFormValid || isConnecting}
+                />
+            </View>
+        </MainLayout>
     );
 };
 

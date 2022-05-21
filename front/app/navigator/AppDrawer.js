@@ -8,12 +8,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useColorScheme, View } from 'react-native';
 import IndexScreen from '../screen/index/IndexScreen';
 import NavigatorStyle from './NavigatorStyle';
-import Text from '../component/text/Text';
+import LiText from '../component/LiText/LiText';
 import Colors from '../styles/colors';
 import Spacings from '../styles/spacings';
 import Fonts from '../styles/fonts';
+import { useAuth } from '../context/auth-context';
 
 const CustomDrawerContent = props => {
+    const { authContext } = useAuth();
+
     const isDarkMode = useColorScheme() === 'dark';
 
     const inactiveTintColor = isDarkMode ? Colors.white._50 : Colors.black._100;
@@ -29,7 +32,7 @@ const CustomDrawerContent = props => {
 
     const logStatusTextStyle = {
         color: NavigatorStyle.color,
-        lineHeight: Fonts.size.md
+        lineHeight: Fonts.size.lg
     };
 
     // Contenu du Drawer
@@ -40,31 +43,53 @@ const CustomDrawerContent = props => {
                 paddingTop: 0
             }}>
             <View style={logStatusViewStyle}>
-                <Text fontSize={Fonts.size.sm} style={logStatusTextStyle}>
-                    Vous n'êtes pas connecté
-                </Text>
+                <LiText fontSize={Fonts.size.md} style={logStatusTextStyle}>
+                    {authContext.isAuth() ? (
+                        <>Welcome mon ami :o</>
+                    ) : (
+                        <>Vous n'êtes pas connecté</>
+                    )}
+                </LiText>
             </View>
-            <DrawerItem
-                inactiveTintColor={inactiveTintColor}
-                label={'Connexion'}
-                onPress={() => {
-                    props.navigation.navigate('SignIn');
-                }}
-            />
-            <DrawerItem
-                inactiveTintColor={inactiveTintColor}
-                label={'Inscription'}
-                onPress={() => {
-                    props.navigation.navigate('SignUp');
-                }}
-            />
+
+            {authContext.isAuth() ? (
+                <>
+                    <DrawerItem
+                        inactiveTintColor={inactiveTintColor}
+                        label={'Se déconnecter'}
+                        onPress={() => {
+                            props.navigation.closeDrawer();
+                            authContext.setToken(null);
+                        }}
+                    />
+                </>
+            ) : (
+                <>
+                    <DrawerItem
+                        inactiveTintColor={inactiveTintColor}
+                        label={'Connexion'}
+                        onPress={() => {
+                            props.navigation.closeDrawer();
+                            props.navigation.navigate('SignIn');
+                        }}
+                    />
+                    <DrawerItem
+                        inactiveTintColor={inactiveTintColor}
+                        label={'Inscription'}
+                        onPress={() => {
+                            props.navigation.closeDrawer();
+                            props.navigation.navigate('SignUp');
+                        }}
+                    />
+                </>
+            )}
         </DrawerContentScrollView>
     );
 };
 
-const Stack = createNativeStackNavigator();
-
 const AppDrawerScreen = () => {
+    const Stack = createNativeStackNavigator();
+
     // Screens possédant le drawer
     return (
         <Stack.Navigator initialRouteName="Drawer">
@@ -77,9 +102,9 @@ const AppDrawerScreen = () => {
     );
 };
 
-const Drawer = createDrawerNavigator();
-
 const AppDrawer = () => {
+    const Drawer = createDrawerNavigator();
+
     return (
         <Drawer.Navigator
             drawerContent={CustomDrawerContent}

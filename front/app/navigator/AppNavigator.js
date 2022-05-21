@@ -16,11 +16,6 @@ const AppNavigator = ({ authContext }) => {
                 headerTintColor: NavigatorStyle.color,
                 headerStyle: { backgroundColor: NavigatorStyle.backgroundColor }
             }}>
-            <Stack.Screen
-                name="Drawer"
-                component={AppDrawer}
-                options={{ headerShown: false }}
-            />
             {authContext.isAuth() ? (
                 <>
                     <Stack.Screen name={'Profil'} component={LoginScreen} />
@@ -39,6 +34,11 @@ const AppNavigator = ({ authContext }) => {
                     />
                 </>
             )}
+            <Stack.Screen
+                name="Drawer"
+                component={AppDrawer}
+                options={{ headerShown: false }}
+            />
         </Stack.Navigator>
     );
 };
