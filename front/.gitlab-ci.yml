@@ -17,7 +17,7 @@ lint-front:
 pages:    # Génération de l'application (génère l'apk et le déplace dans appli.apk)
  stage: deploy
   image: sebastienviardot/rnenvsv:20220427
-  before-script: 
+  before_script: 
     - cd ./front
   script:
     - mkdir -p public # Crée le répertoire pour disposer dans pages de l'application 
