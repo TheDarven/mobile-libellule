@@ -34,10 +34,18 @@ deploy-back:
   before_script:
     - cd ./back
     - touch .env.production
-    - echo $SALT_PROD >> .env.production
-    - echo $JWT_SECRET_KEY_PROD >> .env.production
-    - echo $JWT_ALGORITHM_PROD >> .env.production
-    - echo $JWT_EXPIRES_IN_PROD >> .env.production
+    # BACKEND ENV VAR
+    - echo "SALT=\"$SALT_PROD\"" >> .env.production
+    - echo "JWT_SECRET_KEY=\"$JWT_SECRET_KEY_PROD\"" >> .env.production
+    - echo "JWT_ALGORITHM=\"$JWT_ALGORITHM_PROD\"" >> .env.production
+    - echo "JWT_EXPIRES_IN=\"$JWT_EXPIRES_IN_PROD\"" >> .env.production
+    - echo "PORT=\"$API_PORT_PROD\"" >> .env.production
+    # DB ENV VAR
+    - echo "DATABASE_USER=\"$API_DB_USER_PROD\"" >> .env.production
+    - echo "DATABASE_PASSWORD=\"$API_DB_PASSWORD_PROD\"" >> .env.production
+    - echo "DATABASE_HOST=\"$API_DB_HOST_PROD\"" >> .env.production
+    - echo "DATABASE_NAME=\"$API_DB_NAME_PROD\"" >> .env.production 
+    - echo "DATABASE_PORT=\"$API_DB_PORT_PROD\"" >> .env.production
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
