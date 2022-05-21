@@ -3,7 +3,7 @@ import ReactNative, { useColorScheme } from 'react-native';
 import Colors from '../../styles/colors';
 import Fonts from '../../styles/fonts';
 
-const Text = ({ children, fontSize, style }) => {
+const LiText = ({ children, fontSize, style }) => {
     const isDarkMode = useColorScheme() === 'dark';
 
     const textStyle = {
@@ -16,4 +16,4 @@ const Text = ({ children, fontSize, style }) => {
     return <ReactNative.Text style={textStyle}>{children}</ReactNative.Text>;
 };
 
-export default Text;
+export default LiText;
