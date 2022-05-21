@@ -17,10 +17,9 @@ const LoginScreen = () => {
         setIsFormValid(nonEmptyOrNull(password) && nonEmptyOrNull(name));
     }, [password, name]);
 
-    async function onLoginClicked() {
+    function onLoginClicked() {
         setIsConnecting(true);
-        await login(name, password);
-        setIsConnecting(false);
+        login(name, password).catch(() => setIsConnecting(false));
     }
 
     return (
