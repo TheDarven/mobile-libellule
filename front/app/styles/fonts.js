@@ -1,10 +1,10 @@
 export default {
     size: {
-        xxl: 42,
-        xl: 32,
-        lg: 24,
-        md: 20,
-        sm: 16,
-        xs: 12
+        xl_3: 40,
+        xl_2: 32,
+        xl: 24,
+        lg: 20,
+        md: 16,
+        sm: 12
     }
 };

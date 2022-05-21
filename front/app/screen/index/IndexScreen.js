@@ -12,16 +12,18 @@ import {
     View
 } from 'react-native';
 import { MainLayout } from '../../layout/main/MainLayout';
-import Text from '../../component/text/Text';
+import LiText from '../../component/LiText/LiText';
 import Fonts from '../../styles/fonts';
-import Section from '../../component/section/Section';
+import Section from '../../component/Section/Section';
 import Colors from '../../styles/colors';
 import Spacings from '../../styles/spacings';
+import Borders from '../../styles/borders';
+import { useAuth } from '../../context/auth-context';
 
 const IndexScreen = ({ navigation }) => {
     const cardStyle = {
         backgroundColor: Colors.white._0,
-        borderRadius: 12,
+        borderRadius: Borders.radius._12,
         paddingHorizontal: Spacings._16,
         paddingVertical: Spacings._12,
         shadowColor: Colors.black._20
@@ -32,6 +34,8 @@ const IndexScreen = ({ navigation }) => {
     const backgroundStyle = {
         backgroundColor: isDarkMode ? Colors.black._100 : Colors.white._50
     };
+
+    const { authContext } = useAuth();
 
     return (
         <ScrollView
@@ -48,23 +52,36 @@ const IndexScreen = ({ navigation }) => {
                         onPress={() => navigation.push('Drawer')}
                     />
 
-                    <Text fontSize={Fonts.size.xxl}>
+                    {authContext.token ? (
+                        <Button
+                            title={'Reset token'}
+                            onPress={() => authContext.setToken(null)}
+                        />
+                    ) : (
+                        <></>
+                    )}
+
+                    <LiText fontSize={Fonts.size.xl_3}>
+                        An extra extra extra large text
+                    </LiText>
+                    <LiText fontSize={Fonts.size.xl_2}>
                         An extra extra large text
-                    </Text>
-                    <Text fontSize={Fonts.size.xl}>An extra large text</Text>
-                    <Text fontSize={Fonts.size.lg}>A large text</Text>
-                    <Text fontSize={Fonts.size.md}>A medium text</Text>
-                    <Text fontSize={Fonts.size.sm}>A small text</Text>
-                    <Text fontSize={Fonts.size.xs}>An extra small text</Text>
+                    </LiText>
+                    <LiText fontSize={Fonts.size.xl}>
+                        An extra large text
+                    </LiText>
+                    <LiText fontSize={Fonts.size.lg}>A large text</LiText>
+                    <LiText fontSize={Fonts.size.md}>A medium text</LiText>
+                    <LiText fontSize={Fonts.size.sm}>A small text</LiText>
                 </MainLayout>
                 <MainLayout>
                     <View elevation={2} style={cardStyle}>
-                        <Text>Un texte omg</Text>
+                        <LiText>Un texte omg</LiText>
                     </View>
                 </MainLayout>
                 <Section title="Step One">
-                    Edit <Text style={styles.highlight}>App.js</Text> to change
-                    this screen and then come back to see your edits.
+                    Edit <LiText style={styles.highlight}>App.js</LiText> to
+                    change this screen and then come back to see your edits.
                 </Section>
                 <Section title="See Your Changes">
                     <ReloadInstructions />

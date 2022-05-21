@@ -1,12 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
-import Text from '../../component/text/Text';
+import LiText from '../../component/LiText/LiText';
 
 const SignUpScreen = () => {
     return (
         <View
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>Page d'inscription</Text>
+            <LiText>Page d'inscription</LiText>
         </View>
     );
 };
