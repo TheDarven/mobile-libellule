@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { nonEmptyOrNull } from '../util/string-helper';
 
 const { createContext, useContext } = React;
 
@@ -12,7 +13,7 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(null);
 
     const isAuth = () => {
-        return token != null;
+        return nonEmptyOrNull(token);
     };
 
     return (
