@@ -15,6 +15,8 @@ lint-front:
 # test-front : TODO if detox or something else
 
 pages:    # Génération de l'application (génère l'apk et le déplace dans appli.apk)
+  tags:
+    - docker
   stage: deploy
   image: sebastienviardot/rnenvsv:20220427
   before_script: 
