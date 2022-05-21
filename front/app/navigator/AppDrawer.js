@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     createDrawerNavigator,
     DrawerContentScrollView,
@@ -13,9 +13,25 @@ import Colors from '../styles/colors';
 import Spacings from '../styles/spacings';
 import Fonts from '../styles/fonts';
 import { useAuth } from '../context/auth-context';
+import { isEmptyOrNull } from '../util/string-helper';
+import { whoAmI } from '../api/users-api';
 
 const CustomDrawerContent = props => {
     const { authContext } = useAuth();
+
+    const [displayName, setDisplayName] = useState(null);
+
+    useEffect(() => {
+        if (isEmptyOrNull(authContext.token)) {
+            setDisplayName(null);
+        } else {
+            whoAmI().then(res => {
+                if (res.data?.status) {
+                    setDisplayName(res.data?.data.displayName);
+                }
+            });
+        }
+    }, [authContext.token]);
 
     const isDarkMode = useColorScheme() === 'dark';
 
@@ -45,7 +61,7 @@ const CustomDrawerContent = props => {
             <View style={logStatusViewStyle}>
                 <LiText fontSize={Fonts.size.md} style={logStatusTextStyle}>
                     {authContext.isAuth() ? (
-                        <>Welcome mon ami :o</>
+                        <>Bonjour {displayName}</>
                     ) : (
                         <>Vous n'êtes pas connecté</>
                     )}
