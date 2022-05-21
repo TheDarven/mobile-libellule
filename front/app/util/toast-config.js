@@ -20,6 +20,7 @@ const successTitleStyle = {
 export default {
     success: props => (
         <View
+            elevation={4}
             style={{
                 ...successViewStyle,
                 backgroundColor: Colors.success._20
@@ -40,6 +41,7 @@ export default {
     ),
     error: props => (
         <View
+            elevation={4}
             style={{
                 ...successViewStyle,
                 backgroundColor: Colors.danger._20
