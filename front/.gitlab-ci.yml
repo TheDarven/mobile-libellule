@@ -18,10 +18,9 @@ pages:    # Génération de l'application (génère l'apk et le déplace dans ap
   tags:
     - shell
   stage: deploy
-  before_script: 
-    - cd ./front
   script:
     - mkdir -p public # Crée le répertoire pour disposer dans pages de l'application 
+    - cd ./front
     - source /matieres/4MM1CAW/bashrc2web   # Mise en place des variables pour les outils 
     - npm install --save-dev jetifier # Peut être nécessaire pour la génération de l'apk
     - npm install   # Installe les modules node présents dans package.json (le répertoire node_modules n'étant pas dans le dépôt)
@@ -29,7 +28,7 @@ pages:    # Génération de l'application (génère l'apk et le déplace dans ap
     - cd android    # Se place dans le répertoire android
     - chmod +x ./gradlew
     - ./gradlew assembleRelease # Puis génère l'application au format apk
-    - cp ./app/build/outputs/apk/release/app-release.apk ../public/libellule.apk
+    - cp ./app/build/outputs/apk/release/app-release.apk ../../public/libellule.apk
   artifacts:
     paths:
       - public
