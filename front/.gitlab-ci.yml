@@ -29,6 +29,10 @@ pages:    # Génération de l'application (génère l'apk et le déplace dans ap
     - cd android    # Se place dans le répertoire android
     - chmod +x ./gradlew
     - ./gradlew assembleRelease # Puis génère l'application au format apk
+    - cp ./app/build/outputs/apk/release/app-release.apk ../public/libellule.apk
+  artifacts:
+    paths:
+      - public
   only:
     - dev
     - master
