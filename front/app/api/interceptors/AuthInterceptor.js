@@ -31,7 +31,9 @@ const AuthInterceptor = ({ children }) => {
                 if (authContext.isAuth()) {
                     req.headers = {
                         ...req.headers,
-                        Authorization: authContext.token
+                        Authorization: authContext.token,
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
                     };
                 }
                 return req;

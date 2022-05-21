@@ -19,7 +19,13 @@ const LoginScreen = () => {
 
     function onLoginClicked() {
         setIsConnecting(true);
-        login(name, password).catch(() => setIsConnecting(false));
+        login(name, password)
+            .then(res => {
+                if (!res.data?.status) {
+                    setIsConnecting(false);
+                }
+            })
+            .catch(() => setIsConnecting(false));
     }
 
     return (
