@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { MainLayout } from '../../layout/main/MainLayout';
+import LiMainView from '../../component/LiMainView/LiMainView';
 import LiTextInput from '../../component/LiTextInput/LiTextInput';
 import { View } from 'react-native';
 import Spacings from '../../styles/spacings';
 import LiPressable from '../../component/LiPressable/LiPressable';
 import { nonEmptyOrNull } from '../../util/string-helper';
 import { login } from '../../api/users-api';
+import LiText from '../../component/LiText/LiText';
+import Colors from '../../styles/colors';
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
     const [name, setName] = useState(null);
     const [password, setPassword] = useState(null);
     const [isFormValid, setIsFormValid] = useState(false);
@@ -29,7 +31,7 @@ const LoginScreen = () => {
     }
 
     return (
-        <MainLayout
+        <LiMainView
             style={{
                 flex: 1,
                 alignItems: 'center'
@@ -47,14 +49,21 @@ const LoginScreen = () => {
                 secureTextEntry={true}
                 style={{ marginBottom: Spacings._24 }}
             />
-            <View style={{ flex: 1, alignItems: 'flex-end', width: '100%' }}>
+            <View style={{ alignItems: 'flex-end', width: '100%' }}>
                 <LiPressable
                     onPressIn={onLoginClicked}
                     title="Se connecter"
                     disable={!isFormValid || isConnecting}
                 />
             </View>
-        </MainLayout>
+            <LiText
+                style={{ marginTop: Spacings._32, color: Colors.warning._50 }}
+                onPress={() => {
+                    navigation.navigate('SignUp');
+                }}>
+                Vous n'avez pas de compte ? S'inscrire
+            </LiText>
+        </LiMainView>
     );
 };
 
