@@ -9,12 +9,16 @@ import { useColorScheme, View } from 'react-native';
 import IndexScreen from '../screen/index/IndexScreen';
 import NavigatorStyle from './NavigatorStyle';
 import LiText from '../component/LiText/LiText';
-import Colors from '../styles/colors';
-import Spacings from '../styles/spacings';
+import Colors, { AppBackgroundColor } from '../styles/colors';
 import Fonts from '../styles/fonts';
 import { useAuth } from '../context/auth-context';
 import { isEmptyOrNull } from '../util/string-helper';
 import { whoAmI } from '../api/users-api';
+import {
+    logStatusTextStyle,
+    logStatusViewStyle,
+    menuViewStyle
+} from './AppDrawerStyle';
 
 const CustomDrawerContent = props => {
     const { authContext } = useAuth();
@@ -37,26 +41,19 @@ const CustomDrawerContent = props => {
 
     const inactiveTintColor = isDarkMode ? Colors.white._50 : Colors.black._100;
 
-    const logStatusViewStyle = {
-        backgroundColor: NavigatorStyle.backgroundColor,
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: Spacings._20,
-        marginBottom: Spacings._8
-    };
+    const pressColor = isDarkMode ? Colors.black._100 : Colors.white._100;
 
-    const logStatusTextStyle = {
-        color: NavigatorStyle.color,
-        lineHeight: Fonts.size.lg
-    };
+    const menuBackgroundColor = isDarkMode
+        ? AppBackgroundColor.dark
+        : AppBackgroundColor.light;
 
     // Contenu du Drawer
     return (
         <DrawerContentScrollView
             {...props}
             contentContainerStyle={{
-                paddingTop: 0
+                paddingTop: 0,
+                height: '100%'
             }}>
             <View style={logStatusViewStyle}>
                 <LiText fontSize={Fonts.size.md} style={logStatusTextStyle}>
@@ -68,37 +65,46 @@ const CustomDrawerContent = props => {
                 </LiText>
             </View>
 
-            {authContext.isAuth() ? (
-                <>
-                    <DrawerItem
-                        inactiveTintColor={inactiveTintColor}
-                        label={'Se déconnecter'}
-                        onPress={() => {
-                            props.navigation.closeDrawer();
-                            authContext.setToken(null);
-                        }}
-                    />
-                </>
-            ) : (
-                <>
-                    <DrawerItem
-                        inactiveTintColor={inactiveTintColor}
-                        label={'Connexion'}
-                        onPress={() => {
-                            props.navigation.closeDrawer();
-                            props.navigation.navigate('SignIn');
-                        }}
-                    />
-                    <DrawerItem
-                        inactiveTintColor={inactiveTintColor}
-                        label={'Inscription'}
-                        onPress={() => {
-                            props.navigation.closeDrawer();
-                            props.navigation.navigate('SignUp');
-                        }}
-                    />
-                </>
-            )}
+            <View
+                style={{
+                    backgroundColor: menuBackgroundColor,
+                    ...menuViewStyle
+                }}>
+                {authContext.isAuth() ? (
+                    <>
+                        <DrawerItem
+                            inactiveTintColor={inactiveTintColor}
+                            pressColor={pressColor}
+                            label={'Se déconnecter'}
+                            onPress={() => {
+                                props.navigation.closeDrawer();
+                                authContext.setToken(null);
+                            }}
+                        />
+                    </>
+                ) : (
+                    <>
+                        <DrawerItem
+                            inactiveTintColor={inactiveTintColor}
+                            pressColor={pressColor}
+                            label={'Connexion'}
+                            onPress={() => {
+                                props.navigation.closeDrawer();
+                                props.navigation.navigate('SignIn');
+                            }}
+                        />
+                        <DrawerItem
+                            inactiveTintColor={inactiveTintColor}
+                            pressColor={pressColor}
+                            label={'Inscription'}
+                            onPress={() => {
+                                props.navigation.closeDrawer();
+                                props.navigation.navigate('SignUp');
+                            }}
+                        />
+                    </>
+                )}
+            </View>
         </DrawerContentScrollView>
     );
 };

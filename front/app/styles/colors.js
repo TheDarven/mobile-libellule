@@ -1,4 +1,4 @@
-export default {
+const Colors = {
     white: {
         _0: '#FFFFFF',
         _20: '#FAFAFA',
@@ -6,12 +6,17 @@ export default {
         _80: '#EBECED',
         _100: '#DFE7EF'
     },
+    gray: {
+        _0: '#BDBDBD',
+        _100: '#828282'
+    },
     black: {
         _0: '#9AA8B7',
         _20: '#7C8894',
         _50: '#67717A',
         _80: '#384047',
-        _100: '#24292E'
+        _100: '#24292E',
+        background: '#1B1B1B'
     },
     primary: {
         _0: '#E8E5FF',
@@ -49,3 +54,10 @@ export default {
         _100: '#691531'
     }
 };
+
+export const AppBackgroundColor = {
+    dark: Colors.black.background,
+    light: Colors.white._20
+};
+
+export default Colors;
