@@ -18,7 +18,7 @@ const LiCard = (props) => {
     };
 
     return (
-        <View {...props} elevation={4} style={cardStyle}>
+        <View {...props} elevation={1} style={cardStyle}>
             {props.children}
         </View>
     );

@@ -59,7 +59,7 @@ const LoginScreen = ({ navigation }) => {
             <LiText
                 style={{ marginTop: Spacings._32, color: Colors.warning._50 }}
                 onPress={() => {
-                    navigation.navigate('SignUp');
+                    navigation.replace('SignUp');
                 }}>
                 Vous n'avez pas de compte ? S'inscrire
             </LiText>

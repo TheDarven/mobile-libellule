@@ -6,7 +6,6 @@ import Fonts from '../../styles/fonts';
 const LiTitle = props => {
     const style = {
         marginBottom: Spacings._16,
-        paddingHorizontal: Spacings._4,
         fontWeight: '700',
         ...props.style
     };

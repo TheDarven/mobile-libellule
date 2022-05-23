@@ -5,6 +5,7 @@ import LoginScreen from '../screen/login/LoginScreen';
 import SignUpScreen from '../screen/signup/SignUpScreen';
 import { withAuth } from '../context/auth-context';
 import NavigatorStyle from './NavigatorStyle';
+import QuestionScreen from '../screen/question/QuestionScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,10 @@ const AppNavigator = ({ authContext }) => {
                         name={'SignUp'}
                         component={SignUpScreen}
                         options={{ title: 'Inscription' }}
+                    />
+                    <Stack.Screen
+                        name={'Question'}
+                        component={QuestionScreen}
                     />
                 </>
             )}
