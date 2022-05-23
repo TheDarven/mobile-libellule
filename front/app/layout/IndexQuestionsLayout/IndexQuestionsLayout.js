@@ -1,9 +1,7 @@
 import React from 'react';
-import IndexQuestionItem from './IndexQuestionItem/IndexQuestionItem';
+import QuestionLayout from '../QuestionLayout/QuestionLayout';
 import { View } from 'react-native';
 import Spacings from '../../styles/spacings';
-import LiText from '../../component/LiText/LiText';
-import Fonts from '../../styles/fonts';
 import LiTitle from '../../component/LiTitle/LiTitle';
 
 const IndexQuestionsLayout = () => {
@@ -35,15 +33,18 @@ const IndexQuestionsLayout = () => {
 
     return (
         <View style={{ paddingBottom: Spacings._32 }}>
-            <LiTitle>Dernières questions</LiTitle>
+            <LiTitle style={{ paddingHorizontal: Spacings._4 }}>
+                Dernières questions
+            </LiTitle>
 
             {questions.map(question => (
-                <IndexQuestionItem
+                <QuestionLayout
                     key={question.question_id}
                     author={question.author}
                     content={question.content}
                     title={question.title}
                     nbComments={question.nbComments}
+                    questionId={question.question_id}
                 />
             ))}
         </View>
