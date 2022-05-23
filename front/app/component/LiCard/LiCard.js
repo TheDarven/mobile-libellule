@@ -4,7 +4,7 @@ import Colors from '../../styles/colors';
 import Borders from '../../styles/borders';
 import Spacings from '../../styles/spacings';
 
-const LiCard = (props) => {
+const LiCard = props => {
     const isDarkMode = useColorScheme() === 'dark';
 
     const cardStyle = {

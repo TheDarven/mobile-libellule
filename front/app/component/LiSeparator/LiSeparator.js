@@ -1,6 +1,5 @@
 import React from 'react';
 import Colors from '../../styles/colors';
-import Spacings from '../../styles/spacings';
 import { useColorScheme, View } from 'react-native';
 
 const LiSeparator = ({ style }) => {
