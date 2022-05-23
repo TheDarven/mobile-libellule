@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MainLayout } from '../../layout/main/MainLayout';
+import LiMainView from '../../component/LiMainView/LiMainView';
 import Spacings from '../../styles/spacings';
 import LiTextInput from '../../component/LiTextInput/LiTextInput';
 import LiPressable from '../../component/LiPressable/LiPressable';
@@ -7,8 +7,10 @@ import { View } from 'react-native';
 import { nonEmptyOrNull } from '../../util/string-helper';
 import Toast from 'react-native-toast-message';
 import { signUp } from '../../api/users-api';
+import Colors from '../../styles/colors';
+import LiText from '../../component/LiText/LiText';
 
-const SignUpScreen = () => {
+const SignUpScreen = ({ navigation }) => {
     const [name, setName] = useState(null);
     const [password, setPassword] = useState(null);
     const [confirmPassword, setConfirmPassword] = useState(null);
@@ -43,7 +45,7 @@ const SignUpScreen = () => {
     }
 
     return (
-        <MainLayout
+        <LiMainView
             style={{
                 flex: 1,
                 alignItems: 'center'
@@ -68,14 +70,21 @@ const SignUpScreen = () => {
                 secureTextEntry={true}
                 style={{ marginBottom: Spacings._24 }}
             />
-            <View style={{ flex: 1, alignItems: 'flex-end', width: '100%' }}>
+            <View style={{ alignItems: 'flex-end', width: '100%' }}>
                 <LiPressable
                     onPressIn={onSignUpClicked}
                     title="S'inscrire"
                     disable={!isFormValid || isRegistering}
                 />
             </View>
-        </MainLayout>
+            <LiText
+                style={{ marginTop: Spacings._32, color: Colors.warning._50 }}
+                onPress={() => {
+                    navigation.navigate('SignIn');
+                }}>
+                Si vous avez déjà un compte ? Se connecter
+            </LiText>
+        </LiMainView>
     );
 };
 

@@ -3,17 +3,28 @@ import ReactNative, { useColorScheme } from 'react-native';
 import Colors from '../../styles/colors';
 import Fonts from '../../styles/fonts';
 
-const LiText = ({ children, fontSize, style }) => {
+const LiText = props => {
     const isDarkMode = useColorScheme() === 'dark';
 
-    const textStyle = {
-        color: isDarkMode ? Colors.white._0 : Colors.black._100,
-        fontSize: fontSize ? fontSize : Fonts.size.md,
-        fontFamily: 'Roboto',
-        ...style
+    const color = () => {
+        if (props.color) {
+            return props.color;
+        }
+        return isDarkMode ? Colors.white._0 : Colors.black._100;
     };
 
-    return <ReactNative.Text style={textStyle}>{children}</ReactNative.Text>;
+    const textStyle = {
+        color: color(),
+        fontSize: props.fontSize ? props.fontSize : Fonts.size.md,
+        fontFamily: 'Roboto',
+        ...props.style
+    };
+
+    return (
+        <ReactNative.Text {...props} style={textStyle}>
+            {props.children}
+        </ReactNative.Text>
+    );
 };
 
 export default LiText;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextInput, useColorScheme } from 'react-native';
-import Colors from '../../styles/colors';
+import Colors, { AppBackgroundColor } from '../../styles/colors';
 import Fonts from '../../styles/fonts';
 import Spacings from '../../styles/spacings';
 import Borders from '../../styles/borders';
@@ -24,9 +24,9 @@ const LiTextInput = props => {
 
     const borderColor = () => {
         if (isFocus) {
-            return isDarkMode ? Colors.black._50 : Colors.white._100;
+            return isDarkMode ? Colors.black._80 : Colors.white._80;
         }
-        return isDarkMode ? Colors.black._100 : Colors.white._80;
+        return isDarkMode ? AppBackgroundColor.dark : AppBackgroundColor.light;
     };
 
     const isDarkMode = useColorScheme() === 'dark';
@@ -38,7 +38,7 @@ const LiTextInput = props => {
         borderRadius: Borders.radius._4,
         borderColor: borderColor(),
         color: isDarkMode ? Colors.white._0 : Colors.black._100,
-        backgroundColor: isDarkMode ? Colors.black._80 : Colors.white._0,
+        backgroundColor: isDarkMode ? Colors.black._100 : Colors.white._0,
         width: '100%',
         fontSize: Fonts.size.md
     };

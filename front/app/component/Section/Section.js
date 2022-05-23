@@ -1,14 +1,14 @@
 import React from 'react';
 import LiText from '../LiText/LiText';
-import { MainLayout } from '../../layout/main/MainLayout';
+import LiMainView from '../LiMainView/LiMainView';
 import { StyleSheet } from 'react-native';
 
 const Section = ({ title, children }) => {
     return (
-        <MainLayout>
+        <LiMainView>
             <LiText style={styles.sectionTitle}>{title}</LiText>
             <LiText style={styles.sectionDescription}>{children}</LiText>
-        </MainLayout>
+        </LiMainView>
     );
 };
 
