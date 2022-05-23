@@ -1,5 +1,6 @@
 const db = require('./database-manager')
 const { DataTypes } = require("sequelize");
+const { oneToMany } = require('../util/associations.js')
 const user = require('./user.js')
 const question = require('./question.js')
 
@@ -17,14 +18,14 @@ const comment = db.define('Comment', {
     }
 });
 
-comment.belongsTo(question, {
+oneToMany(comment, question, {
     foreignKey: {
         name: 'questionId',
         field: 'question_id'
     },
     targetKey: 'questionId'
 });
-comment.belongsTo(user, {
+oneToMany(comment, user, {
     foreignKey: {
         name: 'authorId',
         field: 'author_id'

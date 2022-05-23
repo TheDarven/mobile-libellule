@@ -4,19 +4,23 @@ const { TOKEN_NOT_PRESENT, INVALID_TOKEN, INVALID_TOKEN_USER } = require("../uti
 const { CodeError } = require("../util/error-handler");
 const httpStatus = require("http-status");
 const userController = require('./user-controller');
+const questionController = require('./question-controller');
 const jwt = require("jsonwebtoken");
 const { getUserById, createJwtToken } = require("../service/user-service");
 
 const EXCLUDED_TOKEN_ENDPOINTS = [
     { path: '/api/users/', method: 'POST' },
-    { path: '/api/users/login', method: 'POST' }
+    { path: '/api/users/login', method: 'POST' },
+    { path: '/api/questions', method: 'GET' },
+    { path: '/api/questions/*', method: 'GET' },
+    { path: '/api/questions/users/*', method: 'GET' },
 ];
 
 // Token middleware
 router.use('/', async (req, res, next) => {
     // Bypass excluded endpoints
     const isExcludedPath = EXCLUDED_TOKEN_ENDPOINTS
-        .find(excludedPath => excludedPath.path === req.originalUrl && excludedPath.method === req.method) != null
+        .find(excludedPath => req.originalUrl.match(excludedPath.path) && excludedPath.method === req.method) != null
 
     if (isExcludedPath) {
         return next()
@@ -63,6 +67,10 @@ router.use('/users', userController
     /* #swagger.responses[200] = {
         headers: { $ref: '#/components/headers/refreshToken' }
     } */
+);
+
+router.use('/questions', questionController
+    //
 );
 
 module.exports = router
