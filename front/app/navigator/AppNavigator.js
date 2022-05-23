@@ -33,12 +33,9 @@ const AppNavigator = ({ authContext }) => {
                         component={SignUpScreen}
                         options={{ title: 'Inscription' }}
                     />
-                    <Stack.Screen
-                        name={'Question'}
-                        component={QuestionScreen}
-                    />
                 </>
             )}
+            <Stack.Screen name={'Question'} component={QuestionScreen} />
             <Stack.Screen
                 name="Drawer"
                 component={AppDrawer}

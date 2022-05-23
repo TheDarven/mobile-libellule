@@ -60,7 +60,7 @@ const IndexQuestionsLayout = () => {
                                 title={question.title}
                                 nbComments={question.comm_amount}
                                 questionId={question.question_id}
-                                date={'12 Janvier 2022'}
+                                date={question.date}
                             />
                         ))}
                     </>
