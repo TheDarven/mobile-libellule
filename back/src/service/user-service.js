@@ -6,6 +6,7 @@ const { CodeError } = require("../util/error-handler");
 const httpStatus = require("http-status");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const axios = require("axios");
 
 async function loginUser(name, password) {
     // Verify identification
@@ -41,6 +42,7 @@ async function registerUser(name, password) {
             data: createJwtToken(user)
         }
     } catch (err) {
+        console.log(err);
         throw new CodeError(USER_CREATION_FAILED, httpStatus.INTERNAL_SERVER_ERROR)
     }
 }
@@ -78,6 +80,11 @@ function createJwtToken(user) {
 }
 
 function getRandomUsername() {
+    const insectApi = axios.create({
+        baseURL: 'https://explorer.natureserve.org',
+        timeout: 50000,
+        headers: { 'Content-Type': 'application/json' }
+    });
     // Gathering common insect names from north america
     const filter = {
         "classificationOptions": {
@@ -125,16 +132,12 @@ function getRandomUsername() {
             }
         ]
     };
-    const res = fetch('https://explorer.natureserve.org/api/data/speciesSearch', {
-        method: 'POST',
-        body: JSON.stringify(filter),
-        headers: { 'Content-Type': 'application/json' }
-    });
-    return res.then((names) => names.json().then((json) =>{
-        const index = Math.floor(Math.random() * (json.results.length));
-        const nameList = json.results.map((data) => data.primaryCommonName);
+    const res =  insectApi.post('/api/data/speciesSearch',filter);
+    return res.then((json) =>{
+        const nameList = json.data.results.map((insectData) => insectData.primaryCommonName);
+        const index = Math.floor(Math.random() * (json.data.results.length));
         return nameList[index];
-    }))
+    })
 }
 
 module.exports = { loginUser, registerUser, getUserById, getUserByName, createJwtToken }
