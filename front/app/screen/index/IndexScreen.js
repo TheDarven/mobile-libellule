@@ -1,5 +1,4 @@
 import React from 'react';
-import LiMainScrollView from '../../component/LiMainScrollView/LiMainScrollView';
 import IndexQuestionsLayout from '../../layout/IndexQuestionsLayout/IndexQuestionsLayout';
 import { View } from 'react-native';
 import LiPressable, {
@@ -13,9 +12,7 @@ import Colors from '../../styles/colors';
 const IndexScreen = () => {
     return (
         <View style={{ flex: 1 }}>
-            <LiMainScrollView contentInsetAdjustmentBehavior="automatic">
-                <IndexQuestionsLayout />
-            </LiMainScrollView>
+            <IndexQuestionsLayout />
             <View
                 style={{
                     position: 'absolute',

@@ -13,7 +13,7 @@ import Borders from '../../styles/borders';
 import LiSeparator from '../../component/LiSeparator/LiSeparator';
 
 const QuestionScreen = ({ route }) => {
-    const { questionId } = route?.params;
+    // const { questionId } = route?.params;
 
     const question = {
         question_id: 1,

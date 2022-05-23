@@ -6,7 +6,14 @@ import QuestionHeaderLayout from './QuestionHeaderLayout/QuestionHeaderLayout';
 import QuestionContentLayout from './QuestionContentLayout/QuestionContentLayout';
 import QuestionFooterLayout from './QuestionFooterLayout/QuestionFooterLayout';
 
-const QuestionLayout = ({ questionId, title, author, content, nbComments }) => {
+const QuestionLayout = ({
+    questionId,
+    title,
+    author,
+    content,
+    nbComments,
+    date
+}) => {
     const navigation = useNavigation();
 
     const cardStyle = {
@@ -21,7 +28,7 @@ const QuestionLayout = ({ questionId, title, author, content, nbComments }) => {
                     questionId
                 });
             }}>
-            <QuestionHeaderLayout author={author} date={'12 Janvier 2022'} />
+            <QuestionHeaderLayout author={author} date={date} />
             <QuestionContentLayout title={title} content={content} />
             <QuestionFooterLayout nbComments={nbComments} />
         </LiCard>

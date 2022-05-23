@@ -5,7 +5,6 @@ import Spacings from '../../styles/spacings';
 import Colors from '../../styles/colors';
 import LiText from '../LiText/LiText';
 import Fonts from '../../styles/fonts';
-import Feather from 'react-native-vector-icons/Feather';
 
 export const LiPressableSize = {
     small: {
