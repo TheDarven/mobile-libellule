@@ -12,6 +12,7 @@ import LiPressable from '../../component/LiPressable/LiPressable';
 import Borders from '../../styles/borders';
 import LiSeparator from '../../component/LiSeparator/LiSeparator';
 import { getQuestionById } from '../../api/questions-api';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const QuestionScreen = ({ route }) => {
     const [question, setQuestion] = useState(null);
@@ -69,6 +70,10 @@ const QuestionScreen = ({ route }) => {
 
     const isDarkMode = useColorScheme() === 'dark';
 
+    const questionNotExistColor = isDarkMode
+        ? Colors.warning._20
+        : Colors.warning._50;
+
     const viewStyle = {
         backgroundColor: isDarkMode ? Colors.black._100 : Colors.white._0,
         paddingHorizontal: Spacings._20,
@@ -101,11 +106,20 @@ const QuestionScreen = ({ route }) => {
                             justifyContent: 'center',
                             alignItems: 'center'
                         }}>
-                        <LiText>
-                            {isLoading
-                                ? 'Chargement de la question…'
-                                : "La question n'existe pas ou plus"}
-                        </LiText>
+                        {isLoading ? (
+                            <LiText>Chargement de la question…</LiText>
+                        ) : (
+                            <>
+                                <FontAwesome
+                                    name={'bug'}
+                                    size={96}
+                                    color={questionNotExistColor}
+                                />
+                                <LiText style={{ marginTop: Spacings._16 }}>
+                                    La question n'existe pas ou plus
+                                </LiText>
+                            </>
+                        )}
                     </View>
                 ) : (
                     <>
