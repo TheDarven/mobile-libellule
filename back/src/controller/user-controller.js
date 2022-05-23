@@ -9,10 +9,11 @@ const router = express.Router()
 router.post('/login', (req, res, next) => {
     // #swagger.summary = 'Connexion pour un utilisateur'
     // #swagger.description = "Connexion pour un utilisateur. Retourne un token d'authentification dans l'entête."
-    /* #swagger.requestBody = {
+    /* #swagger.parameters['logins'] = {
         required: true,
+        in: 'body',
         schema: { $ref: '#/components/parameters/user' }
-    } */
+    }*/
     /* #swagger.responses[200] = {
         schema: { $ref: '#/components/responses/emptyResponse' },
         headers: { $ref: '#/components/headers/token' }
@@ -45,8 +46,9 @@ router.post('/login', (req, res, next) => {
 router.post('/', (req, res, next) => {
     // #swagger.summary = 'Inscription pour un utilisateur'
     // #swagger.description = "Inscription pour un utilisateur. Retourne un token d'authentification dans l'entête."
-    /* #swagger.requestBody = {
+    /* #swagger.parameters[logins] = {
         required: true,
+        in: 'body',
         schema: { $ref: '#/components/parameters/user' }
     } */
     /* #swagger.responses[200] = {
