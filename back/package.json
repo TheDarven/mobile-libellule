@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "SET NODE_ENV=test && npm run updatedb && jest",
+    "test": "SET NODE_ENV=test && npm run updatedb && jest --runInBand",
     "dev": "SET NODE_ENV=development && npm run doc && nodemon src/index.js",
     "start": "npm run doc && npm run updatedb && node src/index.js",
     "doc": "node src/util/swagger.js",

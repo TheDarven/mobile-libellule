@@ -56,6 +56,18 @@ async function getUserById(userId) {
     }
 }
 
+async function getUserByName(name) {
+    try {
+        return await userModel.findOne({
+            where: {
+                name
+            }
+        })
+    } catch (err) {
+        return null;
+    }
+}
+
 function createJwtToken(user) {
     // Build jwt token
     const secret = process.env.JWT_SECRET_KEY
@@ -64,4 +76,4 @@ function createJwtToken(user) {
     return jwt.sign({ data: { name: user.name, userId: user.userId } }, secret, { expiresIn, algorithm });
 }
 
-module.exports = { loginUser, registerUser, getUserById, createJwtToken }
+module.exports = { loginUser, registerUser, getUserById, getUserByName, createJwtToken }
