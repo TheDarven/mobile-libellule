@@ -3,7 +3,7 @@ const app = require('../app')
 const supertest = require('supertest')
 const httpStatus = require("http-status")
 const { INVALID_TOKEN, QUESTION_CREATED_WITH_SUCCESS, QUESTION_BODY_INVALID_CONTENT_LENGTH, QUESTION_BODY_INVALID_TITLE_LENGTH,
-    QUESTION_EDITED_WITH_SUCCESS, QUESTION_MISSING_PERMISSION, QUESTION_DELETED_WITH_SUCCESS
+    QUESTION_EDITED_WITH_SUCCESS, QUESTION_MISSING_PERMISSION, QUESTION_DELETED_WITH_SUCCESS, QUESTION_NOT_IDENTIFIED, USER_NOT_IDENTIFIED
 } = require("../util/status-message")
 const { getUser } = require('../util/tests/model-utils')
 const { getQuestionByTitle } = require('../service/question-service')
@@ -169,13 +169,13 @@ describe('Question Endpoint Test', () => {
                 .send({
                     content: QUESTION_CONTENT
                 })
-                .expect(httpStatus.INTERNAL_SERVER_ERROR)
+                .expect(httpStatus.BAD_REQUEST)
                 .then((response) => {
                     const body = response._body;
 
                     expect(body.status).toBe(false)
 
-                    expect(body.response).toBe(QUESTION_MISSING_PERMISSION)
+                    expect(body.response).toBe(QUESTION_NOT_IDENTIFIED)
                 })
         })
 
@@ -242,13 +242,13 @@ describe('Question Endpoint Test', () => {
             await supertest(app)
                 .get(BASIC_ENDPOINT + '50000000/')
                 .send()
-                .expect(httpStatus.OK)
+                .expect(httpStatus.BAD_REQUEST)
                 .then((response) => {
                     const body = response._body;
 
-                    expect(body.status).toBe(true)
+                    expect(body.status).toBe(false)
 
-                    expect(body.data).toBeNull()
+                    expect(body.response).toBe(QUESTION_NOT_IDENTIFIED)
                 })
         })
     })
@@ -275,13 +275,13 @@ describe('Question Endpoint Test', () => {
             await supertest(app)
                 .get(SPECIFIC_ENDPOINT + `5000000/`)
                 .send()
-                .expect(httpStatus.OK)
+                .expect(httpStatus.BAD_REQUEST)
                 .then((response) => {
                     const body = response._body;
 
-                    expect(body.status).toBe(true)
+                    expect(body.status).toBe(false)
 
-                    expect(body.data.length).toBe(0)
+                    expect(body.response).toBe(USER_NOT_IDENTIFIED)
                 })
         })
     })
@@ -316,13 +316,13 @@ describe('Question Endpoint Test', () => {
                 .delete(BASIC_ENDPOINT + '500000000/')
                 .set('Authorization', token)
                 .send()
-                .expect(httpStatus.INTERNAL_SERVER_ERROR)
+                .expect(httpStatus.BAD_REQUEST)
                 .then((response) => {
                     const body = response._body;
 
                     expect(body.status).toBe(false)
 
-                    expect(body.response).toBe(QUESTION_MISSING_PERMISSION)
+                    expect(body.response).toBe(QUESTION_NOT_IDENTIFIED)
                 })
         })
 
@@ -346,13 +346,13 @@ describe('Question Endpoint Test', () => {
                 .delete(BASIC_ENDPOINT + `${question.questionId}/`)
                 .set('Authorization', token)
                 .send()
-                .expect(httpStatus.INTERNAL_SERVER_ERROR)
+                .expect(httpStatus.BAD_REQUEST)
                 .then((response) => {
                     const body = response._body;
 
                     expect(body.status).toBe(false)
 
-                    expect(body.response).toBe(QUESTION_MISSING_PERMISSION)
+                    expect(body.response).toBe(QUESTION_NOT_IDENTIFIED)
                 })
         })
     })

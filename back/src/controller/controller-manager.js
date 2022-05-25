@@ -70,7 +70,13 @@ router.use('/users', userController
 );
 
 router.use('/questions', questionController
-    //
+    // #swagger.tags = ['Questions']
+    /* #swagger.responses[401] = {
+        schema: { $ref: '#/components/responses/401' }
+    } */
+    /* #swagger.responses[200] = {
+        headers: { $ref: '#/components/headers/refreshToken' }
+    } */
 );
 
 module.exports = router
