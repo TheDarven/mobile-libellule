@@ -12,19 +12,33 @@ lint-back:
     - dev
     - master
 
-# test-back: 
-#   tags:
-#     - docker
-#   image: node:latest
-#   stage: test
-#   before_script:
-#     - cd ./back
-#     - npm i
-#   script:
-#     - npm run test
-#   only:
-#     - dev
-#     - master
+test-back: 
+  tags:
+    - docker
+  image: node:latest
+  stage: test
+  variables:
+    NODE_ENV: 'test'
+    PORT: $PORT # Port of the app
+    SALT: $SALT # Salt for password encryption
+    JWT_SECRET_KEY: $JWT_SECRET_KEY
+    JWT_ALGORITHM: $JWT_ALGORITHM
+    JWT_EXPIRES_IN: $JWT_EXPIRES_IN
+  before_script:
+    - cd ./back
+    - npm i
+    - echo $NODE_ENV
+    - echo $PORT
+    - echo $SALT
+    - echo $JWT_ALGORITHM
+    - echo $JWT_SECRET_KEY
+    - echo $JWT_EXPIRES_IN
+  script:
+    - npm run test-docker
+  only:
+    - dev
+    - master
+    - feature/sqlite-db-tests
 deploy-back:
   tags:
     - docker
@@ -41,4 +55,3 @@ deploy-back:
     - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
   only:
     - master
-    - dev

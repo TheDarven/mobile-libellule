@@ -136,3 +136,6 @@ dist
 swagger_output.json
 
 package-lock.json
+
+# test-db
+src/__tests__/db

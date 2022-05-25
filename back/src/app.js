@@ -18,8 +18,10 @@ app.use('/api/', controllerManager)
 
 // Swagger Documentation
 const swaggerUi = require('swagger-ui-express')
-const swaggerFile = require('../swagger_output.json')
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+if (process.env.NODE_ENV?.trim() !== 'test') {
+    const swaggerFile = require('../swagger_output.json')
+    app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+}
 
 // Catch errors
 const { errorHandler } = require("./util/error-handler");

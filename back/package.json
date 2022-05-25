@@ -6,6 +6,7 @@
   "scripts": {
     "test": "SET NODE_ENV=test && npm run updatedb && jest --runInBand",
     "dev": "SET NODE_ENV=development && npm run doc && nodemon src/index.js",
+    "test-docker": "npm run updatedb && jest --runInBand",
     "start": "npm run doc && npm run updatedb && node src/index.js",
     "doc": "node src/util/swagger.js",
     "updatedb": "node src/util/update-db.js",
@@ -23,6 +24,7 @@
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.15",
     "sequelize": "^6.19.0",
+    "sqlite3": "^5.0.8",
     "swagger-autogen": "^2.21.1",
     "swagger-ui-express": "^4.3.0"
   },

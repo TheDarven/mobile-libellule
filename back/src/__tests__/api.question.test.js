@@ -3,7 +3,7 @@ const app = require('../app')
 const supertest = require('supertest')
 const httpStatus = require("http-status")
 const { INVALID_TOKEN, QUESTION_CREATED_WITH_SUCCESS, QUESTION_BODY_INVALID_CONTENT_LENGTH, QUESTION_BODY_INVALID_TITLE_LENGTH,
-    QUESTION_EDITED_WITH_SUCCESS, QUESTION_MISSING_PERMISSION, QUESTION_DELETED_WITH_SUCCESS, QUESTION_NOT_IDENTIFIED, USER_NOT_IDENTIFIED
+    QUESTION_EDITED_WITH_SUCCESS, QUESTION_DELETED_WITH_SUCCESS, QUESTION_NOT_IDENTIFIED, USER_NOT_IDENTIFIED
 } = require("../util/status-message")
 const { getUser } = require('../util/tests/model-utils')
 const { getQuestionByTitle } = require('../service/question-service')
@@ -16,6 +16,7 @@ const QACCOUNT_PASSWORD = "MyPassword"
 
 const QUESTION_TITLE = "Sample Title"
 const QUESTION_CONTENT = "Sample Content"
+jest.setTimeout(30000);
 
 describe('Question Endpoint Test', () => {
 
