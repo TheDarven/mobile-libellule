@@ -11,6 +11,7 @@ lint-front:
   only: 
     - dev
     - master
+    - merge_requests
 
 # test-front : TODO if detox or something else
 

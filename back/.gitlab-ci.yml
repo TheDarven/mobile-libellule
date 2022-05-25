@@ -11,6 +11,7 @@ lint-back:
   only:
     - dev
     - master
+    - merge_requests
 
 test-back: 
   tags:
@@ -27,18 +28,12 @@ test-back:
   before_script:
     - cd ./back
     - npm i
-    - echo $NODE_ENV
-    - echo $PORT
-    - echo $SALT
-    - echo $JWT_ALGORITHM
-    - echo $JWT_SECRET_KEY
-    - echo $JWT_EXPIRES_IN
   script:
     - npm run test-docker
   only:
     - dev
     - master
-    - feature/sqlite-db-tests
+    - merge_requests
 deploy-back:
   tags:
     - docker
