@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { nonEmptyOrNull } from '../util/string-helper';
+import React, { useEffect, useState } from 'react';
+import { isEmptyOrNull, nonEmptyOrNull } from '../util/string-helper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { createContext, useContext } = React;
+
+const STORAGE_TOKEN_KEY = 'token';
 
 const AuthContext = createContext({
     token: null,
@@ -16,9 +19,33 @@ export const AuthProvider = ({ children }) => {
         return nonEmptyOrNull(token);
     };
 
+    useEffect(() => {
+        AsyncStorage.getItem(STORAGE_TOKEN_KEY)
+            .then(storageToken => {
+                setToken(storageToken);
+            })
+            .catch(() => setToken(null));
+    }, []);
+
+    const setStoredToken = newToken => {
+        if (newToken !== token) {
+            if (isEmptyOrNull(newToken)) {
+                AsyncStorage.removeItem(STORAGE_TOKEN_KEY).then(() =>
+                    setToken(newToken)
+                );
+            } else {
+                AsyncStorage.setItem(STORAGE_TOKEN_KEY, newToken).then(() =>
+                    setToken(newToken)
+                );
+            }
+        }
+    };
+
     return (
         <AuthContext.Provider
-            value={{ authContext: { token, setToken, isAuth } }}>
+            value={{
+                authContext: { token, setToken: setStoredToken, isAuth }
+            }}>
             {children}
         </AuthContext.Provider>
     );
