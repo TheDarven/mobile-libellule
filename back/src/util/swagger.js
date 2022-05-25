@@ -30,6 +30,35 @@ const schema = {
                         example: 'password'
                     }
                 }
+            },
+            question: {
+                type: 'object',
+                properties: {
+                    title: {
+                        type: 'string',
+                        required: true,
+                        minLength: 5,
+                        maxLength: 255,
+                        example: 'Why is the sky blue ?'
+                    },
+                    content: {
+                        type: 'string',
+                        required: true,
+                        maxLength: 10000,
+                        example: 'I wonder why the sky is blue and not black.'
+                    }
+                }
+            },
+            questionEdit: {
+                type: 'object',
+                properties: {
+                    content: {
+                        type: 'string',
+                        required: true,
+                        maxLength: 10000,
+                        example: 'I wonder why the sky is blue and not black.'
+                    }
+                }
             }
         },
         responses: {

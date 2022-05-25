@@ -20,6 +20,11 @@ const question = db.define('Question', {
         allowNull: false,
         field: 'title'
     }
+},
+{
+    timestamps: true,
+    createdAt: 'creation_date',
+    updatedAt: 'edition_date'
 });
 
 oneToMany(question, user, {

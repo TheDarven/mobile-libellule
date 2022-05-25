@@ -16,6 +16,11 @@ const comment = db.define('Comment', {
         allowNull: false,
         field: 'content'
     }
+},
+{
+    timestamps: true,
+    createdAt: 'creation_date',
+    updatedAt: 'edition_date'
 });
 
 oneToMany(comment, question, {
