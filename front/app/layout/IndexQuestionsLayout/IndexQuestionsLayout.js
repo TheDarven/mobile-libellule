@@ -54,7 +54,7 @@ const IndexQuestionsLayout = () => {
                     <>
                         {questions.map(question => (
                             <QuestionLayout
-                                key={question.question_id}
+                                key={question.id}
                                 author={question.User.display_name}
                                 content={question.content}
                                 title={question.title}

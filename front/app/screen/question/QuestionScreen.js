@@ -13,7 +13,7 @@ import Borders from '../../styles/borders';
 import LiSeparator from '../../component/LiSeparator/LiSeparator';
 import { getQuestionById } from '../../api/questions-api';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useAuth } from "../../context/auth-context";
+import { useAuth } from '../../context/auth-context';
 
 const QuestionScreen = ({ route }) => {
     const [question, setQuestion] = useState(null);

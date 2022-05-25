@@ -7,6 +7,6 @@ export const getAllQuestions = async () => {
     return axios.get(API_QUESTIONS_URL);
 };
 
-export const getQuestionById = async (questionId) => {
+export const getQuestionById = async questionId => {
     return axios.get(`${API_QUESTIONS_URL}${questionId}`);
-}
+};
