@@ -1,0 +1,52 @@
+lint-back:
+  tags:
+    - docker
+  image: node:latest
+  stage: lint
+  before_script:
+    - cd ./back
+    - npm i
+  script:
+    - npm run lint
+  only:
+    - dev
+    - master
+    - merge_requests
+
+test-back: 
+  tags:
+    - docker
+  image: node:latest
+  stage: test
+  variables:
+    NODE_ENV: 'test'
+    PORT: $PORT # Port of the app
+    SALT: $SALT # Salt for password encryption
+    JWT_SECRET_KEY: $JWT_SECRET_KEY
+    JWT_ALGORITHM: $JWT_ALGORITHM
+    JWT_EXPIRES_IN: $JWT_EXPIRES_IN
+  before_script:
+    - cd ./back
+    - npm i
+  script:
+    - npm run test-docker
+  only:
+    - dev
+    - master
+    - merge_requests
+deploy-back:
+  tags:
+    - docker
+  image: ruby:latest
+  stage: deploy
+  # Environment setup for dpl install
+  before_script:
+    - cd ./back
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+  # Deploy on heroku
+  script:
+    - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
+  only:
+    - master

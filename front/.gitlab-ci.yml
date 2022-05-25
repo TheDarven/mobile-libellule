@@ -1,0 +1,38 @@
+lint-front:
+  stage: lint
+  tags: 
+    - docker
+  image: node:latest
+  before_script: 
+    - cd ./front
+    - npm i
+  script:
+    - npm run lint
+  only: 
+    - dev
+    - master
+    - merge_requests
+
+# test-front : TODO if detox or something else
+
+pages:    # Génération de l'application (génère l'apk et le déplace dans appli.apk)
+  tags:
+    - shell
+  stage: deploy
+  script:
+    - mkdir -p public # Crée le répertoire pour disposer dans pages de l'application 
+    - cd ./front
+    - source /matieres/4MM1CAW/bashrc2web   # Mise en place des variables pour les outils 
+    - npm install --save-dev jetifier # Peut être nécessaire pour la génération de l'apk
+    - npm install   # Installe les modules node présents dans package.json (le répertoire node_modules n'étant pas dans le dépôt)
+    - npx jetify    # Prépare la génération de l'application native
+    - cd android    # Se place dans le répertoire android
+    - chmod +x ./gradlew
+    - ./gradlew assembleRelease # Puis génère l'application au format apk
+    - cp ./app/build/outputs/apk/release/app-release.apk ../../public/libellule.apk
+  artifacts:
+    paths:
+      - public
+  only:
+    - dev
+    - master
