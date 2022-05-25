@@ -5,7 +5,8 @@ import Fonts from '../styles/fonts';
 export const logStatusViewStyle = {
     backgroundColor: NavigatorStyle.backgroundColor,
     alignItems: 'center',
-    paddingVertical: Spacings._20
+    paddingVertical: Spacings._20,
+    paddingHorizontal: Spacings._8
 };
 
 export const logStatusTextStyle = {

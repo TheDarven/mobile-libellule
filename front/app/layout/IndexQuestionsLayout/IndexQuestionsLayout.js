@@ -59,8 +59,8 @@ const IndexQuestionsLayout = () => {
                                 content={question.content}
                                 title={question.title}
                                 nbComments={question.comm_amount}
-                                questionId={question.question_id}
-                                date={question.date}
+                                questionId={question.id}
+                                date={question.creation_date}
                             />
                         ))}
                     </>

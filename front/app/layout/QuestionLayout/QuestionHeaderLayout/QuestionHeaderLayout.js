@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import LiText from '../../../component/LiText/LiText';
 import { useColorScheme, View } from 'react-native';
 import Fonts from '../../../styles/fonts';
@@ -7,13 +7,40 @@ import Colors from '../../../styles/colors';
 import Borders from '../../../styles/borders';
 
 const QuestionHeaderLayout = ({ author, date }) => {
+    const [formattedDate, setFormattedDate] = useState(null);
+
     const isDarkMode = useColorScheme() === 'dark';
+
+    useEffect(() => {
+        const newDate = new Date(date);
+
+        const months = [
+            'Janvier',
+            'Février',
+            'Mars',
+            'Avril',
+            'Mai',
+            'Juin',
+            'Juillet',
+            'Août',
+            'Septembre',
+            'Octobre',
+            'Novembre',
+            'Décembre'
+        ];
+
+        setFormattedDate(
+            `${newDate.getDate()} ${
+                months[newDate.getMonth()]
+            } ${newDate.getFullYear()}`
+        );
+    }, [date]);
 
     const cardHeaderStyle = {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         marginBottom: Spacings._8
     };
 
@@ -30,12 +57,14 @@ const QuestionHeaderLayout = ({ author, date }) => {
 
     return (
         <View style={cardHeaderStyle}>
-            <LiText style={{ fontFamily: 'Roboto-Medium' }}>{author}</LiText>
+            <LiText style={{ fontFamily: 'Roboto-Medium', flex: 1 }}>
+                {author}
+            </LiText>
             <View style={cardHeaderDateStyle}>
                 <LiText
                     fontSize={Fonts.size.sm}
                     style={cardHeaderDateTextStyle}>
-                    {date}
+                    {formattedDate}
                 </LiText>
             </View>
         </View>

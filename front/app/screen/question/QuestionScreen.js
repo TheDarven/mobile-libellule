@@ -13,10 +13,13 @@ import Borders from '../../styles/borders';
 import LiSeparator from '../../component/LiSeparator/LiSeparator';
 import { getQuestionById } from '../../api/questions-api';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useAuth } from "../../context/auth-context";
 
 const QuestionScreen = ({ route }) => {
     const [question, setQuestion] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+
+    const { isAuth } = useAuth().authContext;
 
     useEffect(() => {
         if (isLoading) {
@@ -39,32 +42,32 @@ const QuestionScreen = ({ route }) => {
             author: 'Paul',
             content:
                 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias assumenda id recusandae totam voluptas. Ad adipisci architecto dolorum incidunt laboriosam non officiis perspiciatis quidem, quisquam similique soluta, voluptatibus. Quia, repellendus.',
-            date: '12 Janvier 2022 à 08h45'
+            date: '2022-05-25T18:31:49.000Z'
         },
         {
             commentId: 2,
             author: 'John Doe',
             content: 'Un commentaire !',
-            date: '12 Janvier 2022 à 11h21'
+            date: '2022-05-25T18:31:49.000Z'
         },
         {
             commentId: 3,
             author: 'Paul',
             content:
                 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias assumenda id recusandae totam voluptas. Ad adipisci architecto dolorum incidunt laboriosam non officiis perspiciatis quidem, quisquam similique soluta, voluptatibus. Quia, repellendus.',
-            date: '12 Janvier 2022 à 08h45'
+            date: '2022-05-25T18:31:49.000Z'
         },
         {
             commentId: 4,
             author: 'John Doe',
             content: 'Un commentaire !',
-            date: '12 Janvier 2022 à 11h21'
+            date: '2022-05-25T18:31:49.000Z'
         },
         {
             commentId: 5,
             author: 'Louis',
             content: 'Dernier commentaire',
-            date: '12 Janvier 2022 à 11h30'
+            date: '2022-05-25T18:31:49.000Z'
         }
     ];
 
@@ -128,7 +131,7 @@ const QuestionScreen = ({ route }) => {
                         </LiTitle>
                         <QuestionHeaderLayout
                             author={question.User.display_name}
-                            date={question.date}
+                            date={question.creation_date}
                         />
                         <LiText style={contentTextStyle}>
                             {question.content}
@@ -144,7 +147,7 @@ const QuestionScreen = ({ route }) => {
                     </>
                 )}
             </ScrollView>
-            {!isLoading && question != null && (
+            {!isLoading && question != null && isAuth() && (
                 <View
                     style={{
                         paddingHorizontal: Spacings._12,
