@@ -1,12 +1,12 @@
 import React from 'react';
-import QuestionLayout from '../../QuestionLayout/QuestionLayout';
+import Question from '../../../component/Post/Question/Question';
 
 const QuestionItem = ({ item }) => {
     const { index } = item;
     const question = item.item;
 
     return (
-        <QuestionLayout
+        <Question
             key={index}
             author={question.User.display_name}
             content={question.content}
