@@ -2,7 +2,7 @@ import React from 'react';
 import Spacings from '../../styles/spacings';
 import LiCard from '../../component/LiCard/LiCard';
 import { useNavigation } from '@react-navigation/native';
-import QuestionHeaderLayout from './QuestionHeaderLayout/QuestionHeaderLayout';
+import PostHeader from '../../component/Post/PostHeader/PostHeader';
 import QuestionContentLayout from './QuestionContentLayout/QuestionContentLayout';
 import QuestionFooterLayout from './QuestionFooterLayout/QuestionFooterLayout';
 
@@ -28,7 +28,7 @@ const QuestionLayout = ({
                     questionId
                 });
             }}>
-            <QuestionHeaderLayout author={author} date={date} />
+            <PostHeader author={author} date={date} />
             <QuestionContentLayout title={title} content={content} />
             <QuestionFooterLayout nbComments={nbComments} />
         </LiCard>

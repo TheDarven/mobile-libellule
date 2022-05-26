@@ -3,7 +3,7 @@ import LiText from '../../component/LiText/LiText';
 import { useColorScheme, View } from 'react-native';
 import Spacings from '../../styles/spacings';
 import Colors from '../../styles/colors';
-import QuestionHeaderLayout from '../QuestionLayout/QuestionHeaderLayout/QuestionHeaderLayout';
+import PostHeader from '../../component/Post/PostHeader/PostHeader';
 
 const CommentLayout = ({ content, author, date }) => {
     const isDarkMode = useColorScheme() === 'dark';
@@ -20,7 +20,7 @@ const CommentLayout = ({ content, author, date }) => {
     };
     return (
         <View style={commentStyle}>
-            <QuestionHeaderLayout author={author} date={date} />
+            <PostHeader author={author} date={date} />
             <LiText style={commentContentStyle}>{content}</LiText>
         </View>
     );
