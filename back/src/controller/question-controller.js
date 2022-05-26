@@ -217,8 +217,8 @@ router.post('/', (req, res, next) => {
 
     // Create question
     createQuestion(content, title, user)
-    .then(({response}) => {
-        res.json({ status: true, response })
+    .then(({response, data}) => {
+        res.json({ status: true, response, data })
     })
     .catch(error => next(error));
 });

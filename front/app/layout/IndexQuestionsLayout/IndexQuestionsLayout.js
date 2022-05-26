@@ -6,10 +6,18 @@ import { getAllQuestions } from '../../api/questions-api';
 import LiMainFlatList from '../../component/LiMainFlatList/LiMainFlatList';
 import IndexQuestionsEmptyOrLoad from './IndexQuestionsEmptyOrLoad/IndexQuestionsEmptyOrLoad';
 import QuestionItem from './QuestionItem/QuestionItem';
+import { MainContent } from '../../component/LiMainView/LiMainView';
+import { useIsFocused } from '@react-navigation/native';
 
 const IndexQuestionsLayout = () => {
     const [questions, setQuestions] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    const isFocus = useIsFocused();
+
+    useEffect(() => {
+        setIsLoading(true);
+    }, [isFocus]);
 
     useEffect(() => {
         if (isLoading) {
@@ -46,6 +54,7 @@ const IndexQuestionsLayout = () => {
                 flexGrow: 1,
                 paddingBottom: Spacings._80
             }}
+            type={MainContent.card}
         />
     );
 };

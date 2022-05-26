@@ -177,9 +177,7 @@ const QuestionScreen = ({ route }) => {
                                     multiline={true}
                                     numberOfLines={2}
                                     style={newCommentInputStyle}
-                                    placeholderTextColor={
-                                        'Votre commentaire ici..'
-                                    }
+                                    placeholder={'Votre commentaire ici..'}
                                 />
                             </View>
                             <LiPressable title={'Poster'} />
