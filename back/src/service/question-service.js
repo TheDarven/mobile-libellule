@@ -17,7 +17,7 @@ async function createQuestion(content, title, user)
 
         return {
             response: QUESTION_CREATED_WITH_SUCCESS,
-            data: question
+            data: { questionId: question.questionId }
         }
     } catch (err) {
         throw new CodeError(QUESTION_CREATION_FAILED, httpStatus.INTERNAL_SERVER_ERROR)
