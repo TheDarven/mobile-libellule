@@ -317,7 +317,8 @@ function questionInfo()
             'creation_date',
             'edition_date'
         ],
-        group: 'title',
+        group: [ 'id' ],
+        order: [ [ 'creation_date', 'DESC' ] ],
 
         include: [
             {
