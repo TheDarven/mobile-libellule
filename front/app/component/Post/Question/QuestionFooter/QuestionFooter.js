@@ -1,12 +1,12 @@
 import React from 'react';
 import { useColorScheme, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Fonts from '../../../styles/fonts';
-import LiText from '../../../component/LiText/LiText';
-import Spacings from '../../../styles/spacings';
-import Colors from '../../../styles/colors';
+import Fonts from '../../../../styles/fonts';
+import LiText from '../../../../component/LiText/LiText';
+import Spacings from '../../../../styles/spacings';
+import Colors from '../../../../styles/colors';
 
-const QuestionFooterLayout = ({ nbComments }) => {
+const QuestionFooter = ({ nbComments }) => {
     const isDarkMode = useColorScheme() === 'dark';
 
     const iconColor = isDarkMode ? Colors.gray._0 : Colors.black._20;
@@ -45,4 +45,4 @@ const QuestionFooterLayout = ({ nbComments }) => {
     );
 };
 
-export default QuestionFooterLayout;
+export default QuestionFooter;

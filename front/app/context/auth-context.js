@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { isEmptyOrNull, nonEmptyOrNull } from '../util/string-helper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { whoAmI } from '../api/users-api';
 
 const { createContext, useContext } = React;
 
@@ -14,10 +15,23 @@ const AuthContext = createContext({
 
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(null);
+    const [displayName, setDisplayName] = useState(null);
 
     const isAuth = () => {
         return nonEmptyOrNull(token);
     };
+
+    useEffect(() => {
+        if (isEmptyOrNull(token)) {
+            setDisplayName(null);
+        } else {
+            whoAmI().then(res => {
+                if (res.data?.status) {
+                    setDisplayName(res.data?.data.displayName);
+                }
+            });
+        }
+    }, [token]);
 
     useEffect(() => {
         AsyncStorage.getItem(STORAGE_TOKEN_KEY)
@@ -44,7 +58,12 @@ export const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider
             value={{
-                authContext: { token, setToken: setStoredToken, isAuth }
+                authContext: {
+                    token,
+                    setToken: setStoredToken,
+                    isAuth,
+                    displayName
+                }
             }}>
             {children}
         </AuthContext.Provider>
