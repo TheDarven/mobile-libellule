@@ -27,4 +27,15 @@ module.exports = {
     QUESTION_EDITED_WITH_SUCCESS: 'Vous avez édité une question avec succès',
     QUESTION_DELETED_WITH_SUCCESS: 'Vous avez supprimé une question avec succès',
     QUESTION_MISSING_PERMISSION: 'Vous n\'avez pas la permission pour effectuer cette opération',
+
+    // COMMENT
+    COMMENT_BODY_INVALID_CONTENT_LENGTH: 'Le contenu doit posséder moins de 10000 caractères',
+    COMMENT_NOT_IDENTIFIED: 'Aucun commentaire ne correspond à cet ID',
+    COMMENT_CREATION_FAILED: 'Une erreur inconnue s\'est produite lors de la création. Merci de réessayer plus tard.',
+    COMMENT_EDITION_FAILED: 'Une erreur inconnue s\'est produite lors de l\'édition. Merci de réessayer plus tard.',
+    COMMENT_DELETION_FAILED: 'Une erreur inconnue s\'est produite lors de la suppresion. Merci de réessayer plus tard.',
+    COMMENT_CREATED_WITH_SUCCESS: 'Vous avez créé un commentaire avec succès',
+    COMMENT_EDITED_WITH_SUCCESS: 'Vous avez édité un commentaire avec succès',
+    COMMENT_DELETED_WITH_SUCCESS: 'Vous avez supprimé un commentaire avec succès',
+    COMMENT_MISSING_PERMISSION: 'Vous n\'avez pas la permission pour effectuer cette opération',
 }
