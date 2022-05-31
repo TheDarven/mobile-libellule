@@ -8,8 +8,8 @@ const CommentItem = ({ item }) => {
         <CommentLayout
             key={index}
             content={comment.content}
-            author={comment.author}
-            date={comment.date}
+            author={comment.User.display_name}
+            date={comment.creation_date}
         />
     );
 };

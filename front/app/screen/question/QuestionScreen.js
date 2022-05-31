@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { RefreshControl, useColorScheme, View } from 'react-native';
 import Colors from '../../styles/colors';
 import Spacings from '../../styles/spacings';
@@ -10,9 +10,11 @@ import LiMainFlatList from '../../component/LiMainFlatList/LiMainFlatList';
 import NewComment from '../../layout/CommentLayout/NewComment/NewComment';
 import QuestionLayout from '../../layout/QuestionLayout/QuestionLayout';
 import CommentItem from '../../layout/QuestionLayout/CommentItem/CommentItem';
+import { getCommentsOfQuestion } from '../../api/comments-api';
 
 const QuestionScreen = ({ route }) => {
     const [question, setQuestion] = useState(null);
+    const [comments, setComments] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const { isAuth } = useAuth().authContext;
@@ -22,50 +24,28 @@ const QuestionScreen = ({ route }) => {
             getQuestionById(route.params.questionId)
                 .then(res => {
                     setQuestion(res.data.data);
-                    setIsLoading(false);
+                    getCommentsOfQuestion(route.params.questionId)
+                        .then(resComments => {
+                            setComments(
+                                resComments.data?.status
+                                    ? resComments.data.data
+                                    : []
+                            );
+                            setIsLoading(false);
+                        })
+                        .catch(() => setIsLoading(false));
                 })
                 .catch(() => setIsLoading(false));
         }
     }, [isLoading, route.params.questionId]);
 
+    function addComment(newComment) {
+        setComments([...comments, newComment]);
+    }
+
     function onRefresh() {
         setIsLoading(true);
     }
-
-    const comments = [
-        {
-            commentId: 1,
-            author: 'Paul',
-            content:
-                'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias assumenda id recusandae totam voluptas. Ad adipisci architecto dolorum incidunt laboriosam non officiis perspiciatis quidem, quisquam similique soluta, voluptatibus. Quia, repellendus.',
-            date: '2022-05-25T18:31:49.000Z'
-        },
-        {
-            commentId: 2,
-            author: 'John Doe',
-            content: 'Un commentaire !',
-            date: '2022-05-25T18:31:49.000Z'
-        },
-        {
-            commentId: 3,
-            author: 'Paul',
-            content:
-                'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias assumenda id recusandae totam voluptas. Ad adipisci architecto dolorum incidunt laboriosam non officiis perspiciatis quidem, quisquam similique soluta, voluptatibus. Quia, repellendus.',
-            date: '2022-05-25T18:31:49.000Z'
-        },
-        {
-            commentId: 4,
-            author: 'John Doe',
-            content: 'Un commentaire !',
-            date: '2022-05-25T18:31:49.000Z'
-        },
-        {
-            commentId: 5,
-            author: 'Louis',
-            content: 'Dernier commentaire',
-            date: '2022-05-25T18:31:49.000Z'
-        }
-    ];
 
     const isDarkMode = useColorScheme() === 'dark';
 
@@ -114,7 +94,12 @@ const QuestionScreen = ({ route }) => {
                         data={comments}
                         renderItem={item => <CommentItem item={item} />}
                     />
-                    {isAuth() && <NewComment />}
+                    {isAuth() && (
+                        <NewComment
+                            questionId={route.params.questionId}
+                            addComment={addComment}
+                        />
+                    )}
                 </>
             )}
         </View>

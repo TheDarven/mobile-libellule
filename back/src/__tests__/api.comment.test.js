@@ -19,7 +19,7 @@ const CQUESTION_TITLE = "Question Title"
 const CQUESTION_CONTENT = "Question Content"
 
 const COMMENT_CONTENT = "Comment Content"
-jest.setTimeout(30000);
+jest.setTimeout(300000);
 
 describe('Question Endpoint Test', () => {
 
@@ -54,6 +54,10 @@ describe('Question Endpoint Test', () => {
                     const body = response._body;
 
                     expect(body.status).toBe(true);
+
+                    const comment = body.data;
+                    expect(comment.content).toBe(COMMENT_CONTENT)
+                    expect(comment.Reactions.length).toBe(0)
 
                     expect(body.response).toBe(COMMENT_CREATED_WITH_SUCCESS)
                 })
