@@ -17,7 +17,7 @@ async function createComment(content, questionId, user)
 
         return {
             response: COMMENT_CREATED_WITH_SUCCESS,
-            data: comment
+            data: comment.commentId
         }
     } catch (err) {
         throw new CodeError(COMMENT_CREATION_FAILED, httpStatus.INTERNAL_SERVER_ERROR)
@@ -64,12 +64,13 @@ async function deleteComment(commentId, user)
     }
 }
 
-async function getCommentById(commentId) {
+async function getCommentById(commentId, options = {}) {
     try {
         return await commentModel.findOne({
             where: {
                 commentId
-            }
+            },
+            ...options
         })
     } catch (err) {
         return null

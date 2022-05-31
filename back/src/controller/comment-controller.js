@@ -35,23 +35,14 @@ router.get('/:comment/', (req, res, next)  => {
     } */
 
     // Check Comment
-    getCommentById(req.params.comment)
+    getCommentById(req.params.comment, commentInfo())
     .then((comment) => {
 
         if (comment == null) {
             throw new CodeError(COMMENT_NOT_IDENTIFIED);
         }
 
-        // Launch Request
-        const info = commentInfo();
-        info.where = {
-            commentId: req.params.comment
-        };
-        commentModel.findOne(info)
-        .then((data) => {
-            res.json({ status: true, data });
-        })
-        .catch(error => next(error));
+        res.json({ status: true, data: comment });
     })
     .catch(error => next(error));
 });
@@ -223,16 +214,22 @@ router.post('/questions/:question/', (req, res, next) => {
 
     // Check Question
     getQuestionById(req.params.question)
-    .then((data) => {
+    .then((questionResponse) => {
 
-        if (data == null) {
+        if (questionResponse == null) {
             throw new CodeError(QUESTION_NOT_IDENTIFIED);
         }
 
         // Create comment
         createComment(content, req.params.question, user)
-        .then(({response}) => {
-            res.json({ status: true, response })
+        .then(({response, data}) => {
+
+            getCommentById(data, commentInfo())
+                .then((comment) => {
+                    res.json({ status: true, response, data: comment })
+                })
+                .catch(error => next(error));
+
         })
         .catch(error => next(error));
     })

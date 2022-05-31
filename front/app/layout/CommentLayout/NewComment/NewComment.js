@@ -1,12 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useColorScheme, View } from 'react-native';
 import Spacings from '../../../styles/spacings';
 import Colors, { AppBackgroundColor } from '../../../styles/colors';
 import Borders from '../../../styles/borders';
 import LiTextInput from '../../../component/LiTextInput/LiTextInput';
 import LiPressable from '../../../component/LiPressable/LiPressable';
+import { createComment } from '../../../api/comments-api';
+import { nonEmptyOrNull } from '../../../util/string-helper';
 
-const NewComment = () => {
+const NewComment = ({ questionId, addComment }) => {
+    const [comment, setComment] = useState(null);
+    const [isCommenting, setIsCommenting] = useState(false);
+    const [isFormValid, setIsFormValid] = useState(false);
+
+    function onCommentClicked() {
+        console.log(questionId);
+        setIsCommenting(true);
+        createComment(questionId, comment)
+            .then(res => {
+                if (res.data?.status) {
+                    addComment(res.data.data);
+                    setComment(null);
+                }
+                setIsCommenting(false);
+            })
+            .catch(() => setIsCommenting(false));
+    }
+
+    useEffect(() => {
+        setIsFormValid(nonEmptyOrNull(comment));
+    }, [comment]);
+
     const isDarkMode = useColorScheme() === 'dark';
 
     const newCommentViewStyle = {
@@ -39,10 +63,16 @@ const NewComment = () => {
                     multiline={true}
                     numberOfLines={2}
                     style={newCommentInputStyle}
+                    value={comment}
+                    onChangeText={setComment}
                     placeholder={'Votre commentaire ici..'}
                 />
             </View>
-            <LiPressable title={'Poster'} />
+            <LiPressable
+                onPressIn={onCommentClicked}
+                disable={!isFormValid || isCommenting}
+                title={'Poster'}
+            />
         </View>
     );
 };

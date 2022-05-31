@@ -16,7 +16,7 @@ const QACCOUNT_PASSWORD = "MyPassword"
 
 const QUESTION_TITLE = "Sample Title"
 const QUESTION_CONTENT = "Sample Content"
-jest.setTimeout(30000);
+jest.setTimeout(300000);
 
 describe('Question Endpoint Test', () => {
 
