@@ -36,7 +36,7 @@ describe('Follow Question Endpoint Test', () => {
         follower = followerData;
 
         const question = await getQuestion(QUESTION_TITLE, QUESTION_CONTENT, { userId: publisher.id });
-        questionID = question.data.dataValues.questionId;
+        questionID = question.questionId;
     });
 
     describe('Follow Question Create Test', () => {
