@@ -16,5 +16,6 @@ export const logStatusTextStyle = {
 
 export const menuViewStyle = {
     flex: 1,
-    paddingTop: Spacings._8
+    paddingTop: Spacings._8,
+    flexDirection: 'column'
 };
