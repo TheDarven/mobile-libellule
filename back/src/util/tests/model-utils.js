@@ -1,6 +1,7 @@
 const { loginUser, registerUser, getUserByName } = require("../../service/user-service");
 const { createQuestion, getQuestionByTitle } = require("../../service/question-service");
 const { createComment, getFirstCommentFromQuestionId } = require('../../service/comment-service')
+const { createFollowQuestion } = require("../../service/follow-question-service");
 const { CodeError } = require("../error-handler");
 const { QUESTION_NOT_IDENTIFIED, COMMENT_NOT_IDENTIFIED } = require("../status-message");
 const reactionTypeModel = require("../../model/reaction-type");
@@ -92,5 +93,12 @@ async function getRandomReactionType()
         return null;
     }
 }
+async function getFollowQuestion(followerId, questionId) {
+    await createFollowQuestion({ followerId, questionId });
+    return {
+        followerId,
+        questionId
+    }; //await getFollowQuestion(title); TODO
+}
 
-module.exports = { getUser, getQuestion, getFirstComment, getRandomReactionType, getFirstQuestionReaction, getFirstCommentReaction }
+module.exports = { getUser, getQuestion, getFollowQuestion, getFirstComment, getRandomReactionType, getFirstQuestionReaction, getFirstCommentReaction }

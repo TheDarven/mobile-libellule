@@ -1,8 +1,14 @@
 const app = require('../app')
 const supertest = require('supertest')
 const httpStatus = require("http-status")
-const { FOLLOW_CREATED_WITH_SUCCESS } = require("../util/status-message");
-const { getQuestion, getUser } = require('../util/tests/model-utils');
+const { 
+    FOLLOW_CREATED_WITH_SUCCESS,
+    INVALID_TOKEN,
+    QUESTION_NOT_IDENTIFIED,
+    FOLLOW_DELETED_WITH_SUCCESS
+} = require("../util/status-message");
+const { getQuestion, getUser, getFollowQuestion } = require('../util/tests/model-utils');
+const user = require('../model/user');
 
 jest.setTimeout(30000);
 
@@ -56,6 +62,97 @@ describe('Follow Question Endpoint Test', () => {
                 expect(body.response).toBe(FOLLOW_CREATED_WITH_SUCCESS)
             });
         });
+        it('user should not exists', async () => {
+            await supertest(app)
+                .post(FOLLOW_QUESTION_ENDPOINT)
+                .set('Authorization', 'invalid_token')
+                .send({
+                    questionId: questionID
+                })
+                .expect(httpStatus.UNAUTHORIZED)
+                .then((response) => {
+                    const body = response.body;
+    
+                    expect(body.status).toBe(false)
+    
+                    expect(body.response).toBe(INVALID_TOKEN)
+                })
+        })
+    
+        it('question should not exists', async () => {
+            const inexstingQuestionId = 500000000;
+            await supertest(app)
+                .post(FOLLOW_QUESTION_ENDPOINT)
+                .set('Authorization', follower.token)
+                .send({
+                    questionId: inexstingQuestionId
+                })
+                .expect(httpStatus.BAD_REQUEST)
+                .then((response) => {
+                    const body = response.body;
+    
+                    expect(body.status).toBe(false);
+    
+                    expect(body.response).toBe(QUESTION_NOT_IDENTIFIED)
+                })
+        })
     });
+    describe('Follow Question Delete Test', () => {
+        it("fill follow question", async () => {
+            follow = await getFollowQuestion(user.id, questionID);
 
+            expect(follow).toBeDefined();
+        })
+        it('should delete a follow question', async () => {
+
+            await supertest(app)
+            .delete(FOLLOW_QUESTION_ENDPOINT)
+            .set('Authorization', follower.token)
+            .send({
+                questionId: questionID
+            })
+            .expect(httpStatus.OK)
+            .then((response) => {
+                const body = response.body;
+
+                expect(body.status).toBe(true);
+
+                expect(body.response).toBe(FOLLOW_DELETED_WITH_SUCCESS)
+            });
+        });
+        it('user should not exists', async () => {
+            await supertest(app)
+                .delete(FOLLOW_QUESTION_ENDPOINT)
+                .set('Authorization', 'invalid_token')
+                .send({
+                    questionId: questionID
+                })
+                .expect(httpStatus.UNAUTHORIZED)
+                .then((response) => {
+                    const body = response.body;
+    
+                    expect(body.status).toBe(false)
+    
+                    expect(body.response).toBe(INVALID_TOKEN)
+                })
+        })
+    
+        it('question should not exists', async () => {
+            const inexstingQuestionId = 500000000;
+            await supertest(app)
+                .delete(FOLLOW_QUESTION_ENDPOINT)
+                .set('Authorization', follower.token)
+                .send({
+                    questionId: inexstingQuestionId
+                })
+                .expect(httpStatus.BAD_REQUEST)
+                .then((response) => {
+                    const body = response.body;
+    
+                    expect(body.status).toBe(false);
+    
+                    // TODO expect(body.response).toBe(QUESTION_NOT_IDENTIFIED)
+                })
+        })
+    });
 });

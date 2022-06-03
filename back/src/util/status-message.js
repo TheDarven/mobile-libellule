@@ -51,5 +51,9 @@ module.exports = {
     REACTION_MISSING_PERMISSION: 'Vous n\'avez pas la permission pour effectuer cette opération',
     // FOLLOW
     FOLLOW_CREATION_FAILED: 'Une erreur inconnue s\'est produite lors de la création. Merci de réessayer plus tard.',
-    FOLLOW_CREATED_WITH_SUCCESS: 'Vous avez créé un follow avec succès',
+    FOLLOW_CREATED_WITH_SUCCESS: 'Vous avez créé un suivi avec succès',
+    FOLLOW_MISSING_PERMISSION: 'Vous n\'avez pas la permission pour effectuer cette opération',
+    FOLLOW_DELETED_WITH_SUCCESS: 'Vous avez stopper le suivi avec succès',
+    FOLLOW_DELETION_FAILED: 'Une erreur inconnue s\'est produite lors de la suppresion. Merci de réessayer plus tard.',
+    FOLLOW_NOT_IDENTIFIED: 'Aucune suivi ne correspond à cet ID',
 }
