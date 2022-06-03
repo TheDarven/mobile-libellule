@@ -234,6 +234,8 @@ describe('User Endpoint Test',() => {
                     expect(body.status).toBe(true)
 
                     expect(body.data?.name).toBe(ACCOUNT_NAME)
+
+                    expect(body.data?.userId).toBeGreaterThan(0);
                 })
         })
 

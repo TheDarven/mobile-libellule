@@ -1,15 +1,18 @@
 import React from 'react';
 import CommentLayout from '../../CommentLayout/CommentLayout';
 
-const CommentItem = ({ item }) => {
+const CommentItem = ({ item, removeComment }) => {
     const { index } = item;
     const comment = item.item;
     return (
         <CommentLayout
             key={index}
+            commentId={comment.id}
             content={comment.content}
-            author={comment.User.display_name}
+            authorName={comment.User.display_name}
+            authorId={comment.User.user_id}
             date={comment.creation_date}
+            removeComment={removeComment}
         />
     );
 };

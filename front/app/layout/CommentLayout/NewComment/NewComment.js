@@ -14,7 +14,6 @@ const NewComment = ({ questionId, addComment }) => {
     const [isFormValid, setIsFormValid] = useState(false);
 
     function onCommentClicked() {
-        console.log(questionId);
         setIsCommenting(true);
         createComment(questionId, comment)
             .then(res => {

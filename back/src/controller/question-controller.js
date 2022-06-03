@@ -322,7 +322,7 @@ function questionInfo()
         include: [
             {
                 model: userModel,
-                attributes: [ 'display_name' ],
+                attributes: [ 'display_name', 'user_id' ],
                 required: true
             },
             {

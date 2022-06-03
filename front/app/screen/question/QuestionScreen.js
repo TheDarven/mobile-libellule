@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RefreshControl, useColorScheme, View } from 'react-native';
 import Colors from '../../styles/colors';
 import Spacings from '../../styles/spacings';
@@ -41,6 +41,10 @@ const QuestionScreen = ({ route }) => {
 
     function addComment(newComment) {
         setComments([...comments, newComment]);
+    }
+
+    function removeComment(commentId) {
+        setComments(comments.filter(comment => comment.id !== commentId));
     }
 
     function onRefresh() {
@@ -86,13 +90,19 @@ const QuestionScreen = ({ route }) => {
                                 questionId={question.id}
                                 title={question.title}
                                 content={question.content}
-                                author={question.User.display_name}
+                                authorName={question.User.display_name}
+                                authorId={question.User.user_id}
                                 creationDate={question.creation_date}
                             />
                         )}
                         contentContainerStyle={commentsContainerStyle}
                         data={comments}
-                        renderItem={item => <CommentItem item={item} />}
+                        renderItem={item => (
+                            <CommentItem
+                                item={item}
+                                removeComment={removeComment}
+                            />
+                        )}
                     />
                     {isAuth() && (
                         <NewComment
