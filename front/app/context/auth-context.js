@@ -16,6 +16,7 @@ const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(null);
     const [displayName, setDisplayName] = useState(null);
+    const [userId, setUserId] = useState(-1);
 
     const isAuth = () => {
         return nonEmptyOrNull(token);
@@ -24,10 +25,12 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         if (isEmptyOrNull(token)) {
             setDisplayName(null);
+            setUserId(-1);
         } else {
             whoAmI().then(res => {
                 if (res.data?.status) {
                     setDisplayName(res.data?.data.displayName);
+                    setUserId(res.data?.data.userId);
                 }
             });
         }
@@ -62,7 +65,8 @@ export const AuthProvider = ({ children }) => {
                     token,
                     setToken: setStoredToken,
                     isAuth,
-                    displayName
+                    displayName,
+                    userId
                 }
             }}>
             {children}

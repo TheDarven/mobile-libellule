@@ -27,7 +27,8 @@ router.get('/:comment/', (req, res, next)  => {
                 "creation_date": "2022-05-27T11:54:00.000Z",
                 "edition_date": "2022-05-27T11:54:00.000Z",
                 "User": {
-                    "display_name": "DefaultDisplay"
+                    "display_name": "DefaultDisplay",
+                    "user_id": 1
                 },
                 "Reactions": []
             }
@@ -60,7 +61,8 @@ router.get('/questions/:question/', (req, res, next)  => {
                     "creation_date": "2022-05-27T11:54:00.000Z",
                     "edition_date": "2022-05-27T11:54:00.000Z",
                     "User": {
-                        "display_name": "DefaultDisplay"
+                        "display_name": "DefaultDisplay",
+                        "user_id": 1
                     },
                     "Reactions": []
                 },
@@ -70,7 +72,8 @@ router.get('/questions/:question/', (req, res, next)  => {
                     "creation_date": "2022-05-27T11:54:54.000Z",
                     "edition_date": "2022-05-27T11:54:54.000Z",
                     "User": {
-                        "display_name": "DefaultDisplay"
+                        "display_name": "DefaultDisplay",
+                        "user_id": 1
                     },
                     "Reactions": []
                 },
@@ -80,7 +83,8 @@ router.get('/questions/:question/', (req, res, next)  => {
                     "creation_date": "2022-05-27T11:55:23.000Z",
                     "edition_date": "2022-05-27T11:55:23.000Z",
                     "User": {
-                        "display_name": "DefaultDisplay"
+                        "display_name": "DefaultDisplay",
+                        "user_id": 1
                     },
                     "Reactions": []
                 }
@@ -123,7 +127,8 @@ router.get('/users/:user/', (req, res, next)  => {
                     "creation_date": "2022-05-27T11:54:00.000Z",
                     "edition_date": "2022-05-27T11:54:00.000Z",
                     "User": {
-                        "display_name": "DefaultDisplay"
+                        "display_name": "DefaultDisplay",
+                        "user_id": 1
                     },
                     "Reactions": []
                 },
@@ -133,7 +138,8 @@ router.get('/users/:user/', (req, res, next)  => {
                     "creation_date": "2022-05-27T11:54:54.000Z",
                     "edition_date": "2022-05-27T11:54:54.000Z",
                     "User": {
-                        "display_name": "DefaultDisplay"
+                        "display_name": "DefaultDisplay",
+                        "user_id": 1
                     },
                     "Reactions": []
                 },
@@ -143,7 +149,8 @@ router.get('/users/:user/', (req, res, next)  => {
                     "creation_date": "2022-05-27T11:55:23.000Z",
                     "edition_date": "2022-05-27T11:55:23.000Z",
                     "User": {
-                        "display_name": "DefaultDisplay"
+                        "display_name": "DefaultDisplay",
+                        "user_id": 1
                     },
                     "Reactions": []
                 },
@@ -153,7 +160,8 @@ router.get('/users/:user/', (req, res, next)  => {
                     "creation_date": "2022-05-27T12:30:59.000Z",
                     "edition_date": "2022-05-27T12:30:59.000Z",
                     "User": {
-                        "display_name": "DefaultDisplay"
+                        "display_name": "DefaultDisplay",
+                        "user_id": 1
                     },
                     "Reactions": []
                 }
@@ -333,7 +341,7 @@ function commentInfo()
         include: [
             {
                 model: userModel,
-                attributes: [ 'display_name' ],
+                attributes: [ 'display_name', 'user_id' ],
                 required: true
             },
             {

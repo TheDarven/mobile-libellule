@@ -12,3 +12,7 @@ export const createComment = async (questionId, content) => {
 export const getCommentsOfQuestion = async questionId => {
     return axios.get(`${API_COMMENTS_URL}questions/${questionId}`);
 };
+
+export const deleteComment = async commentId => {
+    return axios.delete(`${API_COMMENTS_URL}${commentId}`);
+};
