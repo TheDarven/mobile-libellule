@@ -8,5 +8,9 @@ export default {
     card: {
         paddingVertical: Spacings._20,
         paddingHorizontal: Spacings._12
+    },
+    none: {
+        paddingHorizontal: Spacings._0,
+        paddingVertical: Spacings._0
     }
 };
