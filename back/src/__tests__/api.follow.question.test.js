@@ -261,13 +261,13 @@ describe('Follow Question Endpoint Test', () => {
                 .expect(httpStatus.UNAUTHORIZED)
                 .then((response) => {
                     const body = response.body;
-    
+
                     expect(body.status).toBe(false)
-    
+
                     expect(body.response).toBe(INVALID_TOKEN)
                 })
         })
-    
+
         it('question should not exists', async () => {
             const inexstingQuestionId = 500000000;
             await supertest(app)
@@ -279,9 +279,9 @@ describe('Follow Question Endpoint Test', () => {
                 .expect(httpStatus.BAD_REQUEST)
                 .then((response) => {
                     const body = response.body;
-    
+
                     expect(body.status).toBe(false);
-    
+
                     expect(body.response).toBe(QUESTION_NOT_IDENTIFIED)
                 })
         })
