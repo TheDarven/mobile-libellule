@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import LiTitle from '../../component/LiTitle/LiTitle';
 import Fonts from '../../styles/fonts';
 import PostHeader from '../../component/Post/PostHeader/PostHeader';
@@ -14,6 +14,11 @@ import DeletePost from '../../component/Post/DeletePost/DeletePost';
 import ActionPost from '../../component/Post/ActionPost/ActionPost';
 import FollowUp from '../../component/Post/FollowUp/FollowUp';
 import Reaction from '../../component/Post/Reaction/Reaction';
+import {
+    createFollow,
+    deleteFollow,
+    getFollowOfQuestion
+} from '../../api/follow-question-api';
 
 const QuestionLayout = ({
     questionId,
@@ -23,9 +28,23 @@ const QuestionLayout = ({
     content,
     creationDate
 }) => {
+    const [isFollowing, setIsFollowing] = useState(false);
+
     const { userId, isAuth } = useAuth().authContext;
 
     const navigation = useNavigation();
+
+    useEffect(() => {
+        getFollowOfQuestion(questionId)
+            .then(res => {
+                if (res.data.status) {
+                    setIsFollowing(res.data.data != null);
+                } else {
+                    setIsFollowing(false);
+                }
+            })
+            .catch(() => setIsFollowing(false));
+    }, [questionId]);
 
     function isAuthor() {
         return isAuth() && authorId === userId;
@@ -72,10 +91,25 @@ const QuestionLayout = ({
         );
     }
 
+    function onFollowClicked() {
+        if (isFollowing) {
+            deleteFollow(questionId).then(res => {
+                if (res.data.status) {
+                    setIsFollowing(false);
+                }
+            });
+        } else {
+            createFollow(questionId).then(res => {
+                if (res.data.status) {
+                    setIsFollowing(true);
+                }
+            });
+        }
+    }
+
     /**
      * TODO:
      * - Bouton réaction (avec nb)
-     * - Bouton Follow (avec isFollowing)
      */
 
     return (
@@ -92,7 +126,10 @@ const QuestionLayout = ({
                         }}
                         nbReactions={4}
                     />
-                    <FollowUp isFollowing={false} />
+                    <FollowUp
+                        isFollowing={isFollowing}
+                        followClicked={onFollowClicked}
+                    />
                     <DeletePost deletePost={onDeleteQuestionClicked} />
                 </ActionPost>
             )}
