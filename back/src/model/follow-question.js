@@ -10,6 +10,11 @@ const followQuestion = db.define('FollowQuestion', {
         autoIncrement: true,
         primaryKey: true,
         field: 'follow_question_id'
+    },
+    alerts: {
+        type: DataTypes.INTEGER,
+        field: 'alerts',
+        defaultValue: 0
     }
 });
 

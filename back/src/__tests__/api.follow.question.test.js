@@ -6,11 +6,12 @@ const {
     INVALID_TOKEN,
     QUESTION_NOT_IDENTIFIED,
     FOLLOW_DELETED_WITH_SUCCESS,
-    FOLLOW_NOT_IDENTIFIED
+    FOLLOW_NOT_IDENTIFIED,
+    FOLLOW_ALERT_RESET_WITH_SUCCESS
 } = require("../util/status-message");
-const { getQuestion, getUser, getFollowQuestion, clearFollowQuestions } = require('../util/tests/model-utils');
+const { getQuestion, getUser, getFollowQuestion, clearFollowQuestions, addAlert } = require('../util/tests/model-utils');
 
-jest.setTimeout(30000);
+jest.setTimeout(50000);
 
 const FOLLOW_QUESTION_ENDPOINT = '/api/follow-question/'
 
@@ -246,4 +247,71 @@ describe('Follow Question Endpoint Test', () => {
             });
         });
     });
+    describe('Follow Question Alert Test', () => {
+        let follow, anotherFollow, anotherQuestion, question;
+
+        it("fill follow question", async () => {
+            
+            await clearFollowQuestions();
+            follow = await getFollowQuestion(follower.id, questionID);
+            question = await getQuestion(QUESTION_TITLE, QUESTION_TITLE, { userId: publisher.id });
+            // Another question/ follow add for tests purpose
+            anotherQuestion = await getQuestion('Another Sample Title', QUESTION_CONTENT, { userId: publisher.id });
+
+            anotherFollow = await getFollowQuestion(follower.id, anotherQuestion.questionId);
+
+            // Add alerts to the question
+            await addAlert(question.questionId);
+            await addAlert(anotherQuestion.questionId);
+
+            expect(follow).toBeDefined();
+            expect(anotherFollow).toBeDefined();
+        })
+        it('should get all follow question from user with alerts', async () => {
+            const expectedResult = [
+                {
+                    questionId: question.questionId,
+                    authorId: question.authorId,
+                    title: question.title,
+                    content: question.content,
+                    alerts: 1
+                },
+                {
+                    questionId: anotherQuestion.questionId,
+                    title: anotherQuestion.title,
+                    authorId: question.authorId,
+                    content: anotherQuestion.content,
+                    alerts: 1
+                }
+            ]
+            await supertest(app)
+            .get(`${FOLLOW_QUESTION_ENDPOINT}/alerts/`)
+            .set('Authorization', follower.token)
+            .send()
+            .expect(httpStatus.OK)
+            .then((response) => {
+                const body = response.body;
+
+                expect(body.status).toBe(true);
+
+               expect(body.response).toMatchObject(expectedResult)
+            });
+        });
+        it('should reset alerts from a dpecific question followed', async () => {
+            await supertest(app)
+            .post(`${FOLLOW_QUESTION_ENDPOINT}/alerts/${question.questionId}/`)
+            .set('Authorization', follower.token)
+            .send()
+            .expect(httpStatus.OK)
+            .then((response) => {
+                const body = response.body;
+
+                expect(body.status).toBe(true);
+
+               expect(body.response).toBe(FOLLOW_ALERT_RESET_WITH_SUCCESS)
+            });
+        });
+        
+    })
+
 });

@@ -4,10 +4,13 @@ const {
     FOLLOW_CREATION_FAILED,
     FOLLOW_NOT_IDENTIFIED, 
     FOLLOW_DELETED_WITH_SUCCESS,
-    FOLLOW_DELETION_FAILED
+    FOLLOW_DELETION_FAILED,
+    FOLLOW_ALERT_FAILED,
+    FOLLOW_ALERT_RESET_WITH_SUCCESS
 } = require("../util/status-message");
 const { CodeError } = require("../util/error-handler");
 const httpStatus = require("http-status");
+const { Op } = require('sequelize');
 
 async function createFollowQuestion({ followerId, questionId })
 {
@@ -71,4 +74,44 @@ async function getFollowQuestionByUserId(userId) {
     }
 }
 
-module.exports = { createFollowQuestion, deleteFollowQuestion, getFollowQuestionById, getFollowQuestionByUserId }
+async function getUpdatedFollowQuestionByUserId(userId) {
+    try {
+        return await followQuestionModel.findAll({
+            where: {
+                [Op.and]: [
+                    { followerId: userId },
+                    { alerts: { [Op.gt]: 0 } }
+                ]
+            }
+        });
+    } catch (err) {
+        return null
+    }
+}
+
+async function alertQuestionFollowers({ questionId }) {
+    try {
+        await followQuestionModel.increment({ alerts: 1}, { where : { questionId } });
+    } catch (err) {
+        throw new CodeError(FOLLOW_ALERT_FAILED, httpStatus.INTERNAL_SERVER_ERROR)
+    }
+}
+
+async function resetQuestionAlerts({ followerId, questionId }) {
+    try {
+        await followQuestionModel.update({ alerts: 0}, { where : { questionId, followerId } });
+        return FOLLOW_ALERT_RESET_WITH_SUCCESS
+    } catch (err) {
+        throw new CodeError(FOLLOW_ALERT_FAILED, httpStatus.INTERNAL_SERVER_ERROR)
+    }
+}
+
+module.exports = { 
+    createFollowQuestion,
+    deleteFollowQuestion,
+    getFollowQuestionById,
+    getFollowQuestionByUserId,
+    alertQuestionFollowers,
+    getUpdatedFollowQuestionByUserId,
+    resetQuestionAlerts
+}

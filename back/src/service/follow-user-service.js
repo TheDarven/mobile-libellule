@@ -71,4 +71,12 @@ async function getFollowUserByUserId(userId) {
     }
 }
 
-module.exports = { createFollowUser, deleteFollowUser, getFollowUserById, getFollowUserByUserId }
+async function alertUserFollowers({ targetId }) {
+    try {
+        await followUserModel.increment({ alerts: 1}, { where : { targetId } });
+    } catch (err) {
+        throw new CodeError(FOLLOW_DELETION_FAILED, httpStatus.INTERNAL_SERVER_ERROR)
+    }
+}
+
+module.exports = { createFollowUser, deleteFollowUser, getFollowUserById, getFollowUserByUserId, alertUserFollowers }

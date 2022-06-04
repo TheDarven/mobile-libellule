@@ -1,7 +1,14 @@
 const express = require('express')
 const { INVALID_BODY_DATA, QUESTION_NOT_IDENTIFIED } = require("../util/status-message");
 const { CodeError } = require("../util/error-handler");
-const { createFollowQuestion, deleteFollowQuestion, getFollowQuestionByUserId, getFollowQuestionById } = require('../service/follow-question-service');
+const { 
+    createFollowQuestion,
+    deleteFollowQuestion,
+    getFollowQuestionByUserId,
+    getFollowQuestionById,
+    getUpdatedFollowQuestionByUserId,
+    resetQuestionAlerts
+} = require('../service/follow-question-service');
 const { getQuestionById } =  require('../service/question-service');
 const router = express.Router()
 
@@ -122,6 +129,87 @@ router.get('/', (req, res, next) => {
         res.json({ status: true, response })
     }).catch(error => next(error));
 });
+router.get('/alerts/', (req, res, next) => {
+    // #swagger.summary = "Récupère toutes les question mise à jours suivies par l'utilisateur connecté"
+    /* #swagger.description = "Recupère toutes les questions suivies par l'utilisateur connecté,
+        qui on été mises à jour ou ayant reçu des commentaires." */
+    // #swagger.parameters['authorization'] = { $ref: '#/components/parameters/authorization' }
+    /* #swagger.responses[200] = {
+        schema: {
+            "status": true,
+            "data": [
+                {
+                    "id": 1,
+                    "title": "What is the average length ?",
+                    "content": "I wanna know what is the average length of things.",
+                    "comm_amount": 0,
+                    "creation_date": "2022-05-24T23:34:13.000Z",
+                    "edition_date": "2022-05-24T23:34:13.000Z",
+                    "alerts": 12,
+                    "User": {
+                        "display_name": "Blue Ladybug"
+                    },
+                    "Reactions": [
+                        {
+                            "type": 1,
+                            "amount": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        headers: { $ref: '#/components/headers/token' }
+    } */
+    /* #swagger.responses[400] = {
+        schema: { $ref: '#/components/responses/400' }
+    } */
+    /* #swagger.responses[404] = {
+        schema: { $ref: '#/components/responses/404' }
+    } */
+
+    // Check inputs
+    const user = req.user;
+    getUpdatedFollowQuestionByUserId(user.userId)
+    .then((questionFollows) => {
+        // Promises management
+        const promises = questionFollows.map((follow) => {
+            return getQuestionById(follow.questionId);
+        })
+        Promise.all(promises).then((questions) => {
+            const response = questions.map((question) => {
+                const follow = questionFollows.find((follow) => follow.questionId = question.questionId)
+                return {
+                    ...(question.dataValues),
+                    alerts: follow.alerts
+                }
+            })
+            res.json({ status: true, response });
+        }).catch(error => next(error));
+    }).catch(error => next(error));
+});
+
+router.post('/alerts/:question/', (req, res, next) => {
+    // #swagger.summary = "Remet à zéro le compteur d'alertes d'une question suivie"
+    /* #swagger.description = "Remet à zéro le compteur d'alertes d'une question suivie par un utilisateur connecté"
+    // #swagger.parameters['authorization'] = { $ref: '#/components/parameters/authorization' }
+    /* #swagger.responses[200] = {
+        schema: { $ref: '#/components/responses/emptyResponse' },
+        headers: { $ref: '#/components/headers/token' }
+    } */
+    /* #swagger.responses[400] = {
+        schema: { $ref: '#/components/responses/400' }
+    } */
+    /* #swagger.responses[404] = {
+        schema: { $ref: '#/components/responses/404' }
+    } */
+
+    // Check inputs
+    const user = req.user;
+    resetQuestionAlerts({ followerId: user.userId, questionId: req.params.question }).then((response) => {
+        res.json({ status: true, response });
+    }).catch(error => next(error));
+});
+
 router.get('/:question/', (req, res, next) => {
     // #swagger.summary = "Recupère un follow vers une question précise"
     // #swagger.description = "Recupère un follow ver une question précise de l'utilisateur actuellement connecté."

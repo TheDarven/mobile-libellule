@@ -56,4 +56,6 @@ module.exports = {
     FOLLOW_DELETED_WITH_SUCCESS: 'Vous avez stopper le suivi avec succès',
     FOLLOW_DELETION_FAILED: 'Une erreur inconnue s\'est produite lors de la suppresion. Merci de réessayer plus tard.',
     FOLLOW_NOT_IDENTIFIED: 'Aucune suivi ne correspond à cet ID',
+    FOLLOW_ALERT_FAILED: "Une erreur s'est produite lors de l'envoie d'une alerte",
+    FOLLOW_ALERT_RESET_WITH_SUCCESS: "La remise à zéro des alertes a été effectuée avec succés"
 }

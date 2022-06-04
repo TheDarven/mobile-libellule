@@ -10,6 +10,7 @@ const { CodeError } = require("../util/error-handler");
 const { getQuestionById } = require('../service/question-service')
 const { createComment, updateComment, deleteComment, getCommentById } = require('../service/comment-service')
 const { getUserById } = require('../service/user-service')
+const { alertQuestionFollowers } = require('../service/follow-question-service');
 const userModel = require('../model/user.js')
 const commentModel = require('../model/comment.js')
 const reactionModel = require('../model/reaction.js');
@@ -235,6 +236,7 @@ router.post('/questions/:question/', (req, res, next) => {
             getCommentById(data, commentInfo())
             .then((comment) => {
                 res.json({ status: true, response, data: comment })
+                alertQuestionFollowers({ questionId: req.params.question }).catch((error => next(error)));
             })
             .catch(error => next(error));
 

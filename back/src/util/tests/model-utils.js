@@ -1,7 +1,7 @@
 const { loginUser, registerUser, getUserByName } = require("../../service/user-service");
 const { createQuestion, getQuestionByTitle } = require("../../service/question-service");
 const { createComment, getFirstCommentFromQuestionId } = require('../../service/comment-service')
-const { createFollowQuestion, getFollowQuestionById } = require("../../service/follow-question-service");
+const { createFollowQuestion, getFollowQuestionById, alertQuestionFollowers } = require("../../service/follow-question-service");
 const { createFollowUser, getFollowUserById } = require("../../service/follow-user-service");
 const { CodeError } = require("../error-handler");
 const { QUESTION_NOT_IDENTIFIED, COMMENT_NOT_IDENTIFIED, FOLLOW_NOT_IDENTIFIED } = require("../status-message");
@@ -134,6 +134,10 @@ async function getFollowUser(followerId, targetId) {
     }
 }
 
+async function addAlert(questionId) {
+    return await alertQuestionFollowers({ questionId });
+}
+
 async function clearFollowQuestions() {
     await followQuestionModel.destroy({
         where: {},
@@ -148,4 +152,16 @@ async function clearFollowUsers() {
     });
 }
 
-module.exports = { getUser, getQuestion, getFollowQuestion, getFirstComment, getRandomReactionType, getFirstQuestionReaction, getFirstCommentReaction, clearFollowQuestions, clearFollowUsers, getFollowUser }
+module.exports = { 
+    getUser,
+    getQuestion,
+    getFollowQuestion,
+    getFirstComment,
+    getRandomReactionType,
+    getFirstQuestionReaction,
+    getFirstCommentReaction,
+    clearFollowQuestions,
+    clearFollowUsers,
+    getFollowUser,
+    addAlert
+}
