@@ -51,7 +51,6 @@ router.post('/', (req, res, next) => {
             targetId: body.userId,
             userId: user.userId
         }).then(({response}) => {
-            console.log(response);
             res.json({ status: true, response })
         }).catch(error => next(error));
     }).catch(error => next(error));
@@ -83,7 +82,6 @@ router.delete('/:user/', (req, res, next) => {
         targetId: req.params.user,
         userId: user.userId
     }).then(({response}) => {
-        console.log(response);
         res.json({ status: true, response })
     }).catch(error => next(error));
 });

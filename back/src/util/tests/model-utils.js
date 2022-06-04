@@ -127,12 +127,10 @@ async function getFollowUser(followerId, targetId) {
         return follow;
     } catch(err) {
         await createFollowUser({ userId: followerId, targetId });
-        const res = await getFollowUserById({
+        return await getFollowUserById({
             userId: followerId,
             targetId
         });
-        console.log(res);
-        return res;
     }
 }
 
