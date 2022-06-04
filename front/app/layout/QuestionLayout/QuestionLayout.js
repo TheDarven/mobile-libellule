@@ -11,6 +11,9 @@ import { useAuth } from '../../context/auth-context';
 import { deleteQuestion as deleteQuestionAPI } from '../../api/questions-api';
 import { useNavigation } from '@react-navigation/native';
 import DeletePost from '../../component/Post/DeletePost/DeletePost';
+import ActionPost from '../../component/Post/ActionPost/ActionPost';
+import FollowUp from '../../component/Post/FollowUp/FollowUp';
+import Reaction from '../../component/Post/Reaction/Reaction';
 
 const QuestionLayout = ({
     questionId,
@@ -69,12 +72,30 @@ const QuestionLayout = ({
         );
     }
 
+    /**
+     * TODO:
+     * - Bouton réaction (avec nb)
+     * - Bouton Follow (avec isFollowing)
+     */
+
     return (
         <>
             <LiTitle fontSize={Fonts.size.xl_2}>{title}</LiTitle>
             <PostHeader author={authorName} date={creationDate} />
             <LiText style={contentTextStyle}>{content}</LiText>
-            {isAuthor() && <DeletePost deletePost={onDeleteQuestionClicked} />}
+            {isAuthor() && (
+                <ActionPost>
+                    <Reaction
+                        style={{
+                            marginRight: Spacings._8,
+                            paddingLeft: Spacings._0
+                        }}
+                        nbReactions={4}
+                    />
+                    <FollowUp isFollowing={false} />
+                    <DeletePost deletePost={onDeleteQuestionClicked} />
+                </ActionPost>
+            )}
             <LiSeparator style={separatorStyle} />
             <LiTitle fontSize={Fonts.size.xl} style={titleCommentsPartStyle}>
                 Commentaires

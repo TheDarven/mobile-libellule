@@ -7,6 +7,8 @@ import PostHeader from '../../component/Post/PostHeader/PostHeader';
 import { useAuth } from '../../context/auth-context';
 import DeletePost from '../../component/Post/DeletePost/DeletePost';
 import { deleteComment as deleteCommentAPI } from '../../api/comments-api';
+import ActionPost from '../../component/Post/ActionPost/ActionPost';
+import Reaction from '../../component/Post/Reaction/Reaction';
 
 const CommentLayout = ({
     commentId,
@@ -65,7 +67,16 @@ const CommentLayout = ({
         <View style={commentStyle}>
             <PostHeader author={authorName} date={date} />
             <LiText style={commentContentStyle}>{content}</LiText>
-            {isAuthor() && <DeletePost deletePost={onDeleteCommentClicked} />}
+            {isAuthor() && (
+                <ActionPost>
+                    <Reaction
+                        style={{
+                            paddingLeft: Spacings._0
+                        }}
+                    />
+                    <DeletePost deletePost={onDeleteCommentClicked} />
+                </ActionPost>
+            )}
         </View>
     );
 };
