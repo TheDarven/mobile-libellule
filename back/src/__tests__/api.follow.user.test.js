@@ -1,7 +1,7 @@
 const app = require('../app')
 const supertest = require('supertest')
 const httpStatus = require("http-status")
-const { 
+const {
     FOLLOW_CREATED_WITH_SUCCESS,
     INVALID_TOKEN,
     USER_NOT_IDENTIFIED,
@@ -67,13 +67,13 @@ describe('Follow User Endpoint Test', () => {
                 .expect(httpStatus.UNAUTHORIZED)
                 .then((response) => {
                     const body = response.body;
-    
+
                     expect(body.status).toBe(false)
-    
+
                     expect(body.response).toBe(INVALID_TOKEN)
                 })
         })
-    
+
         it('user should not exists', async () => {
             const inexstingUserId = 500000000;
             await supertest(app)
@@ -85,9 +85,9 @@ describe('Follow User Endpoint Test', () => {
                 .expect(httpStatus.BAD_REQUEST)
                 .then((response) => {
                     const body = response.body;
-    
+
                     expect(body.status).toBe(false);
-    
+
                     expect(body.response).toBe(USER_NOT_IDENTIFIED)
                 })
         })
@@ -121,13 +121,13 @@ describe('Follow User Endpoint Test', () => {
                 .expect(httpStatus.UNAUTHORIZED)
                 .then((response) => {
                     const body = response.body;
-    
+
                     expect(body.status).toBe(false)
-    
+
                     expect(body.response).toBe(INVALID_TOKEN)
                 })
         })
-    
+
         it('user should not exists', async () => {
             const inexstingUserId = 500000000;
             await supertest(app)
@@ -137,9 +137,9 @@ describe('Follow User Endpoint Test', () => {
                 .expect(httpStatus.BAD_REQUEST)
                 .then((response) => {
                     const body = response.body;
-    
+
                     expect(body.status).toBe(false);
-    
+
                     expect(body.response).toBe(FOLLOW_NOT_IDENTIFIED)
                 })
         })
@@ -148,10 +148,10 @@ describe('Follow User Endpoint Test', () => {
         let followId, anotherFollowId, anotherUserId;
 
         it("fill follow user", async () => {
-            
+
             await clearFollowUsers();
             const follow = await getFollowUser(follower.id, target.id);
-            
+
             // Another user/ follow add for tests purpose
             const anotherUser = await getUser('AnotherUser', TARGET_PASSWORD);
 
@@ -189,7 +189,7 @@ describe('Follow User Endpoint Test', () => {
 
                 expect(body.status).toBe(true);
 
-                expect(body.response).toMatchObject(expectedResult)
+                expect(body.data).toMatchObject(expectedResult)
             });
         });
         it('user should not exists', async () => {
@@ -200,9 +200,9 @@ describe('Follow User Endpoint Test', () => {
                 .expect(httpStatus.UNAUTHORIZED)
                 .then((response) => {
                     const body = response.body;
-    
+
                     expect(body.status).toBe(false)
-    
+
                     expect(body.response).toBe(INVALID_TOKEN)
                 })
         })
@@ -222,7 +222,7 @@ describe('Follow User Endpoint Test', () => {
 
                 expect(body.status).toBe(true);
 
-                expect(body.response).toMatchObject(expectedResult)
+                expect(body.data).toMatchObject(expectedResult)
             });
         });
 
@@ -237,7 +237,7 @@ describe('Follow User Endpoint Test', () => {
 
                 expect(body.status).toBe(true);
 
-                expect(body.response).toBe(null)
+                expect(body.data).toBe(null)
             });
         });
     });
@@ -283,7 +283,7 @@ describe('Follow User Endpoint Test', () => {
 
                 expect(body.status).toBe(true);
 
-                expect(body.response).toMatchObject(expectedResult);
+                expect(body.data).toMatchObject(expectedResult);
             });
         });
         it('should reset alerts from a specific user followed', async () => {
@@ -300,6 +300,6 @@ describe('Follow User Endpoint Test', () => {
                expect(body.response).toBe(FOLLOW_ALERT_RESET_WITH_SUCCESS)
             });
         });
-        
+
     })
 });

@@ -1,7 +1,7 @@
 const express = require('express')
 const { INVALID_BODY_DATA, QUESTION_NOT_IDENTIFIED } = require("../util/status-message");
 const { CodeError } = require("../util/error-handler");
-const { 
+const {
     createFollowQuestion,
     deleteFollowQuestion,
     getFollowQuestionByUserId,
@@ -63,7 +63,7 @@ router.post('/', (req, res, next) => {
     }).catch(error => next(error));
 
 
-    
+
 });
 
 router.delete('/:question/', (req, res, next) => {
@@ -125,8 +125,8 @@ router.get('/', (req, res, next) => {
     // Check inputs
     const user = req.user
     getFollowQuestionByUserId(user.userId)
-    .then((response) => {
-        res.json({ status: true, response })
+    .then((data) => {
+        res.json({ status: true, data })
     }).catch(error => next(error));
 });
 router.get('/alerts/', (req, res, next) => {
@@ -176,14 +176,14 @@ router.get('/alerts/', (req, res, next) => {
             return getQuestionById(follow.questionId);
         })
         Promise.all(promises).then((questions) => {
-            const response = questions.map((question) => {
+            const data = questions.map((question) => {
                 const follow = questionFollows.find((follow) => follow.questionId = question.questionId)
                 return {
                     ...(question.dataValues),
                     alerts: follow.alerts
                 }
             })
-            res.json({ status: true, response });
+            res.json({ status: true, data });
         }).catch(error => next(error));
     }).catch(error => next(error));
 });
@@ -239,8 +239,8 @@ router.get('/:question/', (req, res, next) => {
         followerId: user.userId,
         questionId: req.params.question
     })
-    .then((response) => {
-        res.json({ status: true, response })
+    .then((data) => {
+        res.json({ status: true, data })
     }).catch(error => next(error));
 });
 module.exports = router;

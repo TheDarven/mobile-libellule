@@ -58,7 +58,7 @@ router.post('/', (req, res, next) => {
     }).catch(error => next(error));
 
 
-    
+
 });
 
 router.delete('/:user/', (req, res, next) => {
@@ -120,8 +120,8 @@ router.get('/', (req, res, next) => {
     // Check inputs
     const user = req.user
     getFollowUserByUserId(user.userId)
-    .then((response) => {
-        res.json({ status: true, response })
+    .then((data) => {
+        res.json({ status: true, data })
     }).catch(error => next(error));
 });
 
@@ -189,8 +189,8 @@ router.get('/alerts/', (req, res, next) => {
                 targetId: follow.targetId,
             }
         });
-        Promise.all(promise).then((response) => {
-            res.json({ status: true, response })
+        Promise.all(promise).then((data) => {
+            res.json({ status: true, data })
         })
     }).catch(error => next(error));
 });
@@ -246,8 +246,8 @@ router.get('/:user/', (req, res, next) => {
         userId: user.userId,
         targetId: req.params.user
     })
-    .then((response) => {
-        res.json({ status: true, response })
+    .then((data) => {
+        res.json({ status: true, data })
     }).catch(error => next(error));
 });
 module.exports = router;

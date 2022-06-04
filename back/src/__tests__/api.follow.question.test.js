@@ -1,7 +1,7 @@
 const app = require('../app')
 const supertest = require('supertest')
 const httpStatus = require("http-status")
-const { 
+const {
     FOLLOW_CREATED_WITH_SUCCESS,
     INVALID_TOKEN,
     QUESTION_NOT_IDENTIFIED,
@@ -73,13 +73,13 @@ describe('Follow Question Endpoint Test', () => {
                 .expect(httpStatus.UNAUTHORIZED)
                 .then((response) => {
                     const body = response.body;
-    
+
                     expect(body.status).toBe(false)
-    
+
                     expect(body.response).toBe(INVALID_TOKEN)
                 })
         })
-    
+
         it('question should not exists', async () => {
             const inexstingQuestionId = 500000000;
             await supertest(app)
@@ -91,9 +91,9 @@ describe('Follow Question Endpoint Test', () => {
                 .expect(httpStatus.BAD_REQUEST)
                 .then((response) => {
                     const body = response.body;
-    
+
                     expect(body.status).toBe(false);
-    
+
                     expect(body.response).toBe(QUESTION_NOT_IDENTIFIED)
                 })
         })
@@ -127,13 +127,13 @@ describe('Follow Question Endpoint Test', () => {
                 .expect(httpStatus.UNAUTHORIZED)
                 .then((response) => {
                     const body = response.body;
-    
+
                     expect(body.status).toBe(false)
-    
+
                     expect(body.response).toBe(INVALID_TOKEN)
                 })
         })
-    
+
         it('question should not exists', async () => {
             const inexstingQuestionId = 500000000;
             await supertest(app)
@@ -143,9 +143,9 @@ describe('Follow Question Endpoint Test', () => {
                 .expect(httpStatus.BAD_REQUEST)
                 .then((response) => {
                     const body = response.body;
-    
+
                     expect(body.status).toBe(false);
-    
+
                     expect(body.response).toBe(FOLLOW_NOT_IDENTIFIED)
                 })
         })
@@ -154,10 +154,10 @@ describe('Follow Question Endpoint Test', () => {
         let followId, anotherFollowId, anotherQuestionId;
 
         it("fill follow question", async () => {
-            
+
             await clearFollowQuestions();
             const follow = await getFollowQuestion(follower.id, questionID);
-            
+
             // Another question/ follow add for tests purpose
             const anotherQuestion = await getQuestion('Another Sample Title', QUESTION_CONTENT, { userId: publisher.id });
 
@@ -195,7 +195,7 @@ describe('Follow Question Endpoint Test', () => {
 
                 expect(body.status).toBe(true);
 
-                expect(body.response).toMatchObject(expectedResult)
+                expect(body.data).toMatchObject(expectedResult)
             });
         });
         it('user should not exists', async () => {
@@ -206,9 +206,9 @@ describe('Follow Question Endpoint Test', () => {
                 .expect(httpStatus.UNAUTHORIZED)
                 .then((response) => {
                     const body = response.body;
-    
+
                     expect(body.status).toBe(false)
-    
+
                     expect(body.response).toBe(INVALID_TOKEN)
                 })
         })
@@ -228,7 +228,7 @@ describe('Follow Question Endpoint Test', () => {
 
                 expect(body.status).toBe(true);
 
-                expect(body.response).toMatchObject(expectedResult)
+                expect(body.data).toMatchObject(expectedResult)
             });
         });
 
@@ -243,7 +243,7 @@ describe('Follow Question Endpoint Test', () => {
 
                 expect(body.status).toBe(true);
 
-                expect(body.response).toBe(null)
+                expect(body.data).toBe(null)
             });
         });
     });
@@ -251,7 +251,7 @@ describe('Follow Question Endpoint Test', () => {
         let follow, anotherFollow, anotherQuestion, question;
 
         it("fill follow question", async () => {
-            
+
             await clearFollowQuestions();
             follow = await getFollowQuestion(follower.id, questionID);
             question = await getQuestion(QUESTION_TITLE, QUESTION_TITLE, { userId: publisher.id });
@@ -294,7 +294,7 @@ describe('Follow Question Endpoint Test', () => {
 
                 expect(body.status).toBe(true);
 
-               expect(body.response).toMatchObject(expectedResult)
+               expect(body.data).toMatchObject(expectedResult)
             });
         });
         it('should reset alerts from a dpecific question followed', async () => {
@@ -311,7 +311,7 @@ describe('Follow Question Endpoint Test', () => {
                expect(body.response).toBe(FOLLOW_ALERT_RESET_WITH_SUCCESS)
             });
         });
-        
+
     })
 
 });
