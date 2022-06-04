@@ -1,8 +1,8 @@
 const { loginUser, registerUser, getUserByName } = require("../../service/user-service");
 const { createQuestion, getQuestionByTitle } = require("../../service/question-service");
-const { createComment, getFirstCommentFromQuestionId } = require('../../service/comment-service')
+const { createComment, getCommentById, getFirstCommentFromQuestionId } = require('../../service/comment-service')
 const { createFollowQuestion, getFollowQuestionById, alertQuestionFollowers } = require("../../service/follow-question-service");
-const { createFollowUser, getFollowUserById } = require("../../service/follow-user-service");
+const { createFollowUser, getFollowUserById, alertUserFollowersQuestion, alertUserFollowersComment } = require("../../service/follow-user-service");
 const { CodeError } = require("../error-handler");
 const { QUESTION_NOT_IDENTIFIED, COMMENT_NOT_IDENTIFIED, FOLLOW_NOT_IDENTIFIED } = require("../status-message");
 const reactionTypeModel = require("../../model/reaction-type");
@@ -152,6 +152,19 @@ async function clearFollowUsers() {
     });
 }
 
+async function addComment(content, questionId, user) {
+    const res = await createComment(content, questionId, user);
+    return await getCommentById(res.data);
+}
+
+async function addUserQuestionAlert(user) {
+    return await alertUserFollowersQuestion({ targetId: user });
+}
+
+async function addUserCommentAlert(user) {
+    return await alertUserFollowersComment({ targetId: user });
+}
+
 module.exports = { 
     getUser,
     getQuestion,
@@ -163,5 +176,8 @@ module.exports = {
     clearFollowQuestions,
     clearFollowUsers,
     getFollowUser,
-    addAlert
+    addAlert,
+    addComment,
+    addUserQuestionAlert,
+    addUserCommentAlert
 }

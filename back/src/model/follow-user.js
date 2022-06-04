@@ -9,6 +9,16 @@ const followUser = db.define('FollowUser', {
         autoIncrement: true,
         primaryKey: true,
         field: 'follow_user_id'
+    },
+    commentAlerts: {
+        type: DataTypes.INTEGER,
+        field: 'comment_alerts',
+        defaultValue: 0
+    },
+    questionAlerts: {
+        type: DataTypes.INTEGER,
+        field: 'question_alerts',
+        defaultValue: 0
     }
 });
 

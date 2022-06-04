@@ -6,9 +6,10 @@ const {
     INVALID_TOKEN,
     USER_NOT_IDENTIFIED,
     FOLLOW_DELETED_WITH_SUCCESS,
-    FOLLOW_NOT_IDENTIFIED
+    FOLLOW_NOT_IDENTIFIED,
+    FOLLOW_ALERT_RESET_WITH_SUCCESS
 } = require("../util/status-message");
-const { getUser, getFollowUser, clearFollowUsers } = require('../util/tests/model-utils');
+const { getUser, getFollowUser, clearFollowUsers, getQuestion, addComment, addUserCommentAlert, addUserQuestionAlert } = require('../util/tests/model-utils');
 
 jest.setTimeout(30000);
 
@@ -240,4 +241,65 @@ describe('Follow User Endpoint Test', () => {
             });
         });
     });
+    describe('Follow Question Alert Test', () => {
+        let followerQuestion, targetQuestion, targetComment;
+        // target, follower
+        it("fill follow user", async () => {
+            await clearFollowUsers();
+            // Creation du follow
+            await getFollowUser(follower.id, target.id);
+            // Une question du follower avec un commentaire du target
+            followerQuestion = await getQuestion('follower question title', 'question content', { userId: target.id });
+            targetComment = await addComment('target comment', followerQuestion.questionId, { userId: target.id });
+            await addUserCommentAlert(target.id);
+            // Une question du target
+            targetQuestion = await getQuestion('target question title', 'question content', { userId: target.id });
+            await addUserQuestionAlert(target.id);
+
+        })
+        it('should get all recent question and comment from a user followed with alerts', async () => {
+            const expectedResult = [{
+                questions: [{
+                    authorId: targetQuestion.authorId,
+                    content: targetQuestion.content,
+                    questionId: targetQuestion.questionId,
+                    title: targetQuestion.title,
+                }],
+                comments: [{
+                    authorId: targetComment.authorId,
+                    commentId: targetComment.commentId,
+                    content: targetComment.content,
+                    questionId: targetComment.questionId
+                }]
+            }];
+
+            await supertest(app)
+            .get(`${FOLLOW_USER_ENDPOINT}/alerts/`)
+            .set('Authorization', follower.token)
+            .send()
+            .expect(httpStatus.OK)
+            .then((response) => {
+                const body = response.body;
+
+                expect(body.status).toBe(true);
+
+                expect(body.response).toMatchObject(expectedResult);
+            });
+        });
+        it('should reset alerts from a specific user followed', async () => {
+            await supertest(app)
+            .post(`${FOLLOW_USER_ENDPOINT}/alerts/${target.id}/`)
+            .set('Authorization', follower.token)
+            .send()
+            .expect(httpStatus.OK)
+            .then((response) => {
+                const body = response.body;
+
+                expect(body.status).toBe(true);
+
+               expect(body.response).toBe(FOLLOW_ALERT_RESET_WITH_SUCCESS)
+            });
+        });
+        
+    })
 });

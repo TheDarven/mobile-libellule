@@ -88,4 +88,19 @@ async function getQuestionByTitle(title) {
     }
 }
 
-module.exports = { createQuestion, updateQuestion, deleteQuestion, getQuestionById, getQuestionByTitle }
+async function getLastQuestionsFromUser({ authorId, nbQuestion }) {
+    try {
+        console.log(await questionModel.findAll())
+        return await questionModel.findAll({
+            where: {
+                authorId 
+            },
+            order: [['edition_date', 'DESC']],
+            limit: nbQuestion
+        })
+    } catch (err) {
+        return null;
+    }
+}
+
+module.exports = { createQuestion, updateQuestion, deleteQuestion, getQuestionById, getQuestionByTitle, getLastQuestionsFromUser }

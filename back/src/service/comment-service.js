@@ -89,4 +89,19 @@ async function getFirstCommentFromQuestionId(questionId) {
     }
 }
 
-module.exports = { createComment, updateComment, deleteComment, getCommentById, getFirstCommentFromQuestionId }
+async function getLastCommentsFromUser({ authorId, nbComment }) {
+    try {
+        return await commentModel.findAll({
+            where: {
+                authorId 
+            },
+            order: [['edition_date', 'DESC']],
+            limit: nbComment
+        })
+    } catch (err) {
+        return null;
+    }
+}
+
+
+module.exports = { createComment, updateComment, deleteComment, getCommentById, getFirstCommentFromQuestionId, getLastCommentsFromUser }

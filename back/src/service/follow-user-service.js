@@ -4,7 +4,9 @@ const {
     FOLLOW_CREATION_FAILED,
     FOLLOW_NOT_IDENTIFIED, 
     FOLLOW_DELETED_WITH_SUCCESS,
-    FOLLOW_DELETION_FAILED
+    FOLLOW_DELETION_FAILED,
+    FOLLOW_ALERT_RESET_WITH_SUCCESS,
+    FOLLOW_ALERT_FAILED
 } = require("../util/status-message");
 const { CodeError } = require("../util/error-handler");
 const httpStatus = require("http-status");
@@ -71,12 +73,36 @@ async function getFollowUserByUserId(userId) {
     }
 }
 
-async function alertUserFollowers({ targetId }) {
+async function alertUserFollowersQuestion({ targetId }) {
     try {
-        await followUserModel.increment({ alerts: 1}, { where : { targetId } });
+        await followUserModel.increment({ questionAlerts: 1}, { where : { targetId } });
+    } catch (err) {
+        throw new CodeError(FOLLOW_DELETION_FAILED, httpStatus.INTERNAL_SERVER_ERROR)
+    }
+}
+async function alertUserFollowersComment({ targetId }) {
+    try {
+        await followUserModel.increment({ commentAlerts: 1}, { where : { targetId } });
     } catch (err) {
         throw new CodeError(FOLLOW_DELETION_FAILED, httpStatus.INTERNAL_SERVER_ERROR)
     }
 }
 
-module.exports = { createFollowUser, deleteFollowUser, getFollowUserById, getFollowUserByUserId, alertUserFollowers }
+async function resetUserAlerts({ userId, targetId }) {
+    try {
+        await followUserModel.update({ alerts: 0}, { where : { userId, targetId } });
+        return FOLLOW_ALERT_RESET_WITH_SUCCESS
+    } catch (err) {
+        throw new CodeError(FOLLOW_ALERT_FAILED, httpStatus.INTERNAL_SERVER_ERROR)
+    }
+}
+
+module.exports = { 
+    createFollowUser, 
+    deleteFollowUser,
+    getFollowUserById,
+    getFollowUserByUserId,
+    alertUserFollowersQuestion,
+    alertUserFollowersComment,
+    resetUserAlerts
+}
