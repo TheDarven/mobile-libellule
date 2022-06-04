@@ -220,7 +220,7 @@ router.post('/', (req, res, next) => {
     createQuestion(content, title, user)
     .then(({response, data}) => {
         res.json({ status: true, response, data })
-        alertUserFollowersComment({ targetId: user.id });
+        alertUserFollowersComment({ targetId: user.userId });
     })
     .catch(error => next(error));
 });

@@ -75,16 +75,20 @@ async function getFollowUserByUserId(userId) {
 
 async function alertUserFollowersQuestion({ targetId }) {
     try {
+        const data = followUserModel.findOne({ where : { targetId } });
+        if (data === null) return null;
         await followUserModel.increment({ questionAlerts: 1}, { where : { targetId } });
     } catch (err) {
-        throw new CodeError(FOLLOW_DELETION_FAILED, httpStatus.INTERNAL_SERVER_ERROR)
+        throw new CodeError(FOLLOW_ALERT_FAILED, httpStatus.INTERNAL_SERVER_ERROR)
     }
 }
 async function alertUserFollowersComment({ targetId }) {
     try {
+        const data = followUserModel.findOne({ where : { targetId } });
+        if (data === null) return null;
         await followUserModel.increment({ commentAlerts: 1}, { where : { targetId } });
     } catch (err) {
-        throw new CodeError(FOLLOW_DELETION_FAILED, httpStatus.INTERNAL_SERVER_ERROR)
+        throw new CodeError(FOLLOW_ALERT_FAILED, httpStatus.INTERNAL_SERVER_ERROR)
     }
 }
 

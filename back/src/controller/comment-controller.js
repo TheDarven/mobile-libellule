@@ -238,10 +238,9 @@ router.post('/questions/:question/', (req, res, next) => {
             .then((comment) => {
                 res.json({ status: true, response, data: comment })
                 alertQuestionFollowers({ questionId: req.params.question }).catch((error => next(error)));
-                alertUserFollowersComment({ targetId: user.id });
+                alertUserFollowersComment({ targetId: user.userId });
             })
             .catch(error => next(error));
-
         })
         .catch(error => next(error));
     })

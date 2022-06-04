@@ -90,7 +90,6 @@ async function getQuestionByTitle(title) {
 
 async function getLastQuestionsFromUser({ authorId, nbQuestion }) {
     try {
-        console.log(await questionModel.findAll())
         return await questionModel.findAll({
             where: {
                 authorId 

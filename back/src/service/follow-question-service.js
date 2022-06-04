@@ -91,6 +91,10 @@ async function getUpdatedFollowQuestionByUserId(userId) {
 
 async function alertQuestionFollowers({ questionId }) {
     try {
+        const data = followQuestionModel.findOne({ where : { questionId } });
+        if (data === null) {
+            return null;
+        }
         await followQuestionModel.increment({ alerts: 1}, { where : { questionId } });
     } catch (err) {
         throw new CodeError(FOLLOW_ALERT_FAILED, httpStatus.INTERNAL_SERVER_ERROR)
