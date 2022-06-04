@@ -6,12 +6,25 @@ import Fonts from '../../../styles/fonts';
 import LiText from '../../LiText/LiText';
 import Colors from '../../../styles/colors';
 
-const FollowUp = ({ isFollowing, followClicked }) => {
+export const FollowType = {
+    question: {
+        follow: 'Suivre la question',
+        unfollow: 'Ne plus suivre la question'
+    },
+    user: {
+        follow: "Suivre l'utilisateur",
+        unfollow: "Ne plus suivre l'utilisateur"
+    }
+};
+
+const FollowUp = ({ isFollowing, followClicked, type }) => {
     const isDarkMode = useColorScheme() === 'dark';
 
     const iconColor = isDarkMode ? Colors.gray._0 : Colors.black._20;
 
     const infoColor = isDarkMode ? Colors.black._20 : Colors.black._0;
+
+    const followType = type ?? FollowType.question;
 
     return (
         <View
@@ -19,15 +32,18 @@ const FollowUp = ({ isFollowing, followClicked }) => {
             style={{
                 paddingHorizontal: Spacings._12,
                 paddingVertical: Spacings._8,
-                flexDirection: 'row'
+                flexDirection: 'row',
+                alignItems: 'center'
             }}>
             <Feather
                 name={isFollowing ? 'bell-off' : 'bell'}
                 size={Fonts.size.lg}
                 color={iconColor}
             />
-            <LiText style={{ color: infoColor, marginLeft: Spacings._8 }}>
-                {isFollowing ? 'Ne plus suivre' : 'Suivre'}
+            <LiText
+                style={{ color: infoColor, marginLeft: Spacings._8 }}
+                fontSize={Fonts.size.sm}>
+                {isFollowing ? followType.unfollow : followType.follow}
             </LiText>
         </View>
     );

@@ -12,7 +12,7 @@ import { deleteQuestion as deleteQuestionAPI } from '../../api/questions-api';
 import { useNavigation } from '@react-navigation/native';
 import DeletePost from '../../component/Post/DeletePost/DeletePost';
 import ActionPost from '../../component/Post/ActionPost/ActionPost';
-import FollowUp from '../../component/Post/FollowUp/FollowUp';
+import FollowUp, { FollowType } from '../../component/Post/FollowUp/FollowUp';
 import Reaction from '../../component/Post/Reaction/Reaction';
 import {
     createFollow,
@@ -129,6 +129,7 @@ const QuestionLayout = ({
                     <FollowUp
                         isFollowing={isFollowing}
                         followClicked={onFollowClicked}
+                        type={FollowType.question}
                     />
                     <DeletePost deletePost={onDeleteQuestionClicked} />
                 </ActionPost>
