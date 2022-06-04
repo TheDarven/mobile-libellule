@@ -2,7 +2,7 @@ const followQuestionModel = require('../model/follow-question');
 const { 
     FOLLOW_CREATED_WITH_SUCCESS,
     FOLLOW_CREATION_FAILED,
-    FOLLOW_MISSING_PERMISSION, 
+    FOLLOW_NOT_IDENTIFIED, 
     FOLLOW_DELETED_WITH_SUCCESS,
     FOLLOW_DELETION_FAILED
 } = require("../util/status-message");
@@ -31,7 +31,7 @@ async function deleteFollowQuestion({ questionId, followerId })
     // Check Permission
     const question = await followQuestionModel.findOne({ where: { questionId, followerId } });
     if (question == null) {
-        throw new CodeError(FOLLOW_MISSING_PERMISSION, httpStatus.BAD_REQUEST)
+        throw new CodeError(FOLLOW_NOT_IDENTIFIED, httpStatus.BAD_REQUEST)
     }
 
     try {
@@ -46,4 +46,29 @@ async function deleteFollowQuestion({ questionId, followerId })
     }
 }
 
-module.exports = { createFollowQuestion, deleteFollowQuestion }
+async function getFollowQuestionById({ followerId, questionId}) {
+    try {
+        return await followQuestionModel.findOne({
+            where: {
+                followerId,
+                questionId
+            }
+        })
+    } catch (err) {
+        return null
+    }
+}
+
+async function getFollowQuestionByUserId(userId) {
+    try {
+        return await followQuestionModel.findAll({
+            where: {
+                followerId: userId
+            }
+        })
+    } catch (err) {
+        return null
+    }
+}
+
+module.exports = { createFollowQuestion, deleteFollowQuestion, getFollowQuestionById, getFollowQuestionByUserId }

@@ -1,11 +1,12 @@
 const { loginUser, registerUser, getUserByName } = require("../../service/user-service");
 const { createQuestion, getQuestionByTitle } = require("../../service/question-service");
 const { createComment, getFirstCommentFromQuestionId } = require('../../service/comment-service')
-const { createFollowQuestion } = require("../../service/follow-question-service");
+const { createFollowQuestion, getFollowQuestionById } = require("../../service/follow-question-service");
 const { CodeError } = require("../error-handler");
-const { QUESTION_NOT_IDENTIFIED, COMMENT_NOT_IDENTIFIED } = require("../status-message");
+const { QUESTION_NOT_IDENTIFIED, COMMENT_NOT_IDENTIFIED, FOLLOW_NOT_IDENTIFIED } = require("../status-message");
 const reactionTypeModel = require("../../model/reaction-type");
 const reactionModel = require("../../model/reaction");
+const followQuestionModel = require("../../model/follow-question");
 
 async function getUser(name, password)
 {
@@ -94,11 +95,28 @@ async function getRandomReactionType()
     }
 }
 async function getFollowQuestion(followerId, questionId) {
-    await createFollowQuestion({ followerId, questionId });
-    return {
-        followerId,
-        questionId
-    }; //await getFollowQuestion(title); TODO
+    try {
+        const follow = await getFollowQuestionById({
+            followerId,
+            questionId
+        });
+        if (follow == null) {
+            throw new CodeError(FOLLOW_NOT_IDENTIFIED);
+        }
+        return follow;
+    } catch(err) {
+        await createFollowQuestion({ followerId, questionId });
+        return  await getFollowQuestionById({
+            followerId,
+            questionId
+        });
+    }
+}
+async function clearFollowQuestions() {
+    await followQuestionModel.destroy({
+        where: {},
+        truncate: true
+    });
 }
 
-module.exports = { getUser, getQuestion, getFollowQuestion, getFirstComment, getRandomReactionType, getFirstQuestionReaction, getFirstCommentReaction }
+module.exports = { getUser, getQuestion, getFollowQuestion, getFirstComment, getRandomReactionType, getFirstQuestionReaction, getFirstCommentReaction, clearFollowQuestions }
