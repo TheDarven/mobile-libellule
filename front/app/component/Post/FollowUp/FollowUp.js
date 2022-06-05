@@ -14,10 +14,11 @@ export const FollowType = {
     user: {
         follow: "Suivre l'utilisateur",
         unfollow: "Ne plus suivre l'utilisateur"
-    }
+    },
+    none: {}
 };
 
-const FollowUp = ({ isFollowing, followClicked, type }) => {
+const FollowUp = ({ isFollowing, followClicked, style, type }) => {
     const isDarkMode = useColorScheme() === 'dark';
 
     const iconColor = isDarkMode ? Colors.gray._0 : Colors.black._20;
@@ -33,18 +34,21 @@ const FollowUp = ({ isFollowing, followClicked, type }) => {
                 paddingHorizontal: Spacings._12,
                 paddingVertical: Spacings._8,
                 flexDirection: 'row',
-                alignItems: 'center'
+                alignItems: 'center',
+                ...style
             }}>
             <Feather
                 name={isFollowing ? 'bell-off' : 'bell'}
                 size={Fonts.size.lg}
                 color={iconColor}
             />
-            <LiText
-                style={{ color: infoColor, marginLeft: Spacings._8 }}
-                fontSize={Fonts.size.sm}>
-                {isFollowing ? followType.unfollow : followType.follow}
-            </LiText>
+            {followType !== FollowType.none && (
+                <LiText
+                    style={{ color: infoColor, marginLeft: Spacings._8 }}
+                    fontSize={Fonts.size.sm}>
+                    {isFollowing ? followType.unfollow : followType.follow}
+                </LiText>
+            )}
         </View>
     );
 };
