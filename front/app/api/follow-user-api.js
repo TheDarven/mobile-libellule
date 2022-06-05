@@ -14,3 +14,7 @@ export const createFollowUser = async userId => {
 export const deleteFollowUser = async userId => {
     return axios.delete(`${FOLLOW_USER_URL}${userId}`);
 };
+
+export const getAllFollowUsers = async () => {
+    return axios.get(FOLLOW_USER_URL);
+};

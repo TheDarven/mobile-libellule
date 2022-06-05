@@ -8,11 +8,11 @@ const FollowUpUserItem = ({ item, removeFollowUser }) => {
     return (
         <FollowUpUser
             index={index}
-            userName={user.userName}
-            nbFollowers={user.nbFollowers}
-            nbComments={user.nbComments}
-            nbQuestions={user.nbComments}
-            targetId={user.targetId}
+            userName={user.User.displayName}
+            nbFollowers={user.User.nbFollower}
+            nbComments={user.User.nbComment}
+            nbQuestions={user.User.nbQuestion}
+            targetId={user.User.userId}
             removeFollowUser={removeFollowUser}
         />
     );

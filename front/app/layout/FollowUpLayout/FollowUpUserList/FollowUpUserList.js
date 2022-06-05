@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LiMainView, {
     MainContent
 } from '../../../component/LiMainView/LiMainView';
@@ -7,62 +7,43 @@ import Spacings from '../../../styles/spacings';
 import LiMainFlatList from '../../../component/LiMainFlatList/LiMainFlatList';
 import { View } from 'react-native';
 import FollowUpUserItem from './FollowUpUserItem/FollowUpUserItem';
-import { deleteFollowUser } from '../../../api/follow-user-api';
+import {
+    deleteFollowUser,
+    getAllFollowUsers
+} from '../../../api/follow-user-api';
+import { useIsFocused } from '@react-navigation/native';
 
 const FollowUpUserList = () => {
-    const [followUsers, setFollowUsers] = useState([
-        {
-            targetId: 1,
-            userName: 'A name a name a name a name',
-            nbComments: 50,
-            nbQuestions: 12,
-            nbFollowers: 47
-        },
-        {
-            targetId: 2,
-            userName: 'A name',
-            nbComments: 50,
-            nbQuestions: 12,
-            nbFollowers: 47
-        },
-        {
-            targetId: 3,
-            userName: 'A name',
-            nbComments: 50,
-            nbQuestions: 12,
-            nbFollowers: 47
-        },
-        {
-            targetId: 4,
-            userName: 'A name',
-            nbComments: 50,
-            nbQuestions: 12,
-            nbFollowers: 47
-        },
-        {
-            targetId: 5,
-            userName: 'A name',
-            nbComments: 50,
-            nbQuestions: 12,
-            nbFollowers: 47
-        }
-    ]);
+    const [followUsers, setFollowUsers] = useState([]);
 
-    function removeFollowUser(targetId) {
-        deleteFollowUser(targetId).then(res => {
+    const isFocus = useIsFocused();
+
+    useEffect(() => {
+        if (!isFocus) {
+            return;
+        }
+        getAllFollowUsers()
+            .then(res => {
+                if (res.data.status && res.data.data != null) {
+                    setFollowUsers(res.data.data);
+                } else {
+                    setFollowUsers([]);
+                }
+            })
+            .catch(() => setFollowUsers([]));
+    }, [isFocus]);
+
+    function removeFollowUser(userId) {
+        deleteFollowUser(userId).then(res => {
             if (res.data.status) {
                 setFollowUsers([
                     ...followUsers.filter(
-                        followUser => followUser.targetId !== targetId
+                        followUser => followUser.User.userId !== userId
                     )
                 ]);
             }
         });
     }
-
-    /*
-    TODO: Verifier les données (targetId  (+ unfollow), userName, nbCommentaires, nbQuestions, nbSuiveurs)
-    */
 
     return (
         <>
