@@ -8,6 +8,8 @@ import LiTitle from '../../LiTitle/LiTitle';
 import PostDate from '../../Post/PostHeader/PostDate/PostDate';
 import Colors from '../../../styles/colors';
 import { useNavigation } from '@react-navigation/native';
+import DeletePost from '../../Post/DeletePost/DeletePost';
+import SeePost from '../../SeePost/SeePost';
 
 const FollowQuestionAlert = ({
     updateDate,
@@ -18,20 +20,24 @@ const FollowQuestionAlert = ({
 }) => {
     const isDarkMode = useColorScheme() === 'dark';
 
-    const navigation = useNavigation();
+    const iconColor = isDarkMode ? Colors.white._0 : Colors.black._100;
 
-    const infoColor = isDarkMode ? Colors.gray._0 : Colors.black._0;
+    const commentsColors = isDarkMode ? Colors.gray._0 : Colors.black._50;
 
     return (
-        <View style={{ paddingBottom: Spacings._24 }}>
+        <View style={{ paddingBottom: Spacings._32 }}>
             <View
                 style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    marginBottom: Spacings._4
+                    marginBottom: Spacings._8
                 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Feather name={'file-text'} size={Fonts.size.lg} />
+                    <Feather
+                        name={'file-text'}
+                        size={Fonts.size.lg}
+                        color={iconColor}
+                    />
                     <LiTitle
                         style={{
                             fontWeight: '700',
@@ -45,34 +51,30 @@ const FollowQuestionAlert = ({
                 <PostDate date={updateDate} />
             </View>
             <LiText
-                style={{ color: infoColor, paddingLeft: Spacings._16 }}
+                style={{ color: commentsColors, paddingLeft: Spacings._16 }}
                 fontSize={Fonts.size.md}>
                 {alerts > 1
                     ? `• ${alerts} nouveaux commentaires`
                     : `• ${alerts} nouveau commentaire`}
             </LiText>
-            <View style={{ flexDirection: 'row' }}>
-                <View
-                    onTouchEnd={() => {
-                        navigation.navigate('Question', {
-                            questionId
-                        });
-                    }}
-                    style={{
-                        paddingVertical: Spacings._12,
-                        paddingRight: Spacings._12,
-                        flexDirection: 'row',
-                        alignItems: 'center'
-                    }}>
-                    <Feather name={'eye'} size={Fonts.size.lg} />
-                    <LiText
-                        style={{ color: infoColor, marginLeft: Spacings._8 }}
-                        fontSize={Fonts.size.sm}>
-                        {alerts > 1
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                }}>
+                <SeePost
+                    questionId={questionId}
+                    content={
+                        alerts > 1
                             ? 'Voir les commentaires'
-                            : 'Voir le commentaire'}
-                    </LiText>
-                </View>
+                            : 'Voir le commentaire'
+                    }
+                    style={{
+                        paddingLeft: Spacings._0
+                    }}
+                />
+                <DeletePost />
             </View>
         </View>
     );

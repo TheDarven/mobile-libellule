@@ -17,7 +17,7 @@ const FollowUpScreen = () => {
         }
     }, [isAuth, navigation]);
 
-    return <FollowUpAlertsLayout />;
+    return <>{isAuth() && <FollowUpAlertsLayout />}</>;
 };
 
 export default FollowUpScreen;

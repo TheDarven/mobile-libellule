@@ -12,6 +12,7 @@ import {
     getAllFollowQuestions
 } from '../../../api/follow-question-api';
 import { useIsFocused } from '@react-navigation/native';
+import LiText from '../../../component/LiText/LiText';
 
 const FollowUpQuestionList = () => {
     const [followQuestions, setFollowQuestions] = useState([]);
@@ -20,7 +21,7 @@ const FollowUpQuestionList = () => {
 
     useEffect(() => {
         if (!isFocus) {
-            return;
+            return () => {};
         }
         getAllFollowQuestions()
             .then(res => {
@@ -58,6 +59,9 @@ const FollowUpQuestionList = () => {
             <View>
                 <LiMainFlatList
                     horizontal={true}
+                    ListEmptyComponent={() => (
+                        <LiText>Vous ne suivez aucune question !</LiText>
+                    )}
                     data={followQuestions}
                     renderItem={item => (
                         <FollowUpQuestionItem
