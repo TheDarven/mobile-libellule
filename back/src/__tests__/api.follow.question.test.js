@@ -251,6 +251,40 @@ describe('Follow Question Endpoint Test', () => {
                 expect(body.data).toBe(null)
             });
         });
+        it('user should not exists', async () => {
+            await supertest(app)
+                .post(FOLLOW_QUESTION_ENDPOINT)
+                .set('Authorization', 'invalid_token')
+                .send({
+                    questionId: questionID
+                })
+                .expect(httpStatus.UNAUTHORIZED)
+                .then((response) => {
+                    const body = response.body;
+
+                    expect(body.status).toBe(false)
+
+                    expect(body.response).toBe(INVALID_TOKEN)
+                })
+        })
+
+        it('question should not exists', async () => {
+            const inexstingQuestionId = 500000000;
+            await supertest(app)
+                .post(FOLLOW_QUESTION_ENDPOINT)
+                .set('Authorization', follower.token)
+                .send({
+                    questionId: inexstingQuestionId
+                })
+                .expect(httpStatus.BAD_REQUEST)
+                .then((response) => {
+                    const body = response.body;
+
+                    expect(body.status).toBe(false);
+
+                    expect(body.response).toBe(QUESTION_NOT_IDENTIFIED)
+                })
+        })
     });
     describe('Follow Question Alert Test', () => {
         let follow, anotherFollow, anotherQuestion, question;
@@ -295,7 +329,7 @@ describe('Follow Question Endpoint Test', () => {
                         title: question.title,
                     },
                     alerts: 1
-                }
+                },
             ]
             await supertest(app)
             .get(`${FOLLOW_QUESTION_ENDPOINT}/alerts/`)

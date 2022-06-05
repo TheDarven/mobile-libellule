@@ -58,7 +58,6 @@ router.post('/', (req, res, next) => {
     }).catch(error => next(error));
 
 
-
 });
 
 router.delete('/:user/', (req, res, next) => {

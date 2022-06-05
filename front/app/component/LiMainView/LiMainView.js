@@ -4,6 +4,7 @@ import LiViewStyle from './LiViewStyle';
 import { AppBackgroundColor } from '../../styles/colors';
 
 export const MainContent = {
+    none: 'none',
     default: 'default',
     card: 'card'
 };
