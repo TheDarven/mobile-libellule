@@ -59,7 +59,6 @@ const QuestionScreen = ({ route }) => {
 
     const commentsViewStyle = {
         backgroundColor: isDarkMode ? Colors.black._100 : Colors.white._0,
-        paddingHorizontal: Spacings._20,
         paddingVertical: Spacings._16
     };
 

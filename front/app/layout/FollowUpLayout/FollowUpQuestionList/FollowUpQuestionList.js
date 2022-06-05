@@ -53,9 +53,7 @@ const FollowUpQuestionList = () => {
     return (
         <>
             <LiMainView type={MainContent.default} style={{ paddingBottom: 0 }}>
-                <LiTitle style={{ paddingHorizontal: Spacings._8 }}>
-                    Questions suivies ({followQuestions.length})
-                </LiTitle>
+                <LiTitle>Questions suivies ({followQuestions.length})</LiTitle>
             </LiMainView>
             <View>
                 <LiMainFlatList
@@ -67,8 +65,9 @@ const FollowUpQuestionList = () => {
                             unfollowQuestion={unfollowQuestion}
                         />
                     )}
-                    type={MainContent.none}
-                    contentContainerStyle={{ paddingHorizontal: Spacings._20 }}
+                    type={MainContent.card}
+                    contentContainerStyle={{ paddingRight: Spacings._20 }}
+                    style={{ paddingTop: Spacings._0 }}
                     ItemSeparatorComponent={() => (
                         <View style={separatorStyle} />
                     )}
