@@ -233,10 +233,10 @@ router.post('/questions/:question/', (req, res, next) => {
         .then(({response, data}) => {
 
             getCommentById(data, commentInfo())
-                .then((comment) => {
-                    res.json({ status: true, response, data: comment })
-                })
-                .catch(error => next(error));
+            .then((comment) => {
+                res.json({ status: true, response, data: comment })
+            })
+            .catch(error => next(error));
 
         })
         .catch(error => next(error));

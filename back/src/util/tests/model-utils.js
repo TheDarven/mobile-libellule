@@ -1,7 +1,10 @@
 const { loginUser, registerUser, getUserByName } = require("../../service/user-service");
 const { createQuestion, getQuestionByTitle } = require("../../service/question-service");
+const { createComment, getFirstCommentFromQuestionId } = require('../../service/comment-service')
 const { CodeError } = require("../error-handler");
-const { QUESTION_NOT_IDENTIFIED } = require("../status-message");
+const { QUESTION_NOT_IDENTIFIED, COMMENT_NOT_IDENTIFIED } = require("../status-message");
+const reactionTypeModel = require("../../model/reaction-type");
+const reactionModel = require("../../model/reaction");
 
 async function getUser(name, password)
 {
@@ -38,4 +41,56 @@ async function getQuestion(title, content, user)
     }
 }
 
-module.exports = { getUser, getQuestion }
+async function getFirstComment(questionId, content, user)
+{
+    try {
+        const comment = await getFirstCommentFromQuestionId(questionId);
+        if (comment == null) {
+            throw new CodeError(COMMENT_NOT_IDENTIFIED);
+        }
+        return comment;
+    } catch(err) {
+        await createComment(content, questionId, user);
+        return await getFirstCommentFromQuestionId(questionId);
+    }
+}
+
+async function getFirstQuestionReaction(questionId, type)
+{
+    try {
+        return await reactionModel.findOne({
+            where: { questionId, type }
+        });
+    } catch(err) {
+        return null;
+    }
+}
+
+async function getFirstCommentReaction(commentId, type)
+{
+    try {
+        return await reactionModel.findOne({
+            where: { commentId, type }
+        });
+    } catch(err) {
+        return null;
+    }
+}
+
+async function getRandomReactionType()
+{
+    try {
+        const count = await reactionTypeModel.count();
+        const id = Math.floor(Math.random() * count) + 1;
+
+        return await reactionTypeModel.findOne({
+            where: {
+                reactionTypeId: id
+            }
+        });
+    } catch(err) {
+        return null;
+    }
+}
+
+module.exports = { getUser, getQuestion, getFirstComment, getRandomReactionType, getFirstQuestionReaction, getFirstCommentReaction }

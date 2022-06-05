@@ -38,4 +38,15 @@ module.exports = {
     COMMENT_EDITED_WITH_SUCCESS: 'Vous avez édité un commentaire avec succès',
     COMMENT_DELETED_WITH_SUCCESS: 'Vous avez supprimé un commentaire avec succès',
     COMMENT_MISSING_PERMISSION: 'Vous n\'avez pas la permission pour effectuer cette opération',
+
+    // REACTION
+    REACTION_NOT_IDENTIFIED: 'Aucune réaction ne correspond à cet ID',
+    REACTION_TYPE_NOT_IDENTIFIED: 'Aucun type de réaction ne correspond à cet ID',
+    REACTION_ALREADY_EXISTS: 'Une réaction existe déjà pour ce commentaire/question',
+    REACTION_NO_LONGER_EXISTS: 'Aucune réaction n\'existe pour ce commentaire/question',
+    REACTION_CREATION_FAILED: 'Une erreur inconnue s\'est produite lors de la création. Merci de réessayer plus tard.',
+    REACTION_DELETION_FAILED: 'Une erreur inconnue s\'est produite lors de la suppresion. Merci de réessayer plus tard.',
+    REACTION_CREATED_WITH_SUCCESS: 'Vous avez créé une réaction avec succès',
+    REACTION_DELETED_WITH_SUCCESS: 'Vous avez supprimé une réaction avec succès',
+    REACTION_MISSING_PERMISSION: 'Vous n\'avez pas la permission pour effectuer cette opération',
 }

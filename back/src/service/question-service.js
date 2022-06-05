@@ -76,8 +76,7 @@ async function getQuestionById(questionId) {
     }
 }
 
-async function getQuestionByTitle(title)
-{
+async function getQuestionByTitle(title) {
     try {
         return await questionModel.findOne({
             where: {
