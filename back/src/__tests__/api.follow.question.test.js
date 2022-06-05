@@ -330,17 +330,6 @@ describe('Follow Question Endpoint Test', () => {
                     },
                     alerts: 1
                 },
-                {
-                    Question: {
-                        questionId: question.questionId,
-                        User: {
-                            user_id: question.authorId,
-                        },
-                        authorId: question.authorId,
-                        title: question.title,
-                    },
-                    alerts: 1
-                }
             ]
             await supertest(app)
             .get(`${FOLLOW_QUESTION_ENDPOINT}/alerts/`)
