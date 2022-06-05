@@ -61,15 +61,14 @@ const FollowUpUserList = () => {
     }
 
     /*
-    TODO: Utilisateurs suivis (nb)
-    TODO: Verifier les données (targetId, userName, nbCommentaires, nbQuestions, nbSuiveurs)
+    TODO: Verifier les données (targetId  (+ unfollow), userName, nbCommentaires, nbQuestions, nbSuiveurs)
     */
 
     return (
         <>
             <LiMainView type={MainContent.default} style={{ paddingBottom: 0 }}>
                 <LiTitle style={{ paddingHorizontal: Spacings._8 }}>
-                    Utilisateurs suivis (10)
+                    Utilisateurs suivis ({followUsers.length})
                 </LiTitle>
             </LiMainView>
             <View>
