@@ -116,17 +116,18 @@ async function getUpdatedFollowQuestionByUserId(userId) {
                     model: question,
                     as: "Question",
                     attributes: {
-                        include: [
-                            [
-                                sequelize.literal(`
-                                (SELECT COUNT(*) FROM Comments where question_id = \`Question\`.\`question_id\`)
-                                `),
-                                "nbComment"
-                            ]
-                        ]
+                        exclude: ["nbComment", "edition_date", "content"]
+                    },
+                    include: {
+                        model: user,
+                        as: "User",
+                        attributes: ["display_name", "user_id"]
                     }
                 },
-            ], order: [['creation_date', 'DESC']]
+                
+            ], 
+            order: [['edition_date', 'DESC']],
+            attributes: ["alerts", "edition_date"]
         });
     } catch (err) {
         console.log(err)

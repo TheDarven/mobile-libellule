@@ -275,17 +275,25 @@ describe('Follow Question Endpoint Test', () => {
         it('should get all follow question from user with alerts', async () => {
             const expectedResult = [
                 {
-                    questionId: anotherQuestion.questionId,
-                    title: anotherQuestion.title,
-                    authorId: question.authorId,
-                    content: anotherQuestion.content,
+                    Question: {
+                        questionId: anotherQuestion.questionId,
+                        User: {
+                            user_id: anotherQuestion.authorId,
+                        },
+                        authorId: anotherQuestion.authorId,
+                        title: anotherQuestion.title,
+                    },
                     alerts: 1
                 },
                 {
-                    questionId: question.questionId,
-                    authorId: question.authorId,
-                    title: question.title,
-                    content: question.content,
+                    Question: {
+                        questionId: question.questionId,
+                        User: {
+                            user_id: question.authorId,
+                        },
+                        authorId: question.authorId,
+                        title: question.title,
+                    },
                     alerts: 1
                 }
             ]

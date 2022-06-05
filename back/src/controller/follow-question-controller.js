@@ -170,13 +170,7 @@ router.get('/alerts/', (req, res, next) => {
     // Check inputs
     const user = req.user;
     getUpdatedFollowQuestionByUserId(user.userId)
-    .then((questionFollows) => {
-        const data = questionFollows.map((follow) => {
-            return {
-                ...((follow.dataValues).Question.dataValues),
-                alerts: follow.alerts
-            }
-        })
+    .then((data) => {
         res.json({ status: true, data });
     }).catch(error => next(error));
 });
