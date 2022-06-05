@@ -8,7 +8,7 @@ const sequelize = require('sequelize');
 const { CodeError } = require("../util/error-handler");
 const { createQuestion, updateQuestion, deleteQuestion, getQuestionById } = require('../service/question-service')
 const { getUserById } = require('../service/user-service')
-const { alertUserFollowersComment } = require('../service/follow-user-service');
+const { alertUserFollowersQuestion } = require('../service/follow-user-service');
 const questionModel = require('../model/question.js')
 const userModel = require('../model/user.js')
 const commentModel = require('../model/comment.js')
@@ -220,7 +220,7 @@ router.post('/', (req, res, next) => {
     createQuestion(content, title, user)
     .then(({response, data}) => {
         res.json({ status: true, response, data })
-        alertUserFollowersComment({ targetId: user.userId });
+        alertUserFollowersQuestion({ targetId: user.userId });
     })
     .catch(error => next(error));
 });
