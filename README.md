@@ -7,7 +7,6 @@ Ce projet est un réseau social anonyme ayant pour but de partager des questions
 
 ## API
 [API déployée sur heroku](https://libellule-production.herokuapp.com/)
-Le projet se divise en deux parties :
 
 ## Backend
 ### Environnement
