@@ -5,7 +5,6 @@ const { INVALID_BODY_DATA,
     COMMENT_BODY_INVALID_CONTENT_LENGTH,
     COMMENT_NOT_IDENTIFIED
 } = require("../util/status-message");
-const sequelize = require('sequelize');
 const { CodeError } = require("../util/error-handler");
 const { getQuestionById } = require('../service/question-service')
 const { createComment, updateComment, deleteComment, getCommentById } = require('../service/comment-service')
@@ -351,8 +350,9 @@ function commentInfo()
                 model: reactionModel,
                 required: false,
 
-                attributes: [ 'type', [sequelize.fn('count', sequelize.col('reaction_id')), 'amount'] ],
-                group: 'type'
+                attributes: ['type']
+                //attributes: [ 'type', [sequelize.fn('count', sequelize.col('reaction_id')), 'amount'] ],
+                //group: 'type'
             }
         ]
     };
