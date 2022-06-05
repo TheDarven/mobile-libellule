@@ -175,15 +175,15 @@ describe('Follow Question Endpoint Test', () => {
         it('should get all follow question from user', async () => {
             const expectedResult = [
                 {
+                    "followQuestionId": anotherFollowId,
+                    "followerId": follower.id,
+                    "questionId": anotherQuestionId
+                },
+                {
                     "followQuestionId": followId,
                     "followerId": follower.id,
                     "questionId": questionID
                 },
-                {
-                    "followQuestionId": anotherFollowId,
-                    "followerId": follower.id,
-                    "questionId": anotherQuestionId
-                }
             ]
             await supertest(app)
             .get(FOLLOW_QUESTION_ENDPOINT)
