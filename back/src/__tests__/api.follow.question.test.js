@@ -329,6 +329,13 @@ describe('Follow Question Endpoint Test', () => {
                         title: question.title,
                     },
                     alerts: 1
+                },
+                {
+                    questionId: question.questionId,
+                    authorId: question.authorId,
+                    title: question.title,
+                    content: question.content,
+                    alerts: 1
                 }
             ]
             await supertest(app)
