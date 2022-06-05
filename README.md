@@ -33,6 +33,7 @@ Il est possible de vérifier la mise en forme du code via
 ```
 npm run lint
 ```
+Le lint est effectué automatiquement avant un merge sur dev ou master via une pipeline.
 ### Test
 Avant de push des modifications, il est nécessaires de lancer la commande
 ```
@@ -63,9 +64,22 @@ Il est possible de vérifier la mise en forme du code via
 ```
 npm run lint
 ```
+Le lint est effectué automatiquement avant un merge sur dev ou master via une pipeline.
 ### Deploiement
 Le déploiement s'effectue automatiquement sur Gitlab Pages lors d'un merge sur master, l'APK est disponible à l'adresse suivante : 
 [APK](https://webmobile.pages.ensimag.fr/apprentis2a/projet/Projet_gaillalo_geoffrlu_legoyb/libellule.apk)
 
+## conception
+Pour construire notre application nous avons au préalable réalisé différents travaux de conception.
+Diagramme de cas d'utilisation, Diagramme d'état transition, Diagramme d'éntités associations.
+[UML](https://drive.google.com/file/d/1kLiyn0eOAhWXYuPOAIwwTpszS_NER_Kq/view?usp=sharing)
+(Cliquez sur *ouvrir avec Draw.io* poura accéder à l'ensemble des diagrammes)
 
-Drive: [here](https://drive.google.com/drive/folders/1dLj1TmJ4eVh_k8ea3hp49ONHu6qp61x3)
+[Maquettes](https://www.figma.com/file/DxNNWNFoZhTLBHwLuq6jtT/Libellule-UI---Design?node-id=0%3A1)
+(Cliquez sur l'icone avec des petits ronds en haut à gauche pour accéder au différentes pages de l'applications)
+
+## Done et TODO
+Concrètement, les choses suivantes sont actuellement implémentées dans l'application :
+- Système d'inscription / authentification
+- Création / Edition / Suppression / Consultation d'une question
+- Création / Edition / Suppression / Consultation d'un commentaire
