@@ -5,6 +5,7 @@ const { COMMENT_CREATED_WITH_SUCCESS, COMMENT_CREATION_FAILED, COMMENT_MISSING_P
 } = require("../util/status-message");
 const { CodeError } = require("../util/error-handler");
 const httpStatus = require("http-status");
+const question = require('../model/question');
 
 async function createComment(content, questionId, user)
 {
@@ -95,6 +96,11 @@ async function getLastCommentsFromUser({ authorId, nbComment }) {
             where: {
                 authorId 
             },
+            include: [{
+                model: question,
+                as: 'Question',
+                attributes: ["questionId", "title"]
+            }],
             order: [['edition_date', 'DESC']],
             limit: nbComment
         })

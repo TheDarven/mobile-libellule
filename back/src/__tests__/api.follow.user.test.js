@@ -260,17 +260,19 @@ describe('Follow User Endpoint Test', () => {
         })
         it('should get all recent question and comment from a user followed with alerts', async () => {
             const expectedResult = [{
+                User : {
+                    userId: target.id,
+                },
                 questions: [{
-                    authorId: targetQuestion.authorId,
-                    content: targetQuestion.content,
                     questionId: targetQuestion.questionId,
                     title: targetQuestion.title,
                 }],
                 comments: [{
-                    authorId: targetComment.authorId,
                     commentId: targetComment.commentId,
                     content: targetComment.content,
-                    questionId: targetComment.questionId
+                    Question: {
+                        questionId: targetComment.questionId
+                    }
                 }]
             }];
 

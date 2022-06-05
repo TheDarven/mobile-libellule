@@ -188,13 +188,37 @@ router.get('/alerts/', (req, res, next) => {
     const user = req.user
     getFollowUserByUserId(user.userId)
     .then((follows) => {
+        
         const promise = follows.map(async (follow) => {
             const questions = await getLastQuestionsFromUser({ authorId: follow.User.userId, nbQuestion: follow.questionAlerts });
             const comments = await getLastCommentsFromUser({ authorId: follow.User.userId, nbComment: follow.commentAlerts });
+
+            const filteredQuestions = questions.map((question) => {
+                return {
+                    title: question.title,
+                    questionId: question.questionId,
+                    creationDate: question.creation_date
+                }
+            })
+
+            const filteredComments = comments.map((comment) => {
+
+                return {
+                    content: comment.content,
+                    commentId: comment.commentId,
+                    creationDate: comment.creation_date,
+                    Question: comment.Question
+                }
+            })
+
             return {
-                questions,
-                comments,
-                targetId: follow.User.userId,
+                User: {
+                    userId: follow.User.userId,
+                    displayName: follow.User.displayName,
+                },
+                edition_date: follow.edition_date,
+                questions: filteredQuestions,
+                comments: filteredComments
             }
         });
         Promise.all(promise).then((data) => {

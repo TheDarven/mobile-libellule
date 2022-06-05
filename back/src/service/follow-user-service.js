@@ -67,7 +67,7 @@ async function getFollowUserById({ targetId, userId}) {
 async function getFollowUserByUserId(userId) {
     try {
         return await followUserModel.findAll({
-            attributes: ['target_id', 'questionAlerts', 'commentAlerts'],
+            attributes: ['target_id', 'questionAlerts', 'commentAlerts', 'edition_date'],
             where: {
                 userId
             },
@@ -142,5 +142,5 @@ module.exports = {
     getFollowUserByUserId,
     alertUserFollowersQuestion,
     alertUserFollowersComment,
-    resetUserAlerts
+    resetUserAlerts,
 }
