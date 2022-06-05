@@ -59,9 +59,9 @@ const FollowUpQuestionList = () => {
             <View>
                 <LiMainFlatList
                     horizontal={true}
-                    ListEmptyComponent={() => (
+                    ListEmptyComponent={
                         <LiText>Vous ne suivez aucune question !</LiText>
-                    )}
+                    }
                     data={followQuestions}
                     renderItem={item => (
                         <FollowUpQuestionItem
@@ -73,7 +73,7 @@ const FollowUpQuestionList = () => {
                     contentContainerStyle={{ paddingRight: Spacings._20 }}
                     style={{ paddingTop: Spacings._0 }}
                     ItemSeparatorComponent={() => (
-                        <View style={separatorStyle} />
+                        <View style={{ width: Spacings._16 }} />
                     )}
                 />
             </View>

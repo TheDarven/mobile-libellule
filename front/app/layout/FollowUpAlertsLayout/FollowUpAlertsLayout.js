@@ -1,7 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useIsFocused } from '@react-navigation/native';
-import { getAllFollowQuestionAlerts } from '../../api/follow-question-api';
-import { getAllFollowUserAlerts } from '../../api/follow-user-api';
+import {
+    getAllFollowQuestionAlerts,
+    resetFollowQuestion
+} from '../../api/follow-question-api';
+import {
+    getAllFollowUserAlerts,
+    resetFollowUser
+} from '../../api/follow-user-api';
 import { View } from 'react-native';
 import LiMainFlatList from '../../component/LiMainFlatList/LiMainFlatList';
 import LiText from '../../component/LiText/LiText';
@@ -60,31 +66,64 @@ const FollowUpAlertsLayout = () => {
             .catch(() => setUserAlerts([]));
     }, [isFocus]);
 
+    async function deleteFollowQuestionAlert(questionId) {
+        const res = await resetFollowQuestion(questionId);
+        if (res.data.status) {
+            setQuestionAlerts([
+                ...questionAlerts.filter(
+                    questionAlert =>
+                        questionAlert.Question.questionId !== questionId
+                )
+            ]);
+        }
+    }
+
+    async function deleteFollowUserAlert(userId) {
+        const res = await resetFollowUser(userId);
+        if (res.data.status) {
+            setUserAlerts([
+                ...userAlerts.filter(
+                    userAlert => userAlert.User.userId !== userId
+                )
+            ]);
+        }
+    }
+
+    const listHeader = useMemo(() => {
+        return (
+            <>
+                <FollowUpUserList />
+                <FollowUpQuestionList />
+                <LiMainView
+                    type={MainContent.default}
+                    style={{ paddingBottom: 0 }}>
+                    <LiTitle>Activitées</LiTitle>
+                </LiMainView>
+            </>
+        );
+    }, []);
+
     return (
         <View>
             <LiMainFlatList
-                ListEmptyComponent={() => (
+                ListEmptyComponent={
                     <LiMainView
                         type={MainContent.default}
                         style={{ paddingVertical: Spacings._0 }}>
                         <LiText>Aucune activitée</LiText>
                     </LiMainView>
-                )}
+                }
                 data={alerts}
                 type={MainContent.none}
                 style={{ height: '100%' }}
-                ListHeaderComponent={() => (
-                    <>
-                        <FollowUpUserList />
-                        <FollowUpQuestionList />
-                        <LiMainView
-                            type={MainContent.default}
-                            style={{ paddingBottom: 0 }}>
-                            <LiTitle>Activitées</LiTitle>
-                        </LiMainView>
-                    </>
+                ListHeaderComponent={listHeader}
+                renderItem={item => (
+                    <FollowUpAlertsItem
+                        item={item}
+                        deleteFollowQuestionAlert={deleteFollowQuestionAlert}
+                        deleteFollowUserAlert={deleteFollowUserAlert}
+                    />
                 )}
-                renderItem={item => <FollowUpAlertsItem item={item} />}
             />
         </View>
     );

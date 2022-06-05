@@ -54,9 +54,9 @@ const FollowUpUserList = () => {
             <View>
                 <LiMainFlatList
                     horizontal={true}
-                    ListEmptyComponent={() => (
+                    ListEmptyComponent={
                         <LiText>Vous ne suivez aucun utilisateur !</LiText>
-                    )}
+                    }
                     data={followUsers}
                     renderItem={item => (
                         <FollowUpUserItem

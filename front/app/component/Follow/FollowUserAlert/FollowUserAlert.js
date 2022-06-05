@@ -18,8 +18,17 @@ const FollowUserAlertType = {
     question: 'question'
 };
 
-const FollowUserAlert = ({ userName, updateDate, questions, comments }) => {
+const FollowUserAlert = ({
+    userName,
+    userId,
+    updateDate,
+    questions,
+    comments,
+    deleteFollowAlert
+}) => {
     const [alerts, setAlerts] = useState([]);
+
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const isDarkMode = useColorScheme() === 'dark';
 
@@ -54,6 +63,16 @@ const FollowUserAlert = ({ userName, updateDate, questions, comments }) => {
     }, [questions, comments]);
 
     const commentsColors = isDarkMode ? Colors.gray._0 : Colors.black._50;
+
+    function onDeleteClicked() {
+        if (isDeleting) {
+            return;
+        }
+        setIsDeleting(true);
+        deleteFollowAlert(userId)
+            .then(() => setIsDeleting(false))
+            .catch(() => setIsDeleting(false));
+    }
 
     return (
         <View style={{ paddingBottom: Spacings._24 }}>
@@ -177,7 +196,10 @@ const FollowUserAlert = ({ userName, updateDate, questions, comments }) => {
                         />
                     </View>
                 ))}
-                <DeletePost />
+                <DeletePost
+                    deletePost={onDeleteClicked}
+                    style={isDeleting ? { opacity: 0.3 } : {}}
+                />
             </View>
         </View>
     );

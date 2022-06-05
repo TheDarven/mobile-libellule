@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LiText from '../../LiText/LiText';
 import Feather from 'react-native-vector-icons/Feather';
 import Fonts from '../../../styles/fonts';
@@ -7,7 +7,6 @@ import Spacings from '../../../styles/spacings';
 import LiTitle from '../../LiTitle/LiTitle';
 import PostDate from '../../Post/PostHeader/PostDate/PostDate';
 import Colors from '../../../styles/colors';
-import { useNavigation } from '@react-navigation/native';
 import DeletePost from '../../Post/DeletePost/DeletePost';
 import SeePost from '../../SeePost/SeePost';
 
@@ -16,13 +15,27 @@ const FollowQuestionAlert = ({
     questionTitle,
     questionId,
     authorName,
-    alerts
+    alerts,
+    deleteFollowAlert
 }) => {
+    const [isDeleting, setIsDeleting] = useState(false);
+
     const isDarkMode = useColorScheme() === 'dark';
 
     const iconColor = isDarkMode ? Colors.white._0 : Colors.black._100;
 
     const commentsColors = isDarkMode ? Colors.gray._0 : Colors.black._50;
+
+    function onDeleteClicked() {
+        if (isDeleting) {
+            return;
+        }
+
+        setIsDeleting(true);
+        deleteFollowAlert(questionId)
+            .then(() => setIsDeleting(false))
+            .catch(() => setIsDeleting(false));
+    }
 
     return (
         <View style={{ paddingBottom: Spacings._32 }}>
@@ -74,7 +87,10 @@ const FollowQuestionAlert = ({
                         paddingLeft: Spacings._0
                     }}
                 />
-                <DeletePost />
+                <DeletePost
+                    deletePost={onDeleteClicked}
+                    style={isDeleting ? { opacity: 0.3 } : {}}
+                />
             </View>
         </View>
     );

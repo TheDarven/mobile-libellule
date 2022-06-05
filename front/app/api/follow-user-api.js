@@ -22,3 +22,7 @@ export const getAllFollowUsers = async () => {
 export const getAllFollowUserAlerts = async () => {
     return axios.get(`${FOLLOW_USER_URL}alerts`);
 };
+
+export const resetFollowUser = async userId => {
+    return axios.post(`${FOLLOW_USER_URL}alerts/${userId}`);
+};

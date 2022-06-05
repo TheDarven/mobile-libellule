@@ -7,7 +7,11 @@ import LiMainView, {
 } from '../../../component/LiMainView/LiMainView';
 import Spacings from '../../../styles/spacings';
 
-const FollowUpAlertsItem = ({ item }) => {
+const FollowUpAlertsItem = ({
+    item,
+    deleteFollowQuestionAlert,
+    deleteFollowUserAlert
+}) => {
     const { index } = item;
     const followItem = item.item;
 
@@ -18,6 +22,7 @@ const FollowUpAlertsItem = ({ item }) => {
             style={{ paddingVertical: Spacings._0 }}>
             {followItem.type === FollowUpType.question && (
                 <FollowQuestionAlert
+                    deleteFollowAlert={deleteFollowQuestionAlert}
                     updateDate={followItem.edition_date}
                     questionId={followItem.Question.questionId}
                     questionTitle={followItem.Question.title}
@@ -27,7 +32,9 @@ const FollowUpAlertsItem = ({ item }) => {
             )}
             {followItem.type === FollowUpType.user && (
                 <FollowUserAlert
+                    deleteFollowAlert={deleteFollowUserAlert}
                     userName={followItem.User.displayName}
+                    userId={followItem.User.userId}
                     updateDate={followItem.edition_date}
                     questions={followItem.questions}
                     comments={followItem.comments}

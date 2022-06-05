@@ -22,3 +22,7 @@ export const getAllFollowQuestions = async () => {
 export const getAllFollowQuestionAlerts = async () => {
     return axios.get(`${FOLLOW_QUESTION_URL}alerts`);
 };
+
+export const resetFollowQuestion = async questionId => {
+    return axios.post(`${FOLLOW_QUESTION_URL}alerts/${questionId}`)
+};
