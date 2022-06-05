@@ -11,52 +11,30 @@ import {
     deleteFollowQuestion,
     getAllFollowQuestions
 } from '../../../api/follow-question-api';
+import { useIsFocused } from '@react-navigation/native';
 
 const FollowUpQuestionList = () => {
-    const [followQuestions, setFollowQuestions] = useState([
-        {
-            questionId: 1,
-            title: 'A title',
-            author: 'Name of author',
-            date: '2022-06-03T11:18:08.000Z',
-            nbComments: 12
-        },
-        {
-            questionId: 2,
-            title: 'A title',
-            author: 'Name of author',
-            date: '2022-06-03T11:18:08.000Z',
-            nbComments: 12
-        },
-        {
-            questionId: 3,
-            title: 'A title',
-            author: 'Name of author',
-            date: '2022-06-03T11:18:08.000Z',
-            nbComments: 12
-        },
-        {
-            questionId: 4,
-            title: 'A title',
-            author: 'Name of author',
-            date: '2022-06-03T11:18:08.000Z',
-            nbComments: 12
-        },
-        {
-            questionId: 5,
-            title: 'A title',
-            author: 'Name of author',
-            date: '2022-06-03T11:18:08.000Z',
-            nbComments: 12
-        }
-    ]);
+    const [followQuestions, setFollowQuestions] = useState([]);
+
+    const isFocus = useIsFocused();
 
     useEffect(() => {
-        getAllFollowQuestions().then(res => console.log(res.data));
-    }, []);
+        if (!isFocus) {
+            return;
+        }
+        getAllFollowQuestions()
+            .then(res => {
+                if (res.data.status) {
+                    setFollowQuestions(res.data.data);
+                } else {
+                    setFollowQuestions([]);
+                }
+                console.log(res.data);
+            })
+            .catch(() => setFollowQuestions([]));
+    }, [isFocus]);
 
     /*
-    TODO: Questions suivies (nb)
     questionId (+ unfollow), titre, auteur, nbComments, date
      */
 
