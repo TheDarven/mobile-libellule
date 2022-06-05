@@ -29,7 +29,6 @@ const FollowUpQuestionList = () => {
                 } else {
                     setFollowQuestions([]);
                 }
-                console.log(res.data);
             })
             .catch(() => setFollowQuestions([]));
     }, [isFocus]);
@@ -44,7 +43,7 @@ const FollowUpQuestionList = () => {
                 setFollowQuestions([
                     ...followQuestions.filter(
                         followQuestion =>
-                            followQuestion.questionId !== questionId
+                            followQuestion.Question.questionId !== questionId
                     )
                 ]);
             }
