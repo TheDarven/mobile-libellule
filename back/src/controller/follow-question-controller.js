@@ -125,19 +125,7 @@ router.get('/', (req, res, next) => {
     // Check inputs
     const user = req.user
     getFollowQuestionByUserId(user.userId)
-    .then((follows) => {
-        const data = follows.map((follow) => {
-            return {
-                title: follow.Question.dataValues.title,
-                authorId: follow.Question.dataValues.authorId,
-                createdAt: follow.Question.creation_date,
-                authorName: follow.Question.User.name,
-                questionId: follow.Question.questionId,
-                nbComment: follow.Question.dataValues.nbComment,
-                followQuestionId: follow.followQuestionId,
-                followerId: follow.followerId
-            }
-        })
+    .then((data) => {
         res.json({ status: true, data })
     }).catch(error => next(error));
 });
