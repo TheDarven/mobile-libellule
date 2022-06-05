@@ -12,6 +12,7 @@ import {
     getAllFollowUsers
 } from '../../../api/follow-user-api';
 import { useIsFocused } from '@react-navigation/native';
+import LiText from '../../../component/LiText/LiText';
 
 const FollowUpUserList = () => {
     const [followUsers, setFollowUsers] = useState([]);
@@ -20,7 +21,7 @@ const FollowUpUserList = () => {
 
     useEffect(() => {
         if (!isFocus) {
-            return;
+            return () => {};
         }
         getAllFollowUsers()
             .then(res => {
@@ -48,13 +49,14 @@ const FollowUpUserList = () => {
     return (
         <>
             <LiMainView type={MainContent.default} style={{ paddingBottom: 0 }}>
-                <LiTitle style={{ paddingHorizontal: Spacings._8 }}>
-                    Utilisateurs suivis ({followUsers.length})
-                </LiTitle>
+                <LiTitle>Utilisateurs suivis ({followUsers.length})</LiTitle>
             </LiMainView>
             <View>
                 <LiMainFlatList
                     horizontal={true}
+                    ListEmptyComponent={() => (
+                        <LiText>Vous ne suivez aucun utilisateur !</LiText>
+                    )}
                     data={followUsers}
                     renderItem={item => (
                         <FollowUpUserItem
@@ -62,7 +64,8 @@ const FollowUpUserList = () => {
                             removeFollowUser={removeFollowUser}
                         />
                     )}
-                    type={MainContent.default}
+                    type={MainContent.card}
+                    contentContainerStyle={{ paddingRight: Spacings._20 }}
                     style={{ paddingTop: Spacings._0 }}
                     ItemSeparatorComponent={() => (
                         <View style={{ width: Spacings._16 }} />

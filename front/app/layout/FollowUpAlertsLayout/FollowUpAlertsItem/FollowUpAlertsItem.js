@@ -25,7 +25,14 @@ const FollowUpAlertsItem = ({ item }) => {
                     alerts={followItem.alerts}
                 />
             )}
-            {followItem.type === FollowUpType.user && <FollowUserAlert />}
+            {followItem.type === FollowUpType.user && (
+                <FollowUserAlert
+                    userName={followItem.User.displayName}
+                    updateDate={followItem.edition_date}
+                    questions={followItem.questions}
+                    comments={followItem.comments}
+                />
+            )}
         </LiMainView>
     );
 };

@@ -27,7 +27,7 @@ const FollowUpAlertsLayout = () => {
     const isFocus = useIsFocused();
 
     useEffect(() => {
-        setAlerts([...questionAlerts, userAlerts]);
+        setAlerts([...questionAlerts, ...userAlerts]);
     }, [questionAlerts, userAlerts]);
 
     useEffect(() => {
@@ -46,9 +46,18 @@ const FollowUpAlertsLayout = () => {
                 }
             })
             .catch(() => setQuestionAlerts([]));
-        getAllFollowUserAlerts().then(res => {
-            // console.log(res.data);
-        });
+        getAllFollowUserAlerts()
+            .then(res => {
+                if (res.data.status && res.data.data) {
+                    const formattedUsers = res.data.data.map(user => {
+                        return { ...user, type: FollowUpType.user };
+                    });
+                    setUserAlerts(formattedUsers);
+                } else {
+                    setUserAlerts([]);
+                }
+            })
+            .catch(() => setUserAlerts([]));
     }, [isFocus]);
 
     return (
