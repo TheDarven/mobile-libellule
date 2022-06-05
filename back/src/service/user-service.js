@@ -23,7 +23,7 @@ async function loginUser(name, password) {
     }
 }
 
-async function registerUser(name, password) {
+async function registerUser(name, password, isAdmin = false) {
     // Verify if name already use
     const userWithSameName = await userModel.findOne({
         where: { name }
@@ -36,7 +36,7 @@ async function registerUser(name, password) {
     try {
         // Fetch user name from external API
         const generatedName = await getRandomUsername()
-        const user = await userModel.create({ name, password, displayName: generatedName })
+        const user = await userModel.create({ name, password, displayName: generatedName, isAdmin })
         return {
             response: USER_CREATED_WITH_SUCCESS,
             data: createJwtToken(user)
@@ -45,6 +45,10 @@ async function registerUser(name, password) {
         console.log(err);
         throw new CodeError(USER_CREATION_FAILED, httpStatus.INTERNAL_SERVER_ERROR)
     }
+}
+
+async function createAdmin(name, password) {
+    return await registerUser(name, password, true);
 }
 
 async function getUserById(userId) {
@@ -140,4 +144,4 @@ function getRandomUsername() {
     })
 }
 
-module.exports = { loginUser, registerUser, getUserById, getUserByName, createJwtToken }
+module.exports = { loginUser, registerUser, createAdmin, getUserById, getUserByName, createJwtToken }

@@ -48,7 +48,7 @@ async function deleteComment(commentId, user)
 {
     // Check Permission
     const comment = await commentModel.findOne({ where: { commentId, authorId: user.userId } });
-    if (comment == null) {
+    if (!user.isAdmin && comment == null) {
         throw new CodeError(COMMENT_MISSING_PERMISSION, httpStatus.INTERNAL_SERVER_ERROR)
     }
 

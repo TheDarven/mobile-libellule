@@ -6,7 +6,8 @@ const { INVALID_TOKEN, QUESTION_CREATED_WITH_SUCCESS, QUESTION_BODY_INVALID_CONT
     QUESTION_EDITED_WITH_SUCCESS, QUESTION_DELETED_WITH_SUCCESS, QUESTION_NOT_IDENTIFIED, USER_NOT_IDENTIFIED
 } = require("../util/status-message")
 const { getUser } = require('../util/tests/model-utils')
-const { getQuestionByTitle } = require('../service/question-service')
+const { getQuestionByTitle, createQuestion } = require('../service/question-service')
+const { createAdmin, getUserById } = require('../service/user-service')
 
 const BASIC_ENDPOINT = '/api/questions/'
 const SPECIFIC_ENDPOINT = '/api/questions/users/'
@@ -20,7 +21,7 @@ jest.setTimeout(300000);
 
 describe('Question Endpoint Test', () => {
 
-    let token, userID;
+    let token, userID, adminToken;
 
     it('fill token & id', async () => {
         const data = await getUser(QACCOUNT_NAME, QACCOUNT_PASSWORD);
@@ -30,6 +31,14 @@ describe('Question Endpoint Test', () => {
 
         token = data.token;
         userID = data.id;
+
+        const adminUser = await createAdmin("QuestionAdmin", "Admin");
+
+        expect(adminUser).toBeDefined();
+        expect(adminUser).not.toBeNull();
+        expect(adminUser.data).toBeDefined();
+
+        adminToken = adminUser.data;
     })
 
     describe('Question Create Test', () => {
@@ -355,6 +364,24 @@ describe('Question Endpoint Test', () => {
 
                     expect(body.response).toBe(QUESTION_NOT_IDENTIFIED)
                 })
+        })
+
+        it('should test admin deletion', async () => {
+            const user = await getUserById(userID);
+            const questionData = await createQuestion(QUESTION_CONTENT, QUESTION_TITLE, user);
+
+            await supertest(app)
+            .delete(BASIC_ENDPOINT + `${questionData.data.questionId}/`)
+            .set('Authorization', adminToken)
+            .send()
+            .expect(httpStatus.OK)
+            .then((response) => {
+                const body = response._body;
+
+                expect(body.status).toBe(true)
+
+                expect(body.response).toBe(QUESTION_DELETED_WITH_SUCCESS)
+            })
         })
     })
 })
