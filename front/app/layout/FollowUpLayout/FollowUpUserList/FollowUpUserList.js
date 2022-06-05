@@ -48,7 +48,9 @@ const FollowUpUserList = () => {
     return (
         <>
             <LiMainView type={MainContent.default} style={{ paddingBottom: 0 }}>
-                <LiTitle>Utilisateurs suivis ({followUsers.length})</LiTitle>
+                <LiTitle style={{ paddingHorizontal: Spacings._8 }}>
+                    Utilisateurs suivis ({followUsers.length})
+                </LiTitle>
             </LiMainView>
             <View>
                 <LiMainFlatList
@@ -60,9 +62,8 @@ const FollowUpUserList = () => {
                             removeFollowUser={removeFollowUser}
                         />
                     )}
-                    type={MainContent.card}
+                    type={MainContent.default}
                     style={{ paddingTop: Spacings._0 }}
-                    contentContainerStyle={{ paddingRight: Spacings._20 }}
                     ItemSeparatorComponent={() => (
                         <View style={{ width: Spacings._16 }} />
                     )}
