@@ -145,7 +145,7 @@ describe('Follow User Endpoint Test', () => {
         })
     });
     describe('Follow User Get Test', () => {
-        let followId, anotherFollowId, anotherUserId;
+        let followId, anotherUserId;
 
         it("fill follow user", async () => {
 
@@ -160,7 +160,6 @@ describe('Follow User Endpoint Test', () => {
             const anotherFollow = await getFollowUser(follower.id, anotherUser.id);
 
             followId = follow.followUserId;
-            anotherFollowId = anotherFollow.followUserId;
 
             expect(follow).toBeDefined();
             expect(anotherFollow).toBeDefined();
@@ -169,15 +168,17 @@ describe('Follow User Endpoint Test', () => {
         it('should get all follow user from user', async () => {
             const expectedResult = [
                 {
-                    "followUserId": followId,
-                    "targetId": target.id,
-                    "userId": follower.id
+                    "target_id": anotherUserId,
+                    "User": {
+                        userId: anotherUserId
+                    },
                 },
                 {
-                    "followUserId": anotherFollowId,
-                    "targetId": anotherUserId,
-                    "userId": follower.id
-                }
+                    "target_id": target.id,
+                    "User": {
+                        userId: target.id
+                    },
+                },
             ]
             await supertest(app)
             .get(FOLLOW_USER_ENDPOINT)

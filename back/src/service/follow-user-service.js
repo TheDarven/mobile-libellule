@@ -10,6 +10,8 @@ const {
 } = require("../util/status-message");
 const { CodeError } = require("../util/error-handler");
 const httpStatus = require("http-status");
+const sequelize = require('sequelize');
+const user = require("../model/user");
 
 async function createFollowUser({ targetId, userId })
 {
@@ -65,11 +67,42 @@ async function getFollowUserById({ targetId, userId}) {
 async function getFollowUserByUserId(userId) {
     try {
         return await followUserModel.findAll({
+            attributes: ['target_id', 'questionAlerts', 'commentAlerts'],
             where: {
                 userId
-            }
+            },
+            include: [
+                { 
+                    model: user,
+                    as: "User",
+                    attributes: {
+                        include: [
+                            [
+                                sequelize.literal(`
+                                (SELECT COUNT(*) FROM Comments where author_id = \`User\`.\`user_id\`)
+                                `),
+                                "nbComment"
+                            ],
+                            [
+                                sequelize.literal(`
+                                (SELECT COUNT(*) FROM Questions where author_id = \`User\`.\`user_id\`)
+                                `),
+                                "nbQuestion"
+                            ],
+                            [
+                                sequelize.literal(`
+                                (SELECT COUNT(*) FROM FollowUsers where target_id = \`User\`.\`user_id\`)
+                                `),
+                                "nbFollower"
+                            ],
+                        ],
+                        exclude: ["name", "password"]
+                    }
+                },
+            ], order: [['creation_date','DESC']]
         })
     } catch (err) {
+        console.log(err)
         return null
     }
 }

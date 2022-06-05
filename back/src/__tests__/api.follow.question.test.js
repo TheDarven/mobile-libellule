@@ -173,16 +173,21 @@ describe('Follow Question Endpoint Test', () => {
 
         })
         it('should get all follow question from user', async () => {
+            // Trié par ordre du plus récent en terme de création
             const expectedResult = [
                 {
                     "followQuestionId": anotherFollowId,
                     "followerId": follower.id,
-                    "questionId": anotherQuestionId
+                    Question: { 
+                        "questionId": anotherQuestionId
+                    }
                 },
                 {
                     "followQuestionId": followId,
                     "followerId": follower.id,
-                    "questionId": questionID
+                    Question: {
+                        "questionId": questionID
+                    }
                 },
             ]
             await supertest(app)
@@ -270,17 +275,17 @@ describe('Follow Question Endpoint Test', () => {
         it('should get all follow question from user with alerts', async () => {
             const expectedResult = [
                 {
-                    questionId: question.questionId,
-                    authorId: question.authorId,
-                    title: question.title,
-                    content: question.content,
-                    alerts: 1
-                },
-                {
                     questionId: anotherQuestion.questionId,
                     title: anotherQuestion.title,
                     authorId: question.authorId,
                     content: anotherQuestion.content,
+                    alerts: 1
+                },
+                {
+                    questionId: question.questionId,
+                    authorId: question.authorId,
+                    title: question.title,
+                    content: question.content,
                     alerts: 1
                 }
             ]

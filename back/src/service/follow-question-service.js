@@ -94,7 +94,7 @@ async function getFollowQuestionByUserId(userId) {
             ], order: [
                 ['creation_date', 'DESC']
             ], attributes: {
-                exclude: ["edition_date", "alerts"]
+                exclude: ["edition_date", "alerts", "questionId"]
             }
         })
     } catch (err) {
@@ -126,7 +126,7 @@ async function getUpdatedFollowQuestionByUserId(userId) {
                         ]
                     }
                 },
-            ]
+            ], order: [['creation_date', 'DESC']]
         });
     } catch (err) {
         console.log(err)

@@ -99,12 +99,20 @@ router.get('/', (req, res, next) => {
                 {
                     "followUserId": 1,
                     "followerId": 2214,
-                    "userId": 1152
+                    "userId": 1152,
+                    "name": "dragonfly",
+                    "nbComment": 50,
+                    "nbQuestions": 50,
+                    "nbFollowers": 50
                 },
                 {
                     "followUserId": 2,
                     "followerId": 2214,
-                    "userId": 4513
+                    "userId": 4513,
+                    "name": "butterfly",
+                    "nbComment": 60,
+                    "nbQuestions": 60,
+                    "nbFollowers": 60
                 }
             ]
         },
@@ -181,12 +189,12 @@ router.get('/alerts/', (req, res, next) => {
     getFollowUserByUserId(user.userId)
     .then((follows) => {
         const promise = follows.map(async (follow) => {
-            const questions = await getLastQuestionsFromUser({ authorId: follow.targetId, nbQuestion: follow.questionAlerts });
-            const comments = await getLastCommentsFromUser({ authorId: follow.targetId, nbComment: follow.commentAlerts });
+            const questions = await getLastQuestionsFromUser({ authorId: follow.User.userId, nbQuestion: follow.questionAlerts });
+            const comments = await getLastCommentsFromUser({ authorId: follow.User.userId, nbComment: follow.commentAlerts });
             return {
                 questions,
                 comments,
-                targetId: follow.targetId,
+                targetId: follow.User.userId,
             }
         });
         Promise.all(promise).then((data) => {

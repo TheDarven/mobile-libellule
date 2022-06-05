@@ -20,6 +20,11 @@ const followUser = db.define('FollowUser', {
         field: 'question_alerts',
         defaultValue: 0
     }
+}, 
+{
+    timestamps: true,
+    createdAt: 'creation_date',
+    updatedAt: 'edition_date'
 });
 
 oneToMany(followUser, user, {
