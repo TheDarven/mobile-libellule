@@ -7,9 +7,7 @@ const PostAuthor = ({ author, style }) => {
         ...style
     };
 
-    return (
-        <LiText style={authorStyle}>{author}</LiText>
-    );
+    return <LiText style={authorStyle}>{author}</LiText>;
 };
 
 export default PostAuthor;
