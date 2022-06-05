@@ -67,16 +67,16 @@ const CommentLayout = ({
         <View style={commentStyle}>
             <PostHeader author={authorName} date={date} />
             <LiText style={commentContentStyle}>{content}</LiText>
-            {isAuthor() && (
-                <ActionPost>
-                    <Reaction
-                        style={{
-                            paddingLeft: Spacings._0
-                        }}
-                    />
+            <ActionPost>
+                <Reaction
+                    style={{
+                        paddingLeft: Spacings._0
+                    }}
+                />
+                {isAuthor() && (
                     <DeletePost deletePost={onDeleteCommentClicked} />
-                </ActionPost>
-            )}
+                )}
+            </ActionPost>
         </View>
     );
 };

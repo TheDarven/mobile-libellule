@@ -3,13 +3,19 @@ import { View } from 'react-native';
 import { cardHeaderStyle } from './PostHeaderStyle';
 import PostAuthor from './PostAuthor/PostAuthor';
 import PostDate from './PostDate/PostDate';
+import Spacings from '../../../styles/spacings';
 
-const PostHeader = ({ author, date }) => {
+const PostHeader = ({ author, date, children }) => {
     return (
-        <View style={cardHeaderStyle}>
-            <PostAuthor author={author} style={{ flex: 1 }} />
-            <PostDate date={date} />
-        </View>
+        <>
+            <View style={{ marginBottom: Spacings._8 }}>
+                <View style={cardHeaderStyle}>
+                    <PostAuthor author={author} style={{ flex: 1 }} />
+                    <PostDate date={date} />
+                </View>
+                {children}
+            </View>
+        </>
     );
 };
 

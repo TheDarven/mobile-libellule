@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import LiTitle from '../../component/LiTitle/LiTitle';
 import Fonts from '../../styles/fonts';
 import PostHeader from '../../component/Post/PostHeader/PostHeader';
@@ -15,10 +15,15 @@ import ActionPost from '../../component/Post/ActionPost/ActionPost';
 import FollowUp, { FollowType } from '../../component/Post/FollowUp/FollowUp';
 import Reaction from '../../component/Post/Reaction/Reaction';
 import {
-    createFollow,
-    deleteFollow,
+    createFollowQuestion,
+    deleteFollowQuestion,
     getFollowOfQuestion
 } from '../../api/follow-question-api';
+import {
+    createFollowUser,
+    deleteFollowUser,
+    getFollowUser
+} from '../../api/follow-user-api';
 
 const QuestionLayout = ({
     questionId,
@@ -28,27 +33,48 @@ const QuestionLayout = ({
     content,
     creationDate
 }) => {
-    const [isFollowing, setIsFollowing] = useState(false);
+    const [isFollowingQuestion, setIsFollowingQuestion] = useState(false);
+    const [isFollowingUser, setIsFollowingUser] = useState(false);
 
     const { userId, isAuth } = useAuth().authContext;
 
     const navigation = useNavigation();
 
+    const isAuthor = useCallback(() => {
+        return isAuth() && authorId === userId;
+    }, [isAuth, authorId, userId]);
+
     useEffect(() => {
+        if (!isAuth() || isAuthor()) {
+            return;
+        }
+
         getFollowOfQuestion(questionId)
             .then(res => {
                 if (res.data.status) {
-                    setIsFollowing(res.data.data != null);
+                    setIsFollowingQuestion(res.data.data != null);
                 } else {
-                    setIsFollowing(false);
+                    setIsFollowingQuestion(false);
                 }
             })
-            .catch(() => setIsFollowing(false));
-    }, [questionId]);
+            .catch(() => setIsFollowingQuestion(false));
+    }, [questionId, isAuth, isAuthor]);
 
-    function isAuthor() {
-        return isAuth() && authorId === userId;
-    }
+    useEffect(() => {
+        if (!isAuth() || isAuthor()) {
+            return;
+        }
+
+        getFollowUser(authorId)
+            .then(res => {
+                if (res.data.status) {
+                    setIsFollowingUser(res.data.data != null);
+                } else {
+                    setIsFollowingUser(false);
+                }
+            })
+            .catch(() => setIsFollowingUser(false));
+    }, [authorId, isAuth, isAuthor]);
 
     const isDarkMode = useColorScheme() === 'dark';
 
@@ -58,7 +84,7 @@ const QuestionLayout = ({
     };
 
     const separatorStyle = {
-        marginTop: isAuthor() ? Spacings._12 : Spacings._24,
+        marginTop: Spacings._12,
         marginBottom: Spacings._24
     };
 
@@ -91,17 +117,33 @@ const QuestionLayout = ({
         );
     }
 
-    function onFollowClicked() {
-        if (isFollowing) {
-            deleteFollow(questionId).then(res => {
+    function onFollowQuestionClicked() {
+        if (isFollowingQuestion) {
+            deleteFollowQuestion(questionId).then(res => {
                 if (res.data.status) {
-                    setIsFollowing(false);
+                    setIsFollowingQuestion(false);
                 }
             });
         } else {
-            createFollow(questionId).then(res => {
+            createFollowQuestion(questionId).then(res => {
                 if (res.data.status) {
-                    setIsFollowing(true);
+                    setIsFollowingQuestion(true);
+                }
+            });
+        }
+    }
+
+    function onFollowUserClicked() {
+        if (isFollowingUser) {
+            deleteFollowUser(authorId).then(res => {
+                if (res.data.status) {
+                    setIsFollowingUser(false);
+                }
+            });
+        } else {
+            createFollowUser(authorId).then(res => {
+                if (res.data.status) {
+                    setIsFollowingUser(true);
                 }
             });
         }
@@ -115,25 +157,36 @@ const QuestionLayout = ({
     return (
         <>
             <LiTitle fontSize={Fonts.size.xl_2}>{title}</LiTitle>
-            <PostHeader author={authorName} date={creationDate} />
-            <LiText style={contentTextStyle}>{content}</LiText>
-            {isAuthor() && (
-                <ActionPost>
-                    <Reaction
-                        style={{
-                            marginRight: Spacings._8,
-                            paddingLeft: Spacings._0
-                        }}
-                        nbReactions={4}
-                    />
+            <PostHeader author={authorName} date={creationDate}>
+                {!isAuthor() && (
                     <FollowUp
-                        isFollowing={isFollowing}
-                        followClicked={onFollowClicked}
+                        isFollowing={isFollowingUser}
+                        style={{ paddingLeft: 0 }}
+                        type={FollowType.user}
+                        followClicked={onFollowUserClicked}
+                    />
+                )}
+            </PostHeader>
+            <LiText style={contentTextStyle}>{content}</LiText>
+            <ActionPost>
+                <Reaction
+                    style={{
+                        marginRight: Spacings._8,
+                        paddingLeft: Spacings._0
+                    }}
+                    nbReactions={4}
+                />
+                {!isAuthor() && (
+                    <FollowUp
+                        isFollowing={isFollowingQuestion}
+                        followClicked={onFollowQuestionClicked}
                         type={FollowType.question}
                     />
+                )}
+                {isAuthor() && (
                     <DeletePost deletePost={onDeleteQuestionClicked} />
-                </ActionPost>
-            )}
+                )}
+            </ActionPost>
             <LiSeparator style={separatorStyle} />
             <LiTitle fontSize={Fonts.size.xl} style={titleCommentsPartStyle}>
                 Commentaires
