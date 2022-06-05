@@ -10,3 +10,11 @@ export const getAllQuestions = async () => {
 export const getQuestionById = async questionId => {
     return axios.get(`${API_QUESTIONS_URL}${questionId}`);
 };
+
+export const createQuestion = async (title, content) => {
+    return axios.post(`${API_QUESTIONS_URL}`, { title, content });
+};
+
+export const deleteQuestion = async questionId => {
+    return axios.delete(`${API_QUESTIONS_URL}${questionId}`);
+};

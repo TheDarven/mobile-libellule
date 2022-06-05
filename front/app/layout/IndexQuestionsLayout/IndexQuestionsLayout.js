@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import QuestionLayout from '../QuestionLayout/QuestionLayout';
-import { RefreshControl, View } from 'react-native';
+import { RefreshControl } from 'react-native';
 import Spacings from '../../styles/spacings';
 import LiTitle from '../../component/LiTitle/LiTitle';
 import { getAllQuestions } from '../../api/questions-api';
-import LiText from '../../component/LiText/LiText';
-import LiMainScrollView from '../../component/LiMainScrollView/LiMainScrollView';
+import LiMainFlatList from '../../component/LiMainFlatList/LiMainFlatList';
+import IndexQuestionsEmptyOrLoad from './IndexQuestionsEmptyOrLoad/IndexQuestionsEmptyOrLoad';
+import QuestionItem from './QuestionItem/QuestionItem';
+import { MainContent } from '../../component/LiMainView/LiMainView';
+import { useIsFocused } from '@react-navigation/native';
 
 const IndexQuestionsLayout = () => {
     const [questions, setQuestions] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    const isFocus = useIsFocused();
+
+    useEffect(() => {
+        setIsLoading(true);
+    }, [isFocus]);
+
     useEffect(() => {
         if (isLoading) {
             getAllQuestions()
                 .then(res => {
-                    setQuestions(res.data.data);
+                    setQuestions(res.data.data ?? []);
                     setIsLoading(false);
                 })
                 .catch(() => setIsLoading(false));
@@ -27,46 +35,27 @@ const IndexQuestionsLayout = () => {
     }
 
     return (
-        <LiMainScrollView
+        <LiMainFlatList
+            ListHeaderComponent={() => (
+                <LiTitle style={{ paddingHorizontal: Spacings._8 }}>
+                    Dernières questions
+                </LiTitle>
+            )}
             refreshControl={
                 <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
             }
+            ListEmptyComponent={() => (
+                <IndexQuestionsEmptyOrLoad isLoading={isLoading} />
+            )}
+            data={questions}
+            renderItem={item => <QuestionItem item={item} />}
             contentInsetAdjustmentBehavior="automatic"
-            contentContainerStyle={{ flexGrow: 1 }}>
-            <View style={{ flex: 1, marginBottom: Spacings._80 }}>
-                <LiTitle style={{ paddingHorizontal: Spacings._4 }}>
-                    Dernières questions
-                </LiTitle>
-                {isLoading || questions.length === 0 ? (
-                    <View
-                        style={{
-                            flex: 1,
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}>
-                        <LiText>
-                            {isLoading
-                                ? 'Chargement des questions…'
-                                : "Aucune question n'est présente"}
-                        </LiText>
-                    </View>
-                ) : (
-                    <>
-                        {questions.map(question => (
-                            <QuestionLayout
-                                key={question.id}
-                                author={question.User.display_name}
-                                content={question.content}
-                                title={question.title}
-                                nbComments={question.comm_amount}
-                                questionId={question.id}
-                                date={question.creation_date}
-                            />
-                        ))}
-                    </>
-                )}
-            </View>
-        </LiMainScrollView>
+            contentContainerStyle={{
+                flexGrow: 1,
+                paddingBottom: Spacings._80
+            }}
+            type={MainContent.card}
+        />
     );
 };
 

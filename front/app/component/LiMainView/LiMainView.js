@@ -3,11 +3,18 @@ import React from 'react';
 import LiViewStyle from './LiViewStyle';
 import { AppBackgroundColor } from '../../styles/colors';
 
+export const MainContent = {
+    default: 'default',
+    card: 'card'
+};
+
 const LiMainView = props => {
     const isDarkMode = useColorScheme() === 'dark';
 
+    const type = props.type ?? MainContent.default;
+
     const mergeStyle = {
-        ...LiViewStyle,
+        ...LiViewStyle[type],
         backgroundColor: isDarkMode
             ? AppBackgroundColor.dark
             : AppBackgroundColor.light,

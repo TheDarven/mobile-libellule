@@ -6,6 +6,7 @@ import SignUpScreen from '../screen/signup/SignUpScreen';
 import { withAuth } from '../context/auth-context';
 import NavigatorStyle from './NavigatorStyle';
 import QuestionScreen from '../screen/question/QuestionScreen';
+import CreateQuestionScreen from '../screen/create-question/CreateQuestionScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,11 @@ const AppNavigator = ({ authContext }) => {
                 </>
             )}
             <Stack.Screen name={'Question'} component={QuestionScreen} />
+            <Stack.Screen
+                name={'CreateQuestion'}
+                component={CreateQuestionScreen}
+                options={{ title: 'Créer une question' }}
+            />
             <Stack.Screen
                 name="Drawer"
                 component={AppDrawer}

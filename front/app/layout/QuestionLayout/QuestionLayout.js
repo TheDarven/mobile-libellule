@@ -1,37 +1,85 @@
 import React from 'react';
+import LiTitle from '../../component/LiTitle/LiTitle';
+import Fonts from '../../styles/fonts';
+import PostHeader from '../../component/Post/PostHeader/PostHeader';
+import LiText from '../../component/LiText/LiText';
+import { Alert, useColorScheme } from 'react-native';
+import LiSeparator from '../../component/LiSeparator/LiSeparator';
 import Spacings from '../../styles/spacings';
-import LiCard from '../../component/LiCard/LiCard';
+import Colors from '../../styles/colors';
+import { useAuth } from '../../context/auth-context';
+import { deleteQuestion as deleteQuestionAPI } from '../../api/questions-api';
 import { useNavigation } from '@react-navigation/native';
-import QuestionHeaderLayout from './QuestionHeaderLayout/QuestionHeaderLayout';
-import QuestionContentLayout from './QuestionContentLayout/QuestionContentLayout';
-import QuestionFooterLayout from './QuestionFooterLayout/QuestionFooterLayout';
+import DeletePost from '../../component/Post/DeletePost/DeletePost';
 
 const QuestionLayout = ({
     questionId,
     title,
-    author,
+    authorName,
+    authorId,
     content,
-    nbComments,
-    date
+    creationDate
 }) => {
+    const { userId, isAuth } = useAuth().authContext;
+
     const navigation = useNavigation();
 
-    const cardStyle = {
-        marginBottom: Spacings._16
+    function isAuthor() {
+        return isAuth() && authorId === userId;
+    }
+
+    const isDarkMode = useColorScheme() === 'dark';
+
+    const contentTextStyle = {
+        marginBottom: Spacings._0,
+        color: isDarkMode ? Colors.gray._0 : Colors.black._50
     };
 
+    const separatorStyle = {
+        marginTop: isAuthor() ? Spacings._12 : Spacings._24,
+        marginBottom: Spacings._24
+    };
+
+    const titleCommentsPartStyle = {
+        paddingBottom: Spacings._4
+    };
+
+    function deleteQuestion() {
+        deleteQuestionAPI(questionId).then(res => {
+            if (res.data?.status) {
+                navigation.navigate('Index');
+            }
+        });
+    }
+
+    function onDeleteQuestionClicked() {
+        Alert.alert(
+            'Supprimer la question',
+            'Êtes-vous certains de vouloir supprimer la question ? Cette suppression sera définitive.',
+            [
+                {
+                    text: 'Annuler',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Supprimer',
+                    onPress: () => deleteQuestion()
+                }
+            ]
+        );
+    }
+
     return (
-        <LiCard
-            style={cardStyle}
-            onTouchEnd={() => {
-                navigation.navigate('Question', {
-                    questionId
-                });
-            }}>
-            <QuestionHeaderLayout author={author} date={date} />
-            <QuestionContentLayout title={title} content={content} />
-            <QuestionFooterLayout nbComments={nbComments} />
-        </LiCard>
+        <>
+            <LiTitle fontSize={Fonts.size.xl_2}>{title}</LiTitle>
+            <PostHeader author={authorName} date={creationDate} />
+            <LiText style={contentTextStyle}>{content}</LiText>
+            {isAuthor() && <DeletePost deletePost={onDeleteQuestionClicked} />}
+            <LiSeparator style={separatorStyle} />
+            <LiTitle fontSize={Fonts.size.xl} style={titleCommentsPartStyle}>
+                Commentaires
+            </LiTitle>
+        </>
     );
 };
 

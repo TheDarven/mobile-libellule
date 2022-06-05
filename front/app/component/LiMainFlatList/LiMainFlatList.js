@@ -1,10 +1,10 @@
-import { ScrollView, useColorScheme } from 'react-native';
 import React from 'react';
+import { FlatList, useColorScheme } from 'react-native';
 import LiViewStyle from '../LiMainView/LiViewStyle';
 import { AppBackgroundColor } from '../../styles/colors';
 import { MainContent } from '../LiMainView/LiMainView';
 
-const LiMainScrollView = props => {
+const LiMainFlatList = props => {
     const isDarkMode = useColorScheme() === 'dark';
 
     const type = props.type ?? MainContent.default;
@@ -18,10 +18,13 @@ const LiMainScrollView = props => {
     };
 
     return (
-        <ScrollView {...props} style={mergeStyle}>
-            {props.children}
-        </ScrollView>
+        <FlatList
+            {...props}
+            data={props.data}
+            renderItem={props.renderItem}
+            style={mergeStyle}
+        />
     );
 };
 
-export default LiMainScrollView;
+export default LiMainFlatList;

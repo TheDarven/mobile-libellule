@@ -89,13 +89,14 @@ router.get('/whoami', (req, res) => {
             status: true,
             data: {
                 name: 'myname',
-                displayName: 'Libellule'
+                displayName: 'Libellule',
+                user_id: 1
             }
         }
     } */
 
     const user = req.user
-    res.json({ status: true, data: { name: user.name, displayName: user.displayName }})
+    res.json({ status: true, data: { name: user.name, displayName: user.displayName, userId: user.userId }})
 })
 
 function checkName(name) {

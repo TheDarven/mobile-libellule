@@ -1,6 +1,12 @@
 import Spacings from '../../styles/spacings';
 
 export default {
-    paddingVertical: Spacings._20,
-    paddingHorizontal: Spacings._12
+    default: {
+        paddingVertical: Spacings._20,
+        paddingHorizontal: Spacings._20
+    },
+    card: {
+        paddingVertical: Spacings._20,
+        paddingHorizontal: Spacings._12
+    }
 };

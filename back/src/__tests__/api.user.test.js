@@ -15,7 +15,7 @@ const WHOAMI_ENDPOINT = '/api/users/whoami'
 
 const ACCOUNT_NAME = "Test"
 const ACCOUNT_PASSWORD = "MyPassword"
-jest.setTimeout(30000);
+jest.setTimeout(300000);
 
 
 describe('User Endpoint Test',() => {
@@ -234,6 +234,8 @@ describe('User Endpoint Test',() => {
                     expect(body.status).toBe(true)
 
                     expect(body.data?.name).toBe(ACCOUNT_NAME)
+
+                    expect(body.data?.userId).toBeGreaterThan(0);
                 })
         })
 

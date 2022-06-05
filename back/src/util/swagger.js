@@ -59,6 +59,17 @@ const schema = {
                         example: 'I wonder why the sky is blue and not black.'
                     }
                 }
+            },
+            comment: {
+                type: 'object',
+                properties: {
+                    content: {
+                        type: 'string',
+                        required: true,
+                        maxLength: 10000,
+                        example: 'The sky was never blue, it IS black'
+                    }
+                }
             }
         },
         responses: {

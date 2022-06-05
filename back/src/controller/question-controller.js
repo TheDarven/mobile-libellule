@@ -103,9 +103,9 @@ router.get('/:question/', (req, res, next)  => {
 
     // Check Question
     getQuestionById(req.params.question)
-    .then((data) => {
+    .then((question) => {
 
-        if (data == null) {
+        if (question == null) {
             throw new CodeError(QUESTION_NOT_IDENTIFIED);
         }
 
@@ -165,16 +165,16 @@ router.get('/users/:user', (req, res, next)  => {
 
     // Check User
     getUserById(req.params.user)
-    .then((data) => {
+    .then((user) => {
 
-        if (data == null) {
+        if (user == null) {
             throw new CodeError(USER_NOT_IDENTIFIED);
         }
 
         // Launch Request
         const info = questionInfo();
-        info.include[0].where = {
-            userId: req.params.user
+        info.where = {
+            authorId: req.params.user
         };
         questionModel.findAll(info)
         .then((data) => {
@@ -217,8 +217,8 @@ router.post('/', (req, res, next) => {
 
     // Create question
     createQuestion(content, title, user)
-    .then(({response}) => {
-        res.json({ status: true, response })
+    .then(({response, data}) => {
+        res.json({ status: true, response, data })
     })
     .catch(error => next(error));
 });
@@ -226,7 +226,6 @@ router.post('/', (req, res, next) => {
 router.put('/:question/', (req, res, next) => {
     // #swagger.summary = 'Modifie une question'
     // #swagger.description = "Modifie une question spécifique appartenant à l'utilisateur actuellement connecté."
-    // #swagger.path = '/{question}/'
     // #swagger.parameters['authorization'] = { $ref: '#/components/parameters/authorization' }
     /* #swagger.requestBody = {
         required: true,
@@ -317,12 +316,13 @@ function questionInfo()
             'creation_date',
             'edition_date'
         ],
-        group: 'title',
+        group: [ 'id' ],
+        order: [ [ 'creation_date', 'DESC' ] ],
 
         include: [
             {
                 model: userModel,
-                attributes: [ 'display_name' ],
+                attributes: [ 'display_name', 'user_id' ],
                 required: true
             },
             {
