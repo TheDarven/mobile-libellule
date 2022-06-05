@@ -130,10 +130,10 @@ router.get('/', (req, res, next) => {
             return {
                 title: follow.Question.dataValues.title,
                 authorId: follow.Question.dataValues.authorId,
-                createdAt: follow.Question.createdAt,
+                createdAt: follow.Question.creation_date,
                 authorName: follow.Question.User.name,
                 questionId: follow.Question.questionId,
-                nbComment: follow.Question.nbComment,
+                nbComment: follow.Question.dataValues.nbComment,
                 followQuestionId: follow.followQuestionId,
                 followerId: follow.followerId
             }
