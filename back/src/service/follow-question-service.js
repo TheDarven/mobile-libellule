@@ -81,16 +81,21 @@ async function getFollowQuestionByUserId(userId) {
                                 (SELECT COUNT(*) FROM Comments where question_id = \`Question\`.\`question_id\`)
                                 `),
                                 "nbComment"
-                            ]
-                        ]
+                            ],
+                        ],
+                        exclude: ["content", "edition_date"]
                     },
                     include: {
                         model: user,
                         as: "User",
-                        attributes: ["name"]
+                        attributes: ["display_name", "user_id"]
                     }
                 },
-            ]
+            ], order: [
+                ['createdAt', 'DESC']
+            ], attributes: {
+                exclude: ["updatedAt", "alerts"]
+            }
         })
     } catch (err) {
         return null
