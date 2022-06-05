@@ -314,7 +314,7 @@ function questionInfo()
             ['question_id', 'id'],
             'title',
             'content',
-            [sequelize.fn('count', sequelize.col('comments.comment_id')), 'comm_amount'],
+            [sequelize.fn('count', sequelize.col('Comments.comment_id')), 'comm_amount'],
             'creation_date',
             'edition_date'
         ],
