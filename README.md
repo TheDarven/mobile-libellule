@@ -105,20 +105,20 @@ L'admin peut supprimer des questions ou des commentaires d'un utilisateur.
 ### Architecture de l'application
 ## Back
 Nous avons plusieurs dossiers qui ont chacuns leur fonctions :
-- Model
+- Model :
     Ce dossier contient la définition des modèles sequelize qui permettent de faire le lien avec
     la base de donnée
-- Service
+- Service :
     Ce dossier contient des fichiers qui exposent des fonctions utilisant sequelize et les 
     modèle créés.
-- Controller
+- Controller :
     Ce dossier contient les fichiers permettant de créer les routes de notre API, il utilise
     les fonctions exposées par les services
-- Util
+- Util :
     Ce dossier expose différentes fonctions utilisées dans l'ensemble de notre application,
     il possède aussi un sous dossier tests avec des fonctions dédiées
     exclusivement au tests.
-- __tests__
+- __tests__ :
     Ce dossier contient l'ensemble de nos tests End to End.
 
 ## Front
