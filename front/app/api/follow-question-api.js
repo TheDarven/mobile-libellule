@@ -14,3 +14,7 @@ export const createFollowQuestion = async questionId => {
 export const deleteFollowQuestion = async questionId => {
     return axios.delete(`${FOLLOW_QUESTION_URL}${questionId}`);
 };
+
+export const getAllFollowQuestions = async () => {
+    return axios.get(`${FOLLOW_QUESTION_URL}`);
+};

@@ -14,8 +14,7 @@ const QuestionFooter = ({ nbComments }) => {
     const cardFooterStyle = {
         justifyContent: 'space-between',
         flexDirection: 'row',
-        alignItems: 'center',
-        width: '100%'
+        alignItems: 'center'
     };
 
     const cardFooterCommentStyle = {
