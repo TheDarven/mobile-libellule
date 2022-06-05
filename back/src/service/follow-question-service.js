@@ -13,6 +13,7 @@ const httpStatus = require("http-status");
 const { Op } = require('sequelize');
 const sequelize = require('sequelize');
 const question = require('../model/question');
+const user = require('../model/user');
 
 async function createFollowQuestion({ followerId, questionId })
 {
@@ -69,7 +70,27 @@ async function getFollowQuestionByUserId(userId) {
         return await followQuestionModel.findAll({
             where: {
                 followerId: userId
-            }
+            }, include: [
+                { 
+                    model: question,
+                    as: "Question",
+                    attributes: {
+                        include: [
+                            [
+                                sequelize.literal(`
+                                (SELECT COUNT(*) FROM Comments where question_id = \`Question\`.\`question_id\`)
+                                `),
+                                "nbComment"
+                            ]
+                        ]
+                    },
+                    include: {
+                        model: user,
+                        as: "User",
+                        attributes: ["name"]
+                    }
+                },
+            ]
         })
     } catch (err) {
         return null
