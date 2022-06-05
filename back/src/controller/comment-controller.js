@@ -350,7 +350,7 @@ function commentInfo()
                 model: reactionModel,
                 required: false,
 
-                attributes: ['type']
+                attributes: []
                 //attributes: [ 'type', [sequelize.fn('count', sequelize.col('reaction_id')), 'amount'] ],
                 //group: 'type'
             }
