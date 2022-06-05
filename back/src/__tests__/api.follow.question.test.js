@@ -331,10 +331,14 @@ describe('Follow Question Endpoint Test', () => {
                     alerts: 1
                 },
                 {
-                    questionId: question.questionId,
-                    authorId: question.authorId,
-                    title: question.title,
-                    content: question.content,
+                    Question: {
+                        questionId: question.questionId,
+                        User: {
+                            user_id: question.authorId,
+                        },
+                        authorId: question.authorId,
+                        title: question.title,
+                    },
                     alerts: 1
                 }
             ]
