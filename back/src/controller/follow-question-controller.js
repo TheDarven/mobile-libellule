@@ -171,20 +171,13 @@ router.get('/alerts/', (req, res, next) => {
     const user = req.user;
     getUpdatedFollowQuestionByUserId(user.userId)
     .then((questionFollows) => {
-        // Promises management
-        const promises = questionFollows.map((follow) => {
-            return getQuestionById(follow.questionId);
+        const data = questionFollows.map((follow) => {
+            return {
+                ...((follow.dataValues).Question.dataValues),
+                alerts: follow.alerts
+            }
         })
-        Promise.all(promises).then((questions) => {
-            const data = questions.map((question) => {
-                const follow = questionFollows.find((follow) => follow.questionId = question.questionId)
-                return {
-                    ...(question.dataValues),
-                    alerts: follow.alerts
-                }
-            })
-            res.json({ status: true, data });
-        }).catch(error => next(error));
+        res.json({ status: true, data });
     }).catch(error => next(error));
 });
 

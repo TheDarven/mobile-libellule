@@ -1,9 +1,9 @@
 const followUserModel = require('../model/follow-user');
 const { 
-    FOLLOW_CREATED_WITH_SUCCESS,
+    FOLLOW_USER_CREATED_WITH_SUCCESS,
     FOLLOW_CREATION_FAILED,
     FOLLOW_NOT_IDENTIFIED, 
-    FOLLOW_DELETED_WITH_SUCCESS,
+    FOLLOW_USER_DELETED_WITH_SUCCESS,
     FOLLOW_DELETION_FAILED,
     FOLLOW_ALERT_RESET_WITH_SUCCESS,
     FOLLOW_ALERT_FAILED
@@ -14,13 +14,14 @@ const httpStatus = require("http-status");
 async function createFollowUser({ targetId, userId })
 {
     try {
+        if (targetId === userId) throw new CodeError(FOLLOW_CREATION_FAILED, httpStatus.INTERNAL_SERVER_ERROR);
         const follow = await followUserModel.create({
             targetId,
             userId
         })
         if (follow === null) throw new CodeError(FOLLOW_CREATION_FAILED, httpStatus.INTERNAL_SERVER_ERROR);
         return {
-            response: FOLLOW_CREATED_WITH_SUCCESS,
+            response: FOLLOW_USER_CREATED_WITH_SUCCESS,
             data: follow
         }
     } catch (err) {
@@ -40,7 +41,7 @@ async function deleteFollowUser({ userId, targetId })
         const data = await followUserModel.destroy({ where: { userId, targetId } });
 
         return {
-            response: FOLLOW_DELETED_WITH_SUCCESS,
+            response: FOLLOW_USER_DELETED_WITH_SUCCESS,
             data
         }
     } catch (err) {

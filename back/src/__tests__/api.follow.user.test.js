@@ -1,11 +1,11 @@
 const app = require('../app')
 const supertest = require('supertest')
 const httpStatus = require("http-status")
-const {
-    FOLLOW_CREATED_WITH_SUCCESS,
+const { 
+    FOLLOW_USER_CREATED_WITH_SUCCESS,
     INVALID_TOKEN,
     USER_NOT_IDENTIFIED,
-    FOLLOW_DELETED_WITH_SUCCESS,
+    FOLLOW_USER_DELETED_WITH_SUCCESS,
     FOLLOW_NOT_IDENTIFIED,
     FOLLOW_ALERT_RESET_WITH_SUCCESS
 } = require("../util/status-message");
@@ -54,7 +54,7 @@ describe('Follow User Endpoint Test', () => {
 
                 expect(body.status).toBe(true);
 
-                expect(body.response).toBe(FOLLOW_CREATED_WITH_SUCCESS)
+                expect(body.response).toBe(FOLLOW_USER_CREATED_WITH_SUCCESS)
             });
         });
         it('user should not exists', async () => {
@@ -110,7 +110,7 @@ describe('Follow User Endpoint Test', () => {
 
                 expect(body.status).toBe(true);
 
-                expect(body.response).toBe(FOLLOW_DELETED_WITH_SUCCESS)
+                expect(body.response).toBe(FOLLOW_USER_DELETED_WITH_SUCCESS)
             });
         });
         it('user should not exists', async () => {

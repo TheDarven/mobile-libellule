@@ -5,6 +5,7 @@ const { QUESTION_EDITED_WITH_SUCCESS, QUESTION_EDITION_FAILED, QUESTION_MISSING_
 } = require("../util/status-message");
 const { CodeError } = require("../util/error-handler");
 const httpStatus = require("http-status");
+const sequelize = require('sequelize');
 
 async function createQuestion(content, title, user)
 {
@@ -95,7 +96,17 @@ async function getLastQuestionsFromUser({ authorId, nbQuestion }) {
                 authorId 
             },
             order: [['edition_date', 'DESC']],
-            limit: nbQuestion
+            limit: nbQuestion,
+            attributes: {
+                include: [
+                    [
+                        sequelize.literal(`
+                        (SELECT COUNT(*) FROM Comments where question_id = \`Question\`.\`question_id\`)
+                        `),
+                        "nbComment"
+                    ]
+                ]
+            }
         })
     } catch (err) {
         return null;

@@ -1,9 +1,9 @@
 const followQuestionModel = require('../model/follow-question');
 const { 
-    FOLLOW_CREATED_WITH_SUCCESS,
+    FOLLOW_QUESTION_CREATED_WITH_SUCCESS,
     FOLLOW_CREATION_FAILED,
     FOLLOW_NOT_IDENTIFIED, 
-    FOLLOW_DELETED_WITH_SUCCESS,
+    FOLLOW_QUESTION_DELETED_WITH_SUCCESS,
     FOLLOW_DELETION_FAILED,
     FOLLOW_ALERT_FAILED,
     FOLLOW_ALERT_RESET_WITH_SUCCESS
@@ -11,6 +11,8 @@ const {
 const { CodeError } = require("../util/error-handler");
 const httpStatus = require("http-status");
 const { Op } = require('sequelize');
+const sequelize = require('sequelize');
+const question = require('../model/question');
 
 async function createFollowQuestion({ followerId, questionId })
 {
@@ -21,7 +23,7 @@ async function createFollowQuestion({ followerId, questionId })
         })
         if (follow === null) throw new CodeError(FOLLOW_CREATION_FAILED, httpStatus.INTERNAL_SERVER_ERROR);
         return {
-            response: FOLLOW_CREATED_WITH_SUCCESS,
+            response: FOLLOW_QUESTION_CREATED_WITH_SUCCESS,
             data: follow
         }
     } catch (err) {
@@ -41,7 +43,7 @@ async function deleteFollowQuestion({ questionId, followerId })
         const data = await followQuestionModel.destroy({ where: { questionId, followerId } });
 
         return {
-            response: FOLLOW_DELETED_WITH_SUCCESS,
+            response: FOLLOW_QUESTION_DELETED_WITH_SUCCESS,
             data
         }
     } catch (err) {
@@ -82,9 +84,26 @@ async function getUpdatedFollowQuestionByUserId(userId) {
                     { followerId: userId },
                     { alerts: { [Op.gt]: 0 } }
                 ]
-            }
+            },
+            include: [
+                { 
+                    model: question,
+                    as: "Question",
+                    attributes: {
+                        include: [
+                            [
+                                sequelize.literal(`
+                                (SELECT COUNT(*) FROM Comments where question_id = \`Question\`.\`question_id\`)
+                                `),
+                                "nbComment"
+                            ]
+                        ]
+                    }
+                },
+            ]
         });
     } catch (err) {
+        console.log(err)
         return null
     }
 }

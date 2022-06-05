@@ -94,7 +94,7 @@ router.get('/', (req, res, next) => {
     // #swagger.parameters['authorization'] = { $ref: '#/components/parameters/authorization' }
     /* #swagger.responses[200] = {
         schema: {
-             "status": true,
+            "status": true,
             "data": [
                 {
                     "followUserId": 1,
@@ -152,7 +152,7 @@ router.get('/alerts/', (req, res, next) => {
                             }
                         ]
                     }
-                ]
+                ],
                 "comments": [
                     {
                         "id": 1,
