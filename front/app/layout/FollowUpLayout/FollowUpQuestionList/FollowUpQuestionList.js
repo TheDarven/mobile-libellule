@@ -34,10 +34,6 @@ const FollowUpQuestionList = () => {
             .catch(() => setFollowQuestions([]));
     }, [isFocus]);
 
-    const separatorStyle = {
-        width: Spacings._16
-    };
-
     function unfollowQuestion(questionId) {
         deleteFollowQuestion(questionId).then(res => {
             if (res.data.status) {

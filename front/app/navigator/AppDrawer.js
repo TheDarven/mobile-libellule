@@ -141,7 +141,11 @@ const AppDrawer = () => {
                 }
             }}>
             <Drawer.Screen name={'Libellule'} component={AppDrawerScreen} />
-            <Drawer.Screen name={'Follow up'} options={{ title: 'Suivis' }} component={FollowUpScreen} />
+            <Drawer.Screen
+                name={'Follow up'}
+                options={{ title: 'Suivis' }}
+                component={FollowUpScreen}
+            />
         </Drawer.Navigator>
     );
 };
