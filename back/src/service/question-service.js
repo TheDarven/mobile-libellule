@@ -48,7 +48,7 @@ async function deleteQuestion(questionId, user)
 {
     // Check Permission
     const question = await questionModel.findOne({ where: { questionId, authorId: user.userId } });
-    if (question == null) {
+    if (!user.isAdmin && question == null) {
         throw new CodeError(QUESTION_MISSING_PERMISSION, httpStatus.INTERNAL_SERVER_ERROR)
     }
 

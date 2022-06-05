@@ -27,6 +27,12 @@ const user = db.define('User', {
         type: DataTypes.STRING(200),
         allowNull: false,
         field: 'display_name'
+    },
+    isAdmin: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        field: 'is_admin',
+        defaultValue: false
     }
 });
 

@@ -6,7 +6,8 @@ const { COMMENT_CREATED_WITH_SUCCESS, COMMENT_BODY_INVALID_CONTENT_LENGTH, COMME
     QUESTION_NOT_IDENTIFIED, COMMENT_DELETED_WITH_SUCCESS, USER_NOT_IDENTIFIED, INVALID_TOKEN
 } = require("../util/status-message")
 const { getUser, getQuestion } = require('../util/tests/model-utils')
-const { getFirstCommentFromQuestionId } = require('../service/comment-service')
+const { getFirstCommentFromQuestionId, createComment } = require('../service/comment-service')
+const { createAdmin, getUserById } = require('../service/user-service')
 
 const BASIC_ENDPOINT = '/api/comments/'
 const USER_ENDPOINT = '/api/comments/users/'
@@ -23,7 +24,7 @@ jest.setTimeout(300000);
 
 describe('Question Endpoint Test', () => {
 
-    let token, userID, question;
+    let token, userID, question, adminToken;
 
     it('fill content', async () => {
         const data = await getUser(CACCOUNT_NAME, CACCOUNT_PASSWORD);
@@ -39,6 +40,14 @@ describe('Question Endpoint Test', () => {
 
         expect(question).toBeDefined();
         expect(question).not.toBeNull();
+
+        const adminUser = await createAdmin("CommentAdmin", "Admin");
+
+        expect(adminUser).toBeDefined();
+        expect(adminUser).not.toBeNull();
+        expect(adminUser.data).toBeDefined();
+
+        adminToken = adminUser.data;
     })
 
     describe('Comment Create Test', () => {
@@ -357,6 +366,24 @@ describe('Question Endpoint Test', () => {
 
                     expect(body.response).toBe(COMMENT_NOT_IDENTIFIED)
                 })
+        })
+
+        it('should test admin deletion', async () => {
+            const user = await getUserById(userID);
+            const commentData = await createComment(COMMENT_CONTENT, question.questionId, user);
+
+            await supertest(app)
+            .delete(BASIC_ENDPOINT + `${commentData.data}/`)
+            .set('Authorization', adminToken)
+            .send()
+            .expect(httpStatus.OK)
+            .then((response) => {
+                const body = response._body;
+
+                expect(body.status).toBe(true)
+
+                expect(body.response).toBe(COMMENT_DELETED_WITH_SUCCESS)
+            })
         })
     })
 })
