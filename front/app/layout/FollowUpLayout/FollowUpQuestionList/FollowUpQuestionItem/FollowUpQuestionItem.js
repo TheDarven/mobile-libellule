@@ -8,11 +8,11 @@ const FollowUpQuestionItem = ({ item, unfollowQuestion }) => {
     return (
         <FollowUpQuestion
             index={index}
-            questionId={question.questionId}
-            title={question.title}
-            author={question.authorName}
-            date={question.createdAt}
-            nbComments={question.nbComment}
+            questionId={question.Question.questionId}
+            title={question.Question.title}
+            author={question.Question.User.display_name}
+            date={question.Question.creation_date}
+            nbComments={question.Question.nbComment}
             unfollowQuestion={unfollowQuestion}
         />
     );

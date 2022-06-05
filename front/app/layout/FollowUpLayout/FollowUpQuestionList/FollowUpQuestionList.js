@@ -24,7 +24,7 @@ const FollowUpQuestionList = () => {
         }
         getAllFollowQuestions()
             .then(res => {
-                if (res.data.status) {
+                if (res.data.status && res.data.data != null) {
                     setFollowQuestions(res.data.data);
                 } else {
                     setFollowQuestions([]);
@@ -33,10 +33,6 @@ const FollowUpQuestionList = () => {
             })
             .catch(() => setFollowQuestions([]));
     }, [isFocus]);
-
-    /*
-    questionId (+ unfollow), titre, auteur, nbComments, date
-     */
 
     const separatorStyle = {
         width: Spacings._16
@@ -79,12 +75,6 @@ const FollowUpQuestionList = () => {
                     )}
                 />
             </View>
-
-            {/*isLoading ? (
-                <FollowUpQuestionEmptyOrLoad isLoading={isLoading} />
-            ) : (
-                <></>
-            )*/}
         </>
     );
 };
