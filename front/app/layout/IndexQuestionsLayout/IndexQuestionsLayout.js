@@ -16,7 +16,9 @@ const IndexQuestionsLayout = () => {
     const isFocus = useIsFocused();
 
     useEffect(() => {
-        setIsLoading(true);
+        if (isFocus) {
+            setIsLoading(true);
+        }
     }, [isFocus]);
 
     useEffect(() => {
