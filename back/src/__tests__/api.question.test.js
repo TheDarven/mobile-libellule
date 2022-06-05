@@ -223,7 +223,7 @@ describe('Question Endpoint Test', () => {
                     const question = body.data[0];
                     expect(question.title).toBe(QUESTION_TITLE)
                     expect(question.content).toBe(QUESTION_CONTENT)
-                    expect(question.Reactions.length).toBe(0)
+                    //expect(question.Reactions.length).toBe(0)
                 })
         })
     })
@@ -244,7 +244,7 @@ describe('Question Endpoint Test', () => {
                     const question = body.data;
                     expect(question.title).toBe(QUESTION_TITLE)
                     expect(question.content).toBe(QUESTION_CONTENT)
-                    expect(question.Reactions.length).toBe(0)
+                    //expect(question.Reactions.length).toBe(0)
                 })
         })
 
@@ -277,7 +277,7 @@ describe('Question Endpoint Test', () => {
                     const question = body.data[0];
                     expect(question.title).toBe(QUESTION_TITLE)
                     expect(question.content).toBe(QUESTION_CONTENT)
-                    expect(question.Reactions.length).toBe(0)
+                    //expect(question.Reactions.length).toBe(0)
                 })
         })
 
