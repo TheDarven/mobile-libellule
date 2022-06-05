@@ -351,8 +351,8 @@ function commentInfo()
                 model: reactionModel,
                 required: false,
 
-                attributes: [ 'type', [sequelize.fn('count', sequelize.col('reaction_id')), 'amount'] ],
-                group: 'type'
+                //attributes: [ 'type', [sequelize.fn('count', sequelize.col('reaction_id')), 'amount'] ],
+                //group: 'type'
             }
         ]
     };
