@@ -4,7 +4,7 @@ const supertest = require('supertest')
 const httpStatus = require("http-status")
 const { REACTION_CREATED_WITH_SUCCESS, QUESTION_NOT_IDENTIFIED, REACTION_TYPE_NOT_IDENTIFIED, INVALID_TOKEN, COMMENT_NOT_IDENTIFIED, REACTION_DELETED_WITH_SUCCESS, REACTION_NO_LONGER_EXISTS, REACTION_MISSING_PERMISSION } = require("../util/status-message")
 const { getUser, getQuestion, getFirstComment, getRandomReactionType } = require('../util/tests/model-utils')
-const { REACTION_TYPES, repopulateReactionType } = require('../util/reaction-type')
+const { REACTION_TYPES } = require('../util/persistant-data')
 const reactionModel = require('../model/reaction')
 
 const BASIC_ENDPOINT = '/api/reactions/'
@@ -44,8 +44,7 @@ describe('Reaction Endpoint Test', () => {
 
         expect(comment).toBeDefined();
         expect(comment).not.toBeNull();
-
-        await repopulateReactionType();
+        
         const typeData = await getRandomReactionType();
 
         expect(typeData).toBeDefined();
