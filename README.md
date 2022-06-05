@@ -7,6 +7,7 @@ Ce projet est un réseau social anonyme ayant pour but de partager des questions
 
 ## API
 [API déployée sur heroku](https://libellule-production.herokuapp.com/)
+[Documentation]([API](https://libellule-production.herokuapp.com/doc)
 
 ## Backend
 ### Environnement
@@ -43,8 +44,11 @@ grace à la pipeline de tests.
 
 Il est possible que les tests échouent à cause du cache de sqlite, si c'est le cas, pensez à supprimer le fichier situé dans :
 /back/src/__tests__/db/test/db.sqlite
+(On utilise sqlite pour les tests uniquement, on utilise Mysql en prod et en dev)
 
 Relancez ensuite les tests.
+
+Ces tests sont des test END to END qui font tests directement les résultats des appels à notre API.
 
 ### Deploiement
 Le déploiement s'effectue automatiquement sur heroku lors d'un merge sur master, l'API est disponible à l'adresse suivante :
@@ -76,6 +80,48 @@ Diagramme de cas d'utilisation, Diagramme d'état transition, Diagramme d'éntit
 
 [Maquettes](https://www.figma.com/file/DxNNWNFoZhTLBHwLuq6jtT/Libellule-UI---Design?node-id=0%3A1)
 (Cliquez sur l'icone avec des petits ronds en haut à gauche pour accéder au différentes pages de l'applications)
+
+## Choix techniques
+### Webservice utilisé 
+Comme webservice nous avons choisi d'utiliser une API : [Species API](https://www.gbif.org/fr/developer/species)
+Nous l'utilisons afin de générer un pseudonyme aléatoire lors de l'inscription de nos utilisateur.
+L'implémentation est actuellement "bancale", elle a de grosses conséquences sur les performances de l'application
+(presque 5s de chargement pour s'inscrire). En effet nous récupérons un dataset (~5000 entrées) à chaque fois qu'on inscrit un 
+utilisateur, le mieux serait de copier ce dataset dans une table de notre base de donnée mais nous n'avons pas eu le temps
+d'implémenter cette solution.
+
+### Gestion des rôles
+On a 3 rôles,
+- Guest
+- Utilisateur
+- Admin
+
+Le guest a la possibilité de *consulter* l'ensemble des questions et commentaires.
+L'utilisateur peut consulter l'ensemble des questions et commentaires. Il peut aussi créer, modifier et supprimer ses propres
+questions/commentaire.
+Il peut aussi suivre des questions ou d'autres utilisateurs.
+L'admin peut supprimer des questions ou des commentaires d'un utilisateur.
+
+### Architecture de l'application
+## Back
+Nous avons plusieurs dossiers qui ont chacuns leur fonctions :
+- Model
+    Ce dossier contient la définition des modèles sequelize qui permettent de faire le lien avec
+    la base de donnée
+- Service
+    Ce dossier contient des fichiers qui exposent des fonctions utilisant sequelize et les 
+    modèle créés.
+- Controller
+    Ce dossier contient les fichiers permettant de créer les routes de notre API, il utilise
+    les fonctions exposées par les services
+- Util
+    Ce dossier expose différentes fonctions utilisées dans l'ensemble de notre application,
+    il possède aussi un sous dossier tests avec des fonctions dédiées
+    exclusivement au tests.
+- __tests__
+    Ce dossier contient l'ensemble de nos tests End to End.
+
+## Front
 
 ## Done et TODO
 Concrètement, les choses suivantes sont actuellement implémentées dans l'application :
