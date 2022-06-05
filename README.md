@@ -104,7 +104,7 @@ Il peut aussi suivre des questions ou d'autres utilisateurs.
 L'admin peut supprimer des questions ou des commentaires d'un utilisateur.
 
 ### Architecture de l'application
-## Back
+#### Back
 Nous avons plusieurs dossiers qui ont chacuns leur fonctions :
 - Model :
     Ce dossier contient la définition des modèles sequelize qui permettent de faire le lien avec
@@ -122,7 +122,7 @@ Nous avons plusieurs dossiers qui ont chacuns leur fonctions :
 - __tests__ :
     Ce dossier contient l'ensemble de nos tests End to End.
 
-## Front
+#### Front
 
 ## Done et TODO
 Concrètement, les choses suivantes sont actuellement implémentées dans l'application :
