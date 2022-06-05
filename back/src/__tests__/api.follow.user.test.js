@@ -241,7 +241,7 @@ describe('Follow User Endpoint Test', () => {
             });
         });
     });
-    describe('Follow Question Alert Test', () => {
+    describe('Follow User Alert Test', () => {
         let followerQuestion, targetQuestion, targetComment;
         // target, follower
         it("fill follow user", async () => {

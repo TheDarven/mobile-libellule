@@ -15,7 +15,12 @@ const followQuestion = db.define('FollowQuestion', {
         type: DataTypes.INTEGER,
         field: 'alerts',
         defaultValue: 0
-    }
+    },
+}, 
+{
+    timestamps: true,
+    createdAt: 'creation_date',
+    updatedAt: 'edition_date'
 });
 
 oneToMany(followQuestion, user, {

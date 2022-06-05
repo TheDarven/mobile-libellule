@@ -92,9 +92,9 @@ async function getFollowQuestionByUserId(userId) {
                     }
                 },
             ], order: [
-                ['createdAt', 'DESC']
+                ['creation_date', 'DESC']
             ], attributes: {
-                exclude: ["updatedAt", "alerts"]
+                exclude: ["edition_date", "alerts"]
             }
         })
     } catch (err) {
