@@ -70,6 +70,15 @@ const schema = {
                         example: 'The sky was never blue, it IS black'
                     }
                 }
+            },
+            reaction: {
+                type: 'object',
+                properties: {
+                    type: {
+                        type: 'integer',
+                        required: true
+                    }
+                }
             }
         },
         responses: {

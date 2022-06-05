@@ -12,15 +12,12 @@ const QuestionFooter = ({ nbComments }) => {
     const iconColor = isDarkMode ? Colors.gray._0 : Colors.black._20;
 
     const cardFooterStyle = {
-        flex: 1,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        alignItems: 'center',
-        width: '100%'
+        alignItems: 'center'
     };
 
     const cardFooterCommentStyle = {
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         marginLeft: Spacings._4

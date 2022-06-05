@@ -5,6 +5,7 @@ const { QUESTION_EDITED_WITH_SUCCESS, QUESTION_EDITION_FAILED, QUESTION_MISSING_
 } = require("../util/status-message");
 const { CodeError } = require("../util/error-handler");
 const httpStatus = require("http-status");
+const sequelize = require('sequelize');
 
 async function createQuestion(content, title, user)
 {
@@ -48,7 +49,7 @@ async function deleteQuestion(questionId, user)
 {
     // Check Permission
     const question = await questionModel.findOne({ where: { questionId, authorId: user.userId } });
-    if (question == null) {
+    if (!user.isAdmin && question == null) {
         throw new CodeError(QUESTION_MISSING_PERMISSION, httpStatus.INTERNAL_SERVER_ERROR)
     }
 
@@ -76,8 +77,7 @@ async function getQuestionById(questionId) {
     }
 }
 
-async function getQuestionByTitle(title)
-{
+async function getQuestionByTitle(title) {
     try {
         return await questionModel.findOne({
             where: {
@@ -89,4 +89,28 @@ async function getQuestionByTitle(title)
     }
 }
 
-module.exports = { createQuestion, updateQuestion, deleteQuestion, getQuestionById, getQuestionByTitle }
+async function getLastQuestionsFromUser({ authorId, nbQuestion }) {
+    try {
+        return await questionModel.findAll({
+            where: {
+                authorId 
+            },
+            order: [['edition_date', 'DESC']],
+            limit: nbQuestion,
+            attributes: {
+                include: [
+                    [
+                        sequelize.literal(`
+                        (SELECT COUNT(*) FROM Comments where question_id = \`Question\`.\`question_id\`)
+                        `),
+                        "nbComment"
+                    ]
+                ]
+            }
+        })
+    } catch (err) {
+        return null;
+    }
+}
+
+module.exports = { createQuestion, updateQuestion, deleteQuestion, getQuestionById, getQuestionByTitle, getLastQuestionsFromUser }

@@ -1,7 +1,14 @@
 const { loginUser, registerUser, getUserByName } = require("../../service/user-service");
 const { createQuestion, getQuestionByTitle } = require("../../service/question-service");
+const { createComment, getCommentById, getFirstCommentFromQuestionId } = require('../../service/comment-service')
+const { createFollowQuestion, getFollowQuestionById, alertQuestionFollowers } = require("../../service/follow-question-service");
+const { createFollowUser, getFollowUserById, alertUserFollowersQuestion, alertUserFollowersComment } = require("../../service/follow-user-service");
 const { CodeError } = require("../error-handler");
-const { QUESTION_NOT_IDENTIFIED } = require("../status-message");
+const { QUESTION_NOT_IDENTIFIED, COMMENT_NOT_IDENTIFIED, FOLLOW_NOT_IDENTIFIED } = require("../status-message");
+const reactionTypeModel = require("../../model/reaction-type");
+const reactionModel = require("../../model/reaction");
+const followQuestionModel = require("../../model/follow-question");
+const followUserModel = require("../../model/follow-user");
 
 async function getUser(name, password)
 {
@@ -38,4 +45,139 @@ async function getQuestion(title, content, user)
     }
 }
 
-module.exports = { getUser, getQuestion }
+async function getFirstComment(questionId, content, user)
+{
+    try {
+        const comment = await getFirstCommentFromQuestionId(questionId);
+        if (comment == null) {
+            throw new CodeError(COMMENT_NOT_IDENTIFIED);
+        }
+        return comment;
+    } catch(err) {
+        await createComment(content, questionId, user);
+        return await getFirstCommentFromQuestionId(questionId);
+    }
+}
+
+async function getFirstQuestionReaction(questionId, type)
+{
+    try {
+        return await reactionModel.findOne({
+            where: { questionId, type }
+        });
+    } catch(err) {
+        return null;
+    }
+}
+
+async function getFirstCommentReaction(commentId, type)
+{
+    try {
+        return await reactionModel.findOne({
+            where: { commentId, type }
+        });
+    } catch(err) {
+        return null;
+    }
+}
+
+async function getRandomReactionType()
+{
+    try {
+        const count = await reactionTypeModel.count();
+        const id = Math.floor(Math.random() * count) + 1;
+
+        return await reactionTypeModel.findOne({
+            where: {
+                reactionTypeId: id
+            }
+        });
+    } catch(err) {
+        return null;
+    }
+}
+async function getFollowQuestion(followerId, questionId) {
+    try {
+        const follow = await getFollowQuestionById({
+            followerId,
+            questionId
+        });
+        if (follow == null) {
+            throw new CodeError(FOLLOW_NOT_IDENTIFIED);
+        }
+        return follow;
+    } catch(err) {
+        await createFollowQuestion({ followerId, questionId });
+        return  await getFollowQuestionById({
+            followerId,
+            questionId
+        });
+    }
+}
+
+async function getFollowUser(followerId, targetId) {
+    try {
+        const follow = await getFollowUserById({
+            userId: followerId,
+            targetId
+        });
+        if (follow == null) {
+            throw new CodeError(FOLLOW_NOT_IDENTIFIED);
+        }
+        return follow;
+    } catch(err) {
+        await createFollowUser({ userId: followerId, targetId });
+        return await getFollowUserById({
+            userId: followerId,
+            targetId
+        });
+    }
+}
+
+async function addAlert(questionId) {
+    return await alertQuestionFollowers({ questionId });
+}
+
+async function clearFollowQuestions() {
+    await followQuestionModel.destroy({
+        where: {},
+        truncate: true
+    });
+}
+
+async function clearFollowUsers() {
+    await followUserModel.destroy({
+        where: {},
+        truncate: true
+    });
+}
+
+async function addComment(content, questionId, user) {
+    const res = await createComment(content, questionId, user);
+    return await getCommentById(res.data);
+}
+
+async function addUserQuestionAlert(user) {
+    return await alertUserFollowersQuestion({ targetId: user });
+}
+
+async function addUserCommentAlert(user) {
+    return await alertUserFollowersComment({ targetId: user });
+}
+
+module.exports = { 
+    getUser,
+    getQuestion,
+    getFollowQuestion,
+    getFirstComment,
+    getRandomReactionType,
+    getFirstQuestionReaction,
+    getFirstCommentReaction,
+    clearFollowQuestions,
+    clearFollowUsers,
+    getFollowUser,
+    addAlert,
+    addComment,
+    addUserQuestionAlert,
+    addUserCommentAlert
+}

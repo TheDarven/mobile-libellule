@@ -17,6 +17,7 @@ import {
     logStatusViewStyle,
     menuViewStyle
 } from './AppDrawerStyle';
+import FollowUpScreen from '../screen/follow-up/FollowUpScreen';
 
 const CustomDrawerContent = props => {
     const { authContext } = useAuth();
@@ -56,6 +57,25 @@ const CustomDrawerContent = props => {
                 }}>
                 {authContext.isAuth() ? (
                     <>
+                        <DrawerItem
+                            inactiveTintColor={inactiveTintColor}
+                            pressColor={pressColor}
+                            label={'Questions'}
+                            onPress={() => {
+                                props.navigation.closeDrawer();
+                                props.navigation.navigate('Libellule');
+                            }}
+                        />
+                        <DrawerItem
+                            inactiveTintColor={inactiveTintColor}
+                            pressColor={pressColor}
+                            label={'Suivis'}
+                            onPress={() => {
+                                props.navigation.closeDrawer();
+                                props.navigation.navigate('Follow up');
+                            }}
+                        />
+                        <View style={{ flex: 1 }} />
                         <DrawerItem
                             inactiveTintColor={inactiveTintColor}
                             pressColor={pressColor}
@@ -121,6 +141,11 @@ const AppDrawer = () => {
                 }
             }}>
             <Drawer.Screen name={'Libellule'} component={AppDrawerScreen} />
+            <Drawer.Screen
+                name={'Follow up'}
+                options={{ title: 'Suivis' }}
+                component={FollowUpScreen}
+            />
         </Drawer.Navigator>
     );
 };

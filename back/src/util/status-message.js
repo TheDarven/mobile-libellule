@@ -38,4 +38,26 @@ module.exports = {
     COMMENT_EDITED_WITH_SUCCESS: 'Vous avez édité un commentaire avec succès',
     COMMENT_DELETED_WITH_SUCCESS: 'Vous avez supprimé un commentaire avec succès',
     COMMENT_MISSING_PERMISSION: 'Vous n\'avez pas la permission pour effectuer cette opération',
+
+    // REACTION
+    REACTION_NOT_IDENTIFIED: 'Aucune réaction ne correspond à cet ID',
+    REACTION_TYPE_NOT_IDENTIFIED: 'Aucun type de réaction ne correspond à cet ID',
+    REACTION_ALREADY_EXISTS: 'Une réaction existe déjà pour ce commentaire/question',
+    REACTION_NO_LONGER_EXISTS: 'Aucune réaction n\'existe pour ce commentaire/question',
+    REACTION_CREATION_FAILED: 'Une erreur inconnue s\'est produite lors de la création. Merci de réessayer plus tard.',
+    REACTION_DELETION_FAILED: 'Une erreur inconnue s\'est produite lors de la suppresion. Merci de réessayer plus tard.',
+    REACTION_CREATED_WITH_SUCCESS: 'Vous avez créé une réaction avec succès',
+    REACTION_DELETED_WITH_SUCCESS: 'Vous avez supprimé une réaction avec succès',
+    REACTION_MISSING_PERMISSION: 'Vous n\'avez pas la permission pour effectuer cette opération',
+    // FOLLOW
+    FOLLOW_CREATION_FAILED: 'Une erreur inconnue s\'est produite lors de la tentative de suivi. Merci de réessayer plus tard.',
+    FOLLOW_QUESTION_CREATED_WITH_SUCCESS: 'Vous suivez desormais cette question.',
+    FOLLOW_USER_CREATED_WITH_SUCCESS: 'Vous suivez desormais cet utilisateur.',
+    FOLLOW_MISSING_PERMISSION: 'Vous n\'avez pas la permission pour effectuer cette opération',
+    FOLLOW_QUESTION_DELETED_WITH_SUCCESS: 'Vous ne suivez plus cette question',
+    FOLLOW_USER_DELETED_WITH_SUCCESS: 'Vous ne suivez plus cet utilisateur',
+    FOLLOW_DELETION_FAILED: 'Une erreur inconnue s\'est produite lors de la suppresion du suivi. Merci de réessayer plus tard.',
+    FOLLOW_NOT_IDENTIFIED: 'Aucune suivi ne correspond à cet ID',
+    FOLLOW_ALERT_FAILED: "Une erreur s'est produite lors de l'envoie d'une alerte",
+    FOLLOW_ALERT_RESET_WITH_SUCCESS: "La remise à zéro des alertes a été effectuée avec succés"
 }

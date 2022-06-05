@@ -6,6 +6,10 @@ const httpStatus = require("http-status");
 const userController = require('./user-controller');
 const questionController = require('./question-controller');
 const commentController = require('./comment-controller');
+const reactionController = require('./reaction-controller');
+const followQuestionController = require('./follow-question-controller');
+const followUserController = require('./follow-user-controller');
+
 const jwt = require("jsonwebtoken");
 const { getUserById, createJwtToken } = require("../service/user-service");
 
@@ -17,7 +21,10 @@ const EXCLUDED_TOKEN_ENDPOINTS = [
     { path: '/api/questions/users/*', method: 'GET' },
     { path: '/api/comments/*', method: 'GET' },
     { path: '/api/comments/questions/*', method: 'GET' },
-    { path: '/api/comments/users/*', method: 'GET' }
+    { path: '/api/comments/users/*', method: 'GET' },
+    { path: '/api/reactions/types', method: 'GET' },
+    { path: '/api/reactions/questions/*', method: 'GET' },
+    { path: '/api/reactions/comments/*', method: 'GET' },
 ];
 
 // Token middleware
@@ -85,6 +92,34 @@ router.use('/questions', questionController
 
 router.use('/comments', commentController
     // #swagger.tags = ['Comments']
+    /* #swagger.responses[401] = {
+        schema: { $ref: '#/components/responses/401' }
+    } */
+    /* #swagger.responses[200] = {
+        headers: { $ref: '#/components/headers/refreshToken' }
+    } */
+);
+router.use('/follow-question', followQuestionController
+    // #swagger.tags = ['Follow Question']
+    /* #swagger.responses[401] = {
+        schema: { $ref: '#/components/responses/401' }
+    } */
+    /* #swagger.responses[200] = {
+        headers: { $ref: '#/components/headers/refreshToken' }
+    } */
+);
+
+router.use('/reactions', reactionController
+    // #swagger.tags = ['Reactions']
+    /* #swagger.responses[401] = {
+        schema: { $ref: '#/components/responses/401' }
+    } */
+    /* #swagger.responses[200] = {
+        headers: { $ref: '#/components/headers/refreshToken' }
+    } */
+);
+router.use('/follow-user', followUserController
+    // #swagger.tags = ['Follow User']
     /* #swagger.responses[401] = {
         schema: { $ref: '#/components/responses/401' }
     } */

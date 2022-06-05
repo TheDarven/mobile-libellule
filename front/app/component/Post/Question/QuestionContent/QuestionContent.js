@@ -1,17 +1,12 @@
 import React from 'react';
 import { useColorScheme } from 'react-native';
 import LiText from '../../../LiText/LiText';
-import Fonts from '../../../../styles/fonts';
 import Colors from '../../../../styles/colors';
 import Spacings from '../../../../styles/spacings';
+import QuestionTitle from './QuestionTitle/QuestionTitle';
 
 const QuestionContent = ({ title, content }) => {
     const isDarkMode = useColorScheme() === 'dark';
-
-    const cardTitleStyle = {
-        fontWeight: '700',
-        marginBottom: Spacings._8
-    };
 
     const cardContentStyle = {
         marginBottom: Spacings._16,
@@ -20,9 +15,7 @@ const QuestionContent = ({ title, content }) => {
 
     return (
         <>
-            <LiText style={cardTitleStyle} fontSize={Fonts.size.lg}>
-                {title}
-            </LiText>
+            <QuestionTitle title={title} />
             <LiText style={cardContentStyle}>{content}</LiText>
         </>
     );

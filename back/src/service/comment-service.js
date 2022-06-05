@@ -5,6 +5,7 @@ const { COMMENT_CREATED_WITH_SUCCESS, COMMENT_CREATION_FAILED, COMMENT_MISSING_P
 } = require("../util/status-message");
 const { CodeError } = require("../util/error-handler");
 const httpStatus = require("http-status");
+const question = require('../model/question');
 
 async function createComment(content, questionId, user)
 {
@@ -48,7 +49,7 @@ async function deleteComment(commentId, user)
 {
     // Check Permission
     const comment = await commentModel.findOne({ where: { commentId, authorId: user.userId } });
-    if (comment == null) {
+    if (!user.isAdmin && comment == null) {
         throw new CodeError(COMMENT_MISSING_PERMISSION, httpStatus.INTERNAL_SERVER_ERROR)
     }
 
@@ -89,4 +90,24 @@ async function getFirstCommentFromQuestionId(questionId) {
     }
 }
 
-module.exports = { createComment, updateComment, deleteComment, getCommentById, getFirstCommentFromQuestionId }
+async function getLastCommentsFromUser({ authorId, nbComment }) {
+    try {
+        return await commentModel.findAll({
+            where: {
+                authorId 
+            },
+            include: [{
+                model: question,
+                as: 'Question',
+                attributes: ["questionId", "title"]
+            }],
+            order: [['edition_date', 'DESC']],
+            limit: nbComment
+        })
+    } catch (err) {
+        return null;
+    }
+}
+
+
+module.exports = { createComment, updateComment, deleteComment, getCommentById, getFirstCommentFromQuestionId, getLastCommentsFromUser }
