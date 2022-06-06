@@ -99,18 +99,24 @@ router.get('/', (req, res, next) => {
     // #swagger.parameters['authorization'] = { $ref: '#/components/parameters/authorization' }
     /* #swagger.responses[200] = {
         schema: {
-             "status": true,
+            "status": true,
             "data": [
                 {
-                    "id": 1,
-                    "followerId": 2214,
-                    "questionId": 1152
+                    "Question": {
+                        "User": {
+                            "display_name": "Beaver Riverbank Ground Beetle",
+                            "user_id": 4,
+                        },
+                        "authorId": 4,
+                        "creation_date": "2022-06-05T20:11:03.624Z",
+                        "nbComment": 0,
+                        "questionId": 4,
+                        "title": "Another Sample Title",
+                    },
+                    "creation_date": "2022-06-06T18:05:20.798Z",
+                    "followQuestionId": 8,
+                    "followerId": 5,
                 },
-                {
-                    "id": 2,
-                    "followerId": 2214,
-                    "questionId": 4513
-                }
             ]
         },
         headers: { $ref: '#/components/headers/token' }
@@ -139,23 +145,19 @@ router.get('/alerts/', (req, res, next) => {
             "status": true,
             "data": [
                 {
-                    "id": 1,
-                    "title": "What is the average length ?",
-                    "content": "I wanna know what is the average length of things.",
-                    "comm_amount": 0,
-                    "creation_date": "2022-05-24T23:34:13.000Z",
-                    "edition_date": "2022-05-24T23:34:13.000Z",
-                    "alerts": 12,
+                "Question": {
                     "User": {
-                        "display_name": "Blue Ladybug"
+                        "display_name": "Beaver Riverbank Ground Beetle",
+                        "user_id": 4,
                     },
-                    "Reactions": [
-                        {
-                            "type": 1,
-                            "amount": 1
-                        }
-                    ]
-                }
+                    "authorId": 4,
+                    "creation_date": "2022-06-05T20:11:03.624Z",
+                    "questionId": 4,
+                    "title": "Another Sample Title",
+                },
+                "alerts": 1,
+                "edition_date": "2022-06-06T18:09:26.588Z",
+                },
             ]
         },
         headers: { $ref: '#/components/headers/token' }
@@ -206,6 +208,9 @@ router.get('/:question/', (req, res, next) => {
              "status": true,
             "data":
                 {
+                    "alerts": 0,
+                    "creation_date": "2022-06-06T18:08:14.695Z",
+                    "edition_date": "2022-06-06T18:08:14.695Z",
                     "id": 1,
                     "followerId": 2214,
                     "questionId": 1152

@@ -1,9 +1,19 @@
+require('./env-loader')
 const swaggerAutogen = require('swagger-autogen')()
 
 const outputFile = './swagger_output.json'
 const endpointsFiles = ['src/app.js']
 
+const options = {
+  info: {
+    title: 'Libellule API',
+    description: 'An API to provide all the routes needed for the Libellule mobile APP.',
+  },
+  host: `${process.env.HOST}`,
+  schemes: process.env.NODE_ENV?.trim() === 'production' ? ['https'] : ['http'],
+}
 const schema = {
+    ...options,
     components: {
         parameters: {
             authorization: {
