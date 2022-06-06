@@ -96,23 +96,21 @@ router.get('/', (req, res, next) => {
             "status": true,
             "data": [
                 {
-                    "followUserId": 1,
-                    "followerId": 2214,
-                    "userId": 1152,
-                    "name": "dragonfly",
-                    "nbComment": 50,
-                    "nbQuestions": 50,
-                    "nbFollowers": 50
+                "User": {
+                    "createdAt": "2022-06-05T20:11:30.423Z",
+                    "displayName": "Autumn Cuckoo Nomad Bee",
+                    "isAdmin": false,
+                    "nbComment": 0,
+                    "nbFollower": 1,
+                    "nbQuestion": 0,
+                    "updatedAt": "2022-06-05T20:11:30.423Z",
+                    "userId": 7,
                 },
-                {
-                    "followUserId": 2,
-                    "followerId": 2214,
-                    "userId": 4513,
-                    "name": "butterfly",
-                    "nbComment": 60,
-                    "nbQuestions": 60,
-                    "nbFollowers": 60
-                }
+                "commentAlerts": 0,
+                "edition_date": "2022-06-06T18:14:06.372Z",
+                "questionAlerts": 0,
+                "target_id": 7,
+                },
             ]
         },
         headers: { $ref: '#/components/headers/token' }
@@ -137,42 +135,34 @@ router.get('/alerts/', (req, res, next) => {
     // #swagger.description = "Recupère les follow d'un utilisateur connecté, vers un user précis qui a posté récemennt"
     // #swagger.parameters['authorization'] = { $ref: '#/components/parameters/authorization' }
     /* #swagger.responses[200] = {
-        schema: {
+       schema: {
             "status": true,
-            "data": {
-                "questions": [
-                    {
-                        "id": 1,
-                        "title": "What is the average length ?",
-                        "content": "I wanna know what is the average length of things.",
-                        "comm_amount": 0,
-                        "creation_date": "2022-05-24T23:34:13.000Z",
-                        "edition_date": "2022-05-24T23:34:13.000Z",
-                        "alerts": 12,
-                        "User": {
-                            "display_name": "Blue Ladybug"
-                        },
-                        "Reactions": [
-                            {
-                                "type": 1,
-                                "amount": 1
-                            }
-                        ]
-                    }
-                ],
-                "comments": [
-                    {
-                        "id": 1,
-                        "content": "Grass is green ? Thought it was brown.",
-                        "creation_date": "2022-05-27T11:54:00.000Z",
-                        "edition_date": "2022-05-27T11:54:00.000Z",
-                        "User": {
-                            "display_name": "DefaultDisplay"
-                        },
-                        "Reactions": []
+            "data": [
+                {
+                    "User": {
+                        "displayName": "Beaufort Ground Beetle",
+                        "userId": 6,
                     },
-                ]
-            }
+                    "comments": [
+                        {
+                            "Question": {
+                                "questionId": 5,
+                                "title": "follower question title"
+                            },
+                            "commentId": 7,
+                            "content": "target comment",
+                            "creationDate": "2022-06-06T18:17:01.097Z"
+                        }
+                    ],
+                    "questions": [
+                        {
+                            "questionId": 5,
+                            "title": "follower question title",
+                            "creationDate": "2022-06-06T18:17:01.097Z"
+                        }
+                    ]
+                }   
+            ]
         },
         headers: { $ref: '#/components/headers/token' }
     } */
@@ -254,13 +244,16 @@ router.get('/:user/', (req, res, next) => {
     // #swagger.parameters['authorization'] = { $ref: '#/components/parameters/authorization' }
     /* #swagger.responses[200] = {
         schema: {
-             "status": true,
-            "data":
-                {
-                    "followUserId": 1,
-                    "followerId": 2214,
-                    "userId": 1152
-                },
+            "status": true,
+            "data": {
+                    "commentAlerts": 0,
+                    "creation_date": "2022-06-06T18:15:25.206Z",
+                    "edition_date": "2022-06-06T18:15:25.206Z",
+                    "followUserId": 10,
+                    "questionAlerts": 0,
+                    "targetId": 6,
+                    "userId": 5,
+                }
         },
         headers: { $ref: '#/components/headers/token' }
     } */
