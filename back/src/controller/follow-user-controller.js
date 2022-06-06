@@ -181,7 +181,6 @@ router.get('/alerts/', (req, res, next) => {
         const promise = follows.map(async (follow) => {
             const questions = await getLastQuestionsFromUser({ authorId: follow.User.userId, nbQuestion: follow.questionAlerts });
             const comments = await getLastCommentsFromUser({ authorId: follow.User.userId, nbComment: follow.commentAlerts });
-
             const filteredQuestions = questions.map((question) => {
                 return {
                     title: question.title,
@@ -210,7 +209,9 @@ router.get('/alerts/', (req, res, next) => {
                 comments: filteredComments
             }
         });
-        Promise.all(promise).then((data) => {
+        Promise.all(promise).then((alerts) => {
+            const data = alerts
+                .filter((result) => (result.comments.length > 0 || result.questions.length > 0))
             res.json({ status: true, data })
         })
     }).catch(error => next(error));
