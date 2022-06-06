@@ -10,23 +10,21 @@ const { upsertPersistantData } = require('./persistant-data')
 
 const isTestEnv = process.env.NODE_ENV?.trim() === 'test';
 
-(async () => {
+sequelize.sync({ force: isTestEnv })
+    .then(() => {
+        console.log('\x1b[32m✔ \x1b[0mModels synchronisés')
 
-    await sequelize.sync({ force: isTestEnv })
-        .then(async () => {
-            console.log('\x1b[32m✔ \x1b[0mModels synchronisés')
-
-            // Upsert Data
-            await upsertPersistantData()
-            .then(() => {
-                console.log('\x1b[32m✔ \x1b[0mUpsert réalisé')
-            }).catch((error) => {
-                console.error('\x1b[31m❌ \x1b[0mUpsert non réalisé :', error)
-            })
-
+        // Upsert Data
+        upsertPersistantData()
+        .then(() => {
+            console.log('\x1b[32m✔ \x1b[0mUpsert réalisé')
+            process.exit()
         }).catch((error) => {
-            console.error('\x1b[31m❌ \x1b[0mModels non synchronisés :', error)
+            console.error('\x1b[31m❌ \x1b[0mUpsert non réalisé :', error)
+            process.exit()
         })
 
-    process.exit()
-})()
+    }).catch((error) => {
+        console.error('\x1b[31m❌ \x1b[0mModels non synchronisés :', error)
+        process.exit()
+    })
