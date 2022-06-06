@@ -5,8 +5,6 @@
 
 **/model/** : Liste des modèles
 
-**/repository/** : Enregistre les fonctions de requêtages à la base de données
-
 **/service/** : Traitements liés aux endpoints
 
 
@@ -72,9 +70,5 @@ puis l'ajouter dans un _use()_ du **controller-manager.js**.
 5. Importer les endpoints du service dans le controller.
 
 
-6. Si nécessaire, créer les fonctions des requêtes bdd dans **/repository/{nom_modele-repostory.js**
-   (utilisables dans le service).
-
-
-7. ⚠️ CREER LES TESTS sur les endpoints créés
+6. ⚠️ CREER LES TESTS sur les endpoints créés
 

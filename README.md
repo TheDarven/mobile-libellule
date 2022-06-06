@@ -104,8 +104,8 @@ Diagramme de cas d'utilisation, Diagramme d'état transition, Diagramme d'éntit
 ### Webservice utilisé 
 Comme webservice nous avons choisi d'utiliser une API : [Species API](https://www.gbif.org/fr/developer/species)
 Nous l'utilisons afin de générer un pseudonyme aléatoire lors de l'inscription de nos utilisateur.
-L'implémentation est actuellement "bancale", elle a de grosses conséquences sur les performances de l'application
-(presque 5s de chargement pour s'inscrire). En effet nous récupérons un dataset (~5000 entrées) à chaque fois qu'on inscrit un 
+L'API utilisée présente de la latence et a de grosses conséquences sur les performances de l'application
+(presque 5s de chargement pour s'inscrire). En effet, nous devons récupérons un dataset (~5000 entrées) à chaque fois qu'on inscrit un 
 utilisateur, le mieux serait de copier ce dataset dans une table de notre base de donnée mais nous n'avons pas eu le temps
 d'implémenter cette solution.
 
@@ -120,6 +120,23 @@ L'utilisateur peut consulter l'ensemble des questions et commentaires. Il peut a
 questions/commentaire.
 Il peut aussi suivre des questions ou d'autres utilisateurs.
 L'admin peut supprimer des questions ou des commentaires d'un utilisateur.
+
+### Compte administrateur
+Il existe un compte administrateur initialiser au lancement de l'API :
+- **Nom :** admin
+- **Mot de passe :** admin
+
+### Gestion du token
+Nous générons un **token** à chaque connexion afin d'authentifier l'utilisateur connecté.
+
+Ce token est envoyé à chaque appel d'API et est **requis** sur certains endpoints restrictifs (réservés aux utilisateurs connectés ou administrateur).
+
+Le token ayant une **durée de vie limitée** (configurable dans le fichier d'environement du back),
+un système de **refresh de token** a été mis en place. Lorsque le back reçoit un token ayant dépassé
+la moitié de sa durée de vie, un **nouveau token** est placé dans l'entête **Authorization** de la réponse afin de
+la communiquer à l'application.
+
+Du côté de l'application, un **interceptor** récupère ce nouveau token pour les prochains appels.
 
 ### Architecture de l'application
 #### Back
@@ -141,6 +158,24 @@ Nous avons plusieurs dossiers qui ont chacuns leur fonctions :
     Ce dossier contient l'ensemble de nos tests End to End.
 
 #### Front
+L'architecture dossier du front :
+- **api :**
+    Ce dossier contient tous les fichiers qui se réfèrent aux appels à l'API (appel et interceptor).
+- **component :**
+    Ce dossier contient tous les composants qui sont partagés dans l'applications.
+- **context :**
+    Possède les contextes de l'application, il n'y en a qu'un seul pour l'authentification.
+- **layout :**
+    Ce dossier contient les composants d'affiche propre à une seule vue. Le but étant de diviser les
+    composants unitaires volumineux en des composants plus petits.
+- **navigator :**
+    Ce dossier contient tous les composants qui permettent la navigation.
+- **screen :**
+    Ce dossier contient tous les écrans de l'application.
+- **styles :**
+    Ce dossier contient tous les styles unifiés.
+- **util :**
+    Dossier pour les fonctions utilitaires & de configuration.
 
 ## Done et TODO
 Concrètement, les choses suivantes sont actuellement implémentées dans l'application :
@@ -148,10 +183,12 @@ Concrètement, les choses suivantes sont actuellement implémentées dans l'appl
 - Création / Edition / Suppression / Consultation d'une question
 - Création / Edition / Suppression / Consultation d'un commentaire
 - Follow / Unfollow d'un utilisateur ou d'une question
+- Informe dans la page suivis lorsqu'un utilisateur suivi poste un nouveau commentaire / une nouvelle question
+- Informe dans la page suivis lorsqu'une question suivie a des nouveaux commentaires
 - Liste de différentes formes de consultation (questions, commentaires, etc ...)
 
 Certaines fonctionnalités ont été réalisés dans le backend uniquement:
-- Création / Edition / Supprssion / Consultation des réactions pour une question ou un commentaire
+- Création / Edition / Suppression / Consultation des réactions pour une question ou un commentaire
 - Consultation des réactions en liste en fonction de leur type (upvote, downvote, report, etc...)
 
 D'autres fonctionnalités n'ont pas été retenues pour le rendu final et n'ont pas du tout été implémentées (voir `Conception > Cas d'utilisations`).
