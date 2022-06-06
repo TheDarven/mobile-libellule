@@ -1,4 +1,4 @@
-// Testing question endpoint here
+// Testing comment endpoint here
 const app = require('../app')
 const supertest = require('supertest')
 const httpStatus = require("http-status")

@@ -18,7 +18,7 @@ const FOLLOW_QUESTION_ENDPOINT = '/api/follow-question/'
 const PUBLISHER_ACCOUNT_NAME = "publisher"
 const PUBLISHER_PASSWORD = "MyPassword"
 
-const QUESTION_TITLE = "Sample Title"
+const QUESTION_TITLE = "Sample Title Follow"
 const QUESTION_CONTENT = "Sample Content"
 
 const FOLLOWER_ACCOUNT_NAME = "follower"

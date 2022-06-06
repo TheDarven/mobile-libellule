@@ -13,7 +13,6 @@ import { useNavigation } from '@react-navigation/native';
 import DeletePost from '../../component/Post/DeletePost/DeletePost';
 import ActionPost from '../../component/Post/ActionPost/ActionPost';
 import FollowUp, { FollowType } from '../../component/Post/FollowUp/FollowUp';
-import Reaction from '../../component/Post/Reaction/Reaction';
 import {
     createFollowQuestion,
     deleteFollowQuestion,
@@ -36,7 +35,7 @@ const QuestionLayout = ({
     const [isFollowingQuestion, setIsFollowingQuestion] = useState(false);
     const [isFollowingUser, setIsFollowingUser] = useState(false);
 
-    const { userId, isAuth } = useAuth().authContext;
+    const { userId, isAuth, isAdmin } = useAuth().authContext;
 
     const navigation = useNavigation();
 
@@ -149,16 +148,11 @@ const QuestionLayout = ({
         }
     }
 
-    /**
-     * TODO:
-     * - Bouton réaction (avec nb)
-     */
-
     return (
         <>
             <LiTitle fontSize={Fonts.size.xl_2}>{title}</LiTitle>
             <PostHeader author={authorName} date={creationDate}>
-                {!isAuthor() && (
+                {isAuth() && !isAuthor() && (
                     <FollowUp
                         isFollowing={isFollowingUser}
                         style={{ paddingLeft: 0 }}
@@ -169,21 +163,22 @@ const QuestionLayout = ({
             </PostHeader>
             <LiText style={contentTextStyle}>{content}</LiText>
             <ActionPost>
-                <Reaction
+                {/*<Reaction
                     style={{
                         marginRight: Spacings._8,
                         paddingLeft: Spacings._0
                     }}
                     nbReactions={4}
-                />
-                {!isAuthor() && (
+                />*/}
+                {isAuth() && (
                     <FollowUp
                         isFollowing={isFollowingQuestion}
                         followClicked={onFollowQuestionClicked}
+                        style={{ paddingLeft: Spacings._0 }}
                         type={FollowType.question}
                     />
                 )}
-                {isAuthor() && (
+                {(isAuthor() || isAdmin) && (
                     <DeletePost deletePost={onDeleteQuestionClicked} />
                 )}
             </ActionPost>
