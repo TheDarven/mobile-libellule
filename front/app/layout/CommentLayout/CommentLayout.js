@@ -8,7 +8,6 @@ import { useAuth } from '../../context/auth-context';
 import DeletePost from '../../component/Post/DeletePost/DeletePost';
 import { deleteComment as deleteCommentAPI } from '../../api/comments-api';
 import ActionPost from '../../component/Post/ActionPost/ActionPost';
-import Reaction from '../../component/Post/Reaction/Reaction';
 
 const CommentLayout = ({
     commentId,
@@ -20,7 +19,7 @@ const CommentLayout = ({
 }) => {
     const isDarkMode = useColorScheme() === 'dark';
 
-    const { userId, isAuth } = useAuth().authContext;
+    const { userId, isAuth, isAdmin } = useAuth().authContext;
 
     function isAuthor() {
         return isAuth() && authorId === userId;
@@ -68,12 +67,12 @@ const CommentLayout = ({
             <PostHeader author={authorName} date={date} />
             <LiText style={commentContentStyle}>{content}</LiText>
             <ActionPost>
-                <Reaction
+                {/*<Reaction
                     style={{
                         paddingLeft: Spacings._0
                     }}
-                />
-                {isAuthor() && (
+                />*/}
+                {(isAuthor() || isAdmin) && (
                     <DeletePost deletePost={onDeleteCommentClicked} />
                 )}
             </ActionPost>

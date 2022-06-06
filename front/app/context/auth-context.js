@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(null);
     const [displayName, setDisplayName] = useState(null);
     const [userId, setUserId] = useState(-1);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const isAuth = () => {
         return nonEmptyOrNull(token);
@@ -26,11 +27,13 @@ export const AuthProvider = ({ children }) => {
         if (isEmptyOrNull(token)) {
             setDisplayName(null);
             setUserId(-1);
+            setIsAdmin(false);
         } else {
             whoAmI().then(res => {
                 if (res.data?.status) {
-                    setDisplayName(res.data?.data.displayName);
-                    setUserId(res.data?.data.userId);
+                    setDisplayName(res.data?.data?.displayName);
+                    setUserId(res.data?.data?.userId);
+                    setIsAdmin(res.data?.data?.isAdmin);
                 }
             });
         }
@@ -66,7 +69,8 @@ export const AuthProvider = ({ children }) => {
                     setToken: setStoredToken,
                     isAuth,
                     displayName,
-                    userId
+                    userId,
+                    isAdmin
                 }
             }}>
             {children}
