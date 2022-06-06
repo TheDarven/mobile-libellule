@@ -186,7 +186,11 @@ const FollowUserAlert = ({
                             </LiText>
                         )}
                         <SeePost
-                            questionId={1}
+                            questionId={
+                                alert.type === FollowUserAlertType.comment
+                                    ? alert.Question.questionId
+                                    : alert.questionId
+                            }
                             content={
                                 alert.type === FollowUserAlertType.comment
                                     ? 'Voir le commentaire'
