@@ -44,7 +44,7 @@ const QuestionLayout = ({
     }, [isAuth, authorId, userId]);
 
     useEffect(() => {
-        if (!isAuth() || isAuthor()) {
+        if (!isAuth()) {
             return;
         }
 
