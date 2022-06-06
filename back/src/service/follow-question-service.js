@@ -18,6 +18,13 @@ const user = require('../model/user');
 async function createFollowQuestion({ followerId, questionId })
 {
     try {
+        const exist = await followQuestionModel.findOne({
+            where: {
+                followerId,
+                questionId
+            }
+        })
+        if (exist !== null) throw new CodeError(FOLLOW_CREATION_FAILED, httpStatus.INTERNAL_SERVER_ERROR);
         const follow = await followQuestionModel.create({
             followerId,
             questionId
