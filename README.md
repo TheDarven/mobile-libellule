@@ -2,6 +2,9 @@
 
 Ce projet est un réseau social anonyme ayant pour but de partager des questions sur n'importe quel thème.
 
+## Vidéo de présentation
+[Voir la vidéo](https://www.youtube.com/watch?v=kmFLin9HOYg)
+
 ## Téléchargement
 [Application android](https://webmobile.pages.ensimag.fr/apprentis2a/projet/Projet_gaillalo_geoffrlu_legoyb/libellule.apk)
 
